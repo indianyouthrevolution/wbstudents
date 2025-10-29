@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WB Student Group | IYR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#0a74da;
+    --deep:#042a5f;
+    --accent:#ffcc00;
+    --bg:#071126;
+    --glass: rgba(255,255,255,0.04);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background:linear-gradient(180deg,#041731 0%, #071126 60%);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+
+  /* ---------- CONTAINER ---------- */
+  .wrap{max-width:1100px;margin:28px auto;padding:20px;}
+
+  /* ---------- HEADER ---------- */
+  header.site{
+    background: linear-gradient(90deg, rgba(10,116,218,0.15), rgba(255,204,0,0.03));
+    border-radius:14px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    box-shadow:0 8px 30px rgba(2,10,30,0.6), inset 0 1px 0 rgba(255,255,255,0.025);
+    backdrop-filter: blur(6px);
+  }
+  .brand{
+    display:flex;align-items:center;gap:14px;
+  }
+  .brand img{height:70px;width:70px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,255,255,0.06);}
+  .brand .title{font-weight:700;font-size:1.05rem;color:var(--accent);letter-spacing:0.2px}
+  .brand .subtitle{font-size:0.85rem;color:rgba(230,238,248,0.8);margin-top:2px}
+
+  .header-right{margin-left:auto;display:flex;gap:12px;align-items:center}
+  .chip{background:var(--glass);padding:8px 12px;border-radius:10px;font-weight:600;color:#d9eefc;font-size:0.9rem}
+  .small{font-size:0.85rem;color:rgba(230,238,248,0.8)}
+
+  /* ---------- HERO STATS ---------- */
+  .stats{display:flex;gap:14px;margin-top:18px}
+  .stat-card{
+    flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));
+    border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(2,8,30,0.6);
+    display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+  }
+  .stat-num{font-size:1.6rem;font-weight:800;color:var(--accent)}
+  .stat-sub{font-size:0.95rem;color:rgba(230,238,248,0.85)}
+
+  /* ---------- GRID LAYOUT ---------- */
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:22px;margin-top:26px}
+  @media(max-width:980px){.grid{grid-template-columns:1fr;}.brand img{height:64px;width:64px}}
+
+  /* ---------- MAIN CARD ---------- */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:18px; box-shadow:0 8px 30px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* ---------- IMPACT BAR ---------- */
+  .impact{display:flex;gap:12px;align-items:center;justify-content:space-between}
+  .impact .big{font-size:1.4rem;font-weight:800;color:var(--accent)}
+  .impact p{margin:0;color:rgba(230,238,248,0.9)}
+
+  /* ---------- HISTORY + RULES ---------- */
+  .two-col{display:flex;gap:14px}
+  .two-col .col{flex:1}
+  .history .title{color:var(--accent);font-weight:700;margin-bottom:8px}
+  .history p{color:rgba(230,238,248,0.9);margin-bottom:10px}
+
+  .rules li{margin-bottom:8px;color:rgba(255,240,200,0.95)}
+  .rules strong{color:#fff}
+
+  /* ---------- STREAMS / TABS ---------- */
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .tabs button{
+    background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;color:rgba(230,238,248,0.95);cursor:pointer;font-weight:700;
+  }
+  .tabs button.active{background:linear-gradient(90deg,var(--blue),var(--accent));color:#071126;box-shadow:0 8px 22px rgba(2,8,30,0.6)}
+  .subjects{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .subject{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px;min-width:160px;box-shadow:0 6px 18px rgba(2,6,20,0.6);cursor:pointer}
+  .subject h4{margin:0;font-size:1rem;color:var(--accent)}
+  .subject a{display:block;margin-top:8px;font-weight:600;color:#cfe8ff;font-size:0.9rem}
+
+  /* ---------- UPDATES TIMELINE ---------- */
+  .timeline{margin-top:12px}
+  .update{display:flex;gap:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));margin-bottom:10px}
+  .update .time{width:92px;flex-shrink:0;color:rgba(200,220,255,0.8);font-weight:700}
+  .update .txt{flex:1;color:rgba(230,238,248,0.95)}
+
+  /* ---------- ADMIN ACTIONS (hidden normally) ---------- */
+  .admin-row{display:flex;gap:10px;align-items:center}
+  .btn{background:var(--blue);color:white;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+  .btn.alt{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent)}
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar .card{padding:14px}
+  .meta{display:flex;gap:10px;flex-direction:column}
+  .meta .m-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+  .meta .m-row:last-child{border-bottom:none}
+  .admin-note{font-size:0.9rem;color:rgba(230,238,248,0.85);margin-top:10px}
+
+  /* ---------- FOOTER ---------- */
+  footer{margin-top:28px;text-align:center;color:rgba(200,220,255,0.7);font-size:0.9rem;padding:20px}
+  .social a{margin:0 6px;color:var(--accent)}
+
+  /* ---------- FLOATING WHATSAPP BUTTON ---------- */
+  .whats{
+    position:fixed;right:22px;bottom:22px;background:linear-gradient(90deg,#25D366,#128C7E);
+    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(2,10,30,0.5);z-index:9999;border:2px solid rgba(255,255,255,0.06);
+  }
+  .whats img{width:28px;height:28px;display:block}
+  .whats:hover{transform:translateY(-4px);transition:transform .18s ease}
+
+  /* small screens */
+  @media(max-width:720px){
+    .grid{grid-template-columns:1fr;margin-top:18px}
+    .brand .title{font-size:0.92rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- HEADER -->
+  <header class="site">
+    <div class="brand">
+      <img src="https://i.ibb.co/3mxmCNDP/wb-logo.jpg" alt="WB logo">
+      <div>
+        <div class="title">WB Student Group</div>
+        <div class="subtitle">Managed by IYR — Urdu · Hindi · English</div>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="chip">Founder: Yusuf Khan</div>
+      <div class="small">Since 09-09-2024</div>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats" style="margin-top:16px">
+    <div class="stat-card card">
+      <div class="stat-num" id="memCount">500+</div>
+      <div class="stat-sub">Active Members</div>
+      <div style="margin-top:8px;color:rgba(230,238,248,0.8);font-size:0.95rem">A diverse group of students from all mediums.</div>
+    </div>
+    <div class="stat-card card">
+      <div class="stat-num" id="helpCount">1000+</div>
+      <div class="stat-sub">Students Helped</div>
+      <div style="margin-top:8px;color:rgba(230,238,248,0.8);font-size:0.95rem">Notes, guidance, and support since launch.</div>
+    </div>
+    <div class="stat-card card">
+      <div class="stat-num" id="resourcesCount">350+</div>
+      <div class="stat-sub">Resources (PDFs)</div>
+      <div style="margin-top:8px;color:rgba(230,238,248,0.8);font-size:0.95rem">Notes, books, past papers & more.</div>
+    </div>
+  </div>
+
+  <!-- GRID: MAIN + SIDEBAR -->
+  <div class="grid" style="margin-top:18px">
+    <!-- MAIN -->
+    <main>
+               <!-- OUR BOOKS & FREE MATERIAL -->
+<div style="margin-top:18px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <h3 style="margin:0;color:rgba(rgb(255, 255, 255))">OUR BOOKS & FREE MATERIAL</h3>
+    <small style="color:rgba(255, 255, 255, 0.8)">Updated Live</small>
+  </div>
+
+  <!-- Tabs / Buttons -->
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <button onclick="showSection('langBooks')" class="tabBtn">Language</button>
+    <button onclick="showSection('compBooks')" class="tabBtn">Compulsory</button>
+    <button onclick="showSection('specialBooks')" class="tabBtn">Special</button>
+  </div>
+
+  <!-- Book Cards Container -->
+  <div id="langBooks" class="bookSection"></div>
+  <div id="compBooks" class="bookSection" style="display:none"></div>
+  <div id="specialBooks" class="bookSection" style="display:none"></div>
+</div>
+
+<style>
+.tabBtn {
+  background: var(--accent);
+  color: #000000;
+  border:none;
+  padding:6px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px;
+}
+.tabBtn:hover {
+  opacity:.85;
+}
+.bookItem {
+  background: rgba(255,255,255,0.04);
+  padding:10px;
+  border-left:3px solid var(--accent);
+  border-radius:6px;
+  margin-bottom:10px;
+}
+.bookItem h4 {
+  margin:0 0 4px;
+  font-size:14px;
+  color:#fff;
+}
+.bookItem a {
+  font-size:12px;
+  text-decoration:none;
+}
+</style>
+
+<script>
+// SAMPLE DATA ✅ (Aap yaha apne links update kar dena)
+const langBooksData = [
+  { title: "Urdu Guide Semester 4", link: "https://example.com/urdu" },
+  { title: "Urdu Guide Semester 2", link: "https://example.com/hindi" }
+];
+
+const compulsoryBooksData = [
+  { title: "History", link: "https://drive.google.com/file/d/1wDbEQ8MJzx7UtC60POXG6W-eQTdvcoBU/view?usp=drive_link" },
+{ title: "Physics Notes", link: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4ZC4j2w8aNSK6KLHDaaWP2emx7lHTcypiHw&s" },
+  { title: "Chemistry Notes", link: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4ZC4j2w8aNSK6KLHDaaWP2emx7lHTcypiHw&s" }
+];
+
+const specialBooksData = [
+  { title: "The hidden principle of human nature", link: "https://acrobat.adobe.com/id/urn:aaid:sc:AP:ee8cbc22-bb87-4986-a891-06bcc24c2889" }
+];
+
+// Load Books Function ✅
+function loadBooks(dataArr, containerId){
+  let container = document.getElementById(containerId);
+  container.innerHTML = "";
+  dataArr.forEach(item=>{
+    let div = document.createElement("div");
+    div.className = "bookItem";
+    div.innerHTML = `<h4>${item.title}</h4>
+                     <a href="${item.link}" target="_blank">Open / View</a>`;
+    container.appendChild(div);
+  });
+}
+
+// Show Sections ✅
+function showSection(id){
+  document.querySelectorAll('.bookSection').forEach(sec => sec.style.display='none');
+  document.getElementById(id).style.display="block";
+}
+
+// Load by default
+loadBooks(langBooksData,"langBooks");
+loadBooks(compulsoryBooksData,"compBooks");
+loadBooks(specialBooksData,"specialBooks");
+</script>
+      <!-- IMPACT + ACTIONS -->
+      <div class="card">
+        <!-- UPDATES -->
+        <div style="margin-top:18px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <h3 style="margin:0;color:var(--accent)">Latest Updates</h3>
+            <small style="color:rgba(200,220,255,0.8)">Updated live</small>
+          </div>
+
+          <div id="updatesList" class="timeline">
+            <div class="update">
+                              <div class="time">31-Oct-2025</div>
+              <div class="txt">See Your Result SEM 3 <a href="https://result.wb.gov.in/" style="color:var(--accent)">Open</a></div>
+            </div>
+             <div class="update">
+              <div class="time">29-Oct-2025</div>
+              <div class="txt">Result semester 3 Notice <a href="https://i.ibb.co/RpH02hxh/Whats-App-Image-2025-10-29-at-18-36-38-3009d5f2.jpg" style="color:var(--accent)">Open</a></div>
+            </div>
+            <div class="update">
+              <div class="time">01-Sep-2025</div>
+              <div class="txt">Class 12 4th Sem Book Suggestion by councile <a href="https://acrobat.adobe.com/id/urn:aaid:sc:AP:ff48e337-8f79-4b49-a522-627eb591ff77" style="color:var(--accent)">Open</a></div>
+            </div>
+            <div class="update">
+              <div class="time">01-Sep-2025</div>
+              <div class="txt">Class 12 second semester notes uploaded (Physics, Chemistry, Biology).</div>
+            </div>
+          </div>
+        </div>
+        <div class="impact">
+          <div>
+            <div style="font-size:1.05rem;font-weight:700;color:var(--accent)">Our Mission</div>
+            <p>To make quality study material & guidance available for every WB student — regardless of background.</p>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:0.9rem;color:rgba(230,238,248,0.85)">500+ members • 1000+ helped</div>
+            <div style="margin-top:10px">
+            </div>
+          </div>
+        </div>
+
+
+        <!-- HISTORY & RULES -->
+        <div style="margin-top:18px" class="two-col">
+          <div class="col history card" style="padding:14px">
+            <div class="title">History</div>
+            <p><strong>Founded:</strong> 09-09-2024</p>
+            <p>Yusuf khan founder of Indian youth revolution Founded WB Student Group started to support students of Urdu, Hindi & English mediums. Many students who couldn't afford coaching found free support here help each othr.</p>
+            <p style="font-weight:700;color:var(--accent)">Language respect • Peer support • Free resources</p>
+          </div>
+
+          <div class="col card" style="padding:14px">
+            <div class="title" style="color:#ffd59a">Rules (short)</div>
+            <ul class="rules">
+              <li><strong>No PMs:</strong> Report to Admin Yusuf with screenshot.</li>
+              <li><strong>Be respectful:</strong> No insults/bullying.</li>
+              <li><strong>Study only:</strong> No spam, no politics.</li>
+              <li><strong>No promotions:</strong> No external group links or ads.</li>
+              <li><strong>Paid content:</strong> Don't share without permission.</li>
+            </ul>
+          </div>
+        </div>
+
+
+
+
+      <!-- STREAMS / SUBJECTS -->
+      <div class="card" style="margin-top:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0;color:var(--accent)">Books & Notes</h3>
+          <div style="font-size:0.9rem;color:rgba(200,220,255,0.8)">Click a stream to view subjects</div>
+        </div>
+
+        <div style="margin-top:12px" class="tabs" id="tabs">
+          <button class="active" data-stream="science">Science</button>
+          <button data-stream="arts">Arts</button>
+          <button data-stream="commerce">Commerce</button>
+        </div>
+
+        <div class="subjects" id="subjectsArea">
+          <!-- JS will populate -->
+        </div>
+      </div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://i.ibb.co/3mxmCNDP/wb-logo.jpg" alt="logo" style="width:74px;height:74px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.03)">
+          <div>
+            <div style="font-weight:800;font-size:1.05rem">WB Student Group</div>
+            <div style="font-size:0.9rem;color:rgba(200,220,255,0.85)">Managed by IYR</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="meta">
+          <div class="m-row"><div>Members</div><div style="font-weight:800">500+</div></div>
+          <div class="m-row"><div>Students helped</div><div style="font-weight:800">1000+</div></div>
+          <div class="m-row"><div>Available PDFs</div><div style="font-weight:800" id="pdfCount">350+</div></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div style="font-weight:700;color:var(--accent)">Contact Admin</div>
+          <div class="admin-note">For violations or important requests, message Yusuf (admin).</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:8px">Quick Links</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <a href="#" style="color:#cfe8ff">Notes (Urdu)</a>
+          <a href="#" style="color:#cfe8ff">Notes (Hindi)</a>
+          <a href="#" style="color:#cfe8ff">Join Telegram</a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="opacity:0.9">© 2025 WB Student Group · Managed by IYR · Founder: Yusuf Khan</div>
+    <div style="margin-top:8px" class="social">
+      <a href="YOUR_FB" target="_blank">Facebook</a> · <a href="YOUR_IG" target="_blank">Instagram</a> · <a href="YOUR_YT" target="_blank">YouTube</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- FLOATING WHATSAPP -->
+<a class="whats" id="whatsBtn" href="YOUR_WHATSAPP_LINK" target="_blank" title="Join WhatsApp Group">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp">
+</a>
+
+<!-- ---------- SCRIPTS ---------- -->
+<script>
+/* ====== Data (edit as needed) ====== */
+const dataStreams = {
+  science:[
+    {title:"Physics (Class 12) - Notes", link:"https://drive.google.com/science_physics"},
+    {title:"Chemistry - Notes", link:"https://drive.google.com/science_chemistry"},
+    {title:"Biology - Notes", link:"https://drive.google.com/science_biology"},
+    {title:"Mathematics - Notes", link:"https://drive.google.com/science_math"}
+  ],
+  arts:[
+    {title:"History - Notes", link:"https://drive.google.com/arts_history"},
+    {title:"Geography - Notes", link:"https://drive.google.com/arts_geography"},
+    {title:"Political Science - Notes", link:"https://drive.google.com/arts_polscience"},
+    {title:"Economics - Notes", link:"https://drive.google.com/arts_economics"}
+  ],
+  commerce:[
+    {title:"Accountancy - Notes", link:"https://drive.google.com/commerce_accountancy"},
+    {title:"Business Studies - Notes", link:"https://drive.google.com/commerce_business"},
+    {title:"Economics - Notes", link:"https://drive.google.com/commerce_economics"},
+    {title:"Mathematics - Notes", link:"https://drive.google.com/commerce_math"}
+  ]
+};
+
+let updates = [
+  {date:"2025-10-05", text:"‘The Hidden Principle of Human Nature’ PDF uploaded (Urdu & English)."},
+  {date:"2025-09-01", text:"Class 12 second semester notes added: Physics, Chemistry, Biology."}
+];
+
+/* ====== Populate subjects ====== */
+const subjectsArea = document.getElementById('subjectsArea');
+function loadSubjects(streamKey){
+  subjectsArea.innerHTML = "";
+  const arr = dataStreams[streamKey] || [];
+  arr.forEach(s=>{
+    const el = document.createElement('div');
+    el.className = 'subject';
+    el.innerHTML = <h4>${s.title}</h4><a href="${s.link}" target="_blank">Open / Download</a>;
+    subjectsArea.appendChild(el);
+  });
+}
+
+/* initial */
+loadSubjects('science');
+
+/* tab switching */
+document.getElementById('tabs').addEventListener('click',(e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const stream = btn.getAttribute('data-stream');
+  loadSubjects(stream);
+});
+
+/* ====== Updates render ====== */
+function renderUpdates(){
+  const container = document.getElementById('updatesList');
+  container.innerHTML = '';
+  updates.forEach(u=>{
+    const d = new Date(u.date);
+    const fmt = d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const div = document.createElement('div');
+    div.className = 'update';
+    div.innerHTML = <div class="time">${fmt}</div><div class="txt">${u.text}</div>;
+    container.appendChild(div);
+  });
+}
+renderUpdates();
+
+/* ====== Admin: Add PDF / Add Update (prompt-based) ====== */
+function openAdmin(){
+  // simple auth prompt (set pass as "iyradmin" for now) - change/remove as you like
+  const pass = prompt("Admin password:");
+  if(pass !== "iyradmin"){ alert("Wrong password or cancelled."); return; }
+  const action = prompt("Type: 1 to add PDF, 2 to add update, 3 to change counts (members/help/resources)");
+  if(action === "1"){
+    const stream = prompt("Stream (science / arts / commerce):").toLowerCase();
+    const title = prompt("PDF Title:");
+    const link = prompt("Google Drive link:");
+    if(dataStreams[stream] && title && link){
+      dataStreams[stream].push({title,link});
+      // reload if active tab equals stream
+      const active = document.querySelector('#tabs button.active').getAttribute('data-stream');
+      if(active === stream) loadSubjects(stream);
+      alert("PDF added.");
+      // bump pdf count visually (optional)
+      const pdfCountEl = document.getElementById('pdfCount');
+      if(pdfCountEl){ pdfCountEl.textContent = (parseInt(pdfCountEl.textContent)||0) + 1; }
+    } else alert("Invalid input or stream.");
+  } else if(action === "2"){
+    const date = prompt("Date (YYYY-MM-DD):", new Date().toISOString().slice(0,10));
+    const txt = prompt("Update text:");
+    if(date && txt){ updates.unshift({date, text: txt}); renderUpdates(); alert("Update added."); }
+  } else if(action === "3"){
+    const m = prompt("Members count (e.g. 600+):"); if(m) document.getElementById('memCount').textContent = m;
+    const h = prompt("Helped count (e.g. 1200+):"); if(h) document.getElementById('helpCount').textContent = h;
+    const p = prompt("Resources count (e.g. 400+):"); if(p) document.getElementById('pdfCount').textContent = p;
+  } else alert("Cancelled or invalid option.");
+}
+
+/* ====== Contact quick (show) ====== */
+function showContact(){
+  alert("Contact Admin Yusuf via WhatsApp (floating button) or message on the group.");
+}
+
+/* ====== Small animations - counters (simple) ====== */
+function animateCount(id, start, end, duration){
+  const el = document.getElementById(id);
+  if(!el) return;
+  let startTime = null;
+  function step(ts){
+    if(!startTime) startTime = ts;
+    const progress = Math.min((ts - startTime)/duration,1);
+    const value = Math.floor(progress*(end-start)+start);
+    el.textContent = value + (end>=100?"+":"");
+    if(progress<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+animateCount('memCount', 400, 500, 900);
+animateCount('helpCount', 800, 1000, 900);
+animateCount('resourcesCount', 300, 350, 900);
+
+/* ====== Replace placeholders note (optional) ====== */
+console.log("Replace YOUR_WHATSAPP_LINK, YOUR_FB, YOUR_IG, YOUR_YT in HTML with your real links.");
+</script>
+</body>
+</html>

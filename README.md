@@ -1,32 +1,14 @@
-# WB Student Group (IYR)
+# WB Websites - Admin scaffold
 
-*WB Student Group* — A modern, responsive website for West Bengal students (Urdu / Hindi / English) managed by *Indian Youth Revolution (IYR)*.  
-Founder: *Yusuf Khan* · Launched: *09-09-2024*
+This workspace contains a static site. I added a minimal admin panel under `admin/` which uses `localStorage` for data and a simple static password flow (demo only).
 
----
+Files added:
+- admin/login.html — login page
+- admin/index.html — dashboard
+- admin/users.html — user CRUD
+- admin/content.html — simple content editor
+- admin/admin.css, admin/admin.js — styles and logic
 
-## 🔥 Live / Demo
-(Replace with your GitHub Pages link after deploy)  
-https://<your-github-username>.github.io/<your-repo-name>/
+Default demo admin password: `admin123` (change by setting `admin_pass` in `localStorage`).
 
----
-
-## ✅ Features
-- Full-width animated *hero slider* (3 motivational slides)  
-- *Floating WhatsApp* join button (bottom-right)  
-- *Books & Notes* section with tabs (Science / Arts / Commerce) and downloadable PDFs  
-- *Languages* section: Urdu / English / Hindi lists  
-- *Special IYR Books* section (cover image + download link)  
-- *About Us* with Founder details and typewriter animation  
-- *Animated counters*: Members, Students Helped, Resources  
-- *Updates timeline, **Rules, **History, **Future Goals*  
-- Mobile responsive and modern UI/UX (glassmorphic + gradients)  
-- Simple *Admin prompt* in JS (optional — can be removed if not needed)
-
----
-
-## 🛠 Quick setup (local)
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/<your-username>/<your-repo>.git
-   cd <your-repo>
+To use locally: open `admin/login.html` in the browser, sign in with the demo password, and use the dashboard.

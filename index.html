@@ -193,16 +193,18 @@
     </div>
   </div>
 
-  <div id="mobileNav" style="display:none;margin-top:10px;border-radius:10px;overflow:hidden;">
-    <nav style="background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);">
-      <a href="#home" class="nav-link mobile">Home</a> |
-      <a href="#latest" class="nav-link mobile">Latest</a> |
-      <a href="#books" class="nav-link mobile">Books</a> |
-      <a href="#history" class="nav-link mobile">History</a> |
-      <a href="#rules" class="nav-link mobile">Rules</a> |
-      <a href="#streams" class="nav-link mobile">Streams</a>
-    </nav>
-  </div>
+  <!-- HTML -->
+
+<div id="mobileNav" style="display:none;margin-top:10px;border-radius:10px;overflow:hidden;">
+  <nav class="mobile-nav">
+    <a href="#home" class="nav-link mobile nav-item">Home</a>
+    <a href="#latest" class="nav-link mobile nav-item">Latest</a>
+    <a href="#books" class="nav-link mobile nav-item">Books</a>
+    <a href="#history" class="nav-link mobile nav-item">History</a>
+    <a href="#rules" class="nav-link mobile nav-item">Rules</a>
+    <a href="#streams" class="nav-link mobile nav-item">Streams</a>
+  </nav>
+</div>
 
   <!-- STATS -->
   <div class="stats" style="margin-top:14px">
@@ -530,7 +532,7 @@ html, body{
   <div class="wb-card" id="wbCard" tabindex="0" role="region" aria-label="Countdown to 4th semester examination">
 
     <div class="wb-left">
-      <div class="wb-title">4th Semester Examination Left</div>
+      <div class="wb-title">WB CAP 2026 Registration Ends In</div>
     </div>
 
     <div class="wb-timers">
@@ -562,7 +564,7 @@ html, body{
   const mEl = document.getElementById('wb-mins');
   const sEl = document.getElementById('wb-secs');
 
-  const target = new Date("2026-02-12T00:00:00+05:30").getTime();
+  const target = new Date("2026-06-01T00:00:00+05:30").getTime();
 
   function update(){
     let diff = target - Date.now();
@@ -597,6 +599,7 @@ html, body{
 
 </body>
 </html>
+
 
 
 
@@ -652,11 +655,6 @@ html, body{
            style="width:100%;height:100%;object-fit:cover;">
     </div>
 
-    <!-- Image 4 -->
-    <div class="slide" style="position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.7s;">
-      <img src="https://i.ibb.co/TB6xm3P3/Whats-App-Image-2025-11-23-at-13-44-23-19a399e1.jpg"
-           style="width:100%;height:100%;object-fit:cover;">
-    </div>
   </div>
 
   <!-- Dots -->
@@ -718,6 +716,55 @@ sliderBox.addEventListener("touchend", resumeSlide);
 
 startSlide();
 </script>
+<script>
+const slider = document.querySelector('.slider');
+let startX = 0;
+let isDown = false;
+let scrollLeft;
+
+slider.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+}, { passive: true });
+
+slider.addEventListener('touchmove', (e) => {
+    if (!startX) return;
+    let diff = startX - e.touches[0].clientX;
+    if (diff > 40) {
+        nextSlide();
+        startX = 0;
+    } else if (diff < -40) {
+        prevSlide();
+        startX = 0;
+    }
+}, { passive: true });
+
+slider.addEventListener('touchend', () => {
+    startX = 0;
+});
+
+// ----- Mouse Drag (Desktop) -----
+slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX;
+    e.preventDefault();
+});
+
+slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    let diff = startX - e.pageX;
+    if (diff > 40) {
+        nextSlide();
+        isDown = false;
+    } else if (diff < -40) {
+        prevSlide();
+        isDown = false;
+    }
+});
+
+slider.addEventListener('mouseup', () => (isDown = false));
+slider.addEventListener('mouseleave', () => (isDown = false));
+</script>
+
 <!-- ================= END SLIDER ================= -->
 
 
@@ -806,7 +853,10 @@ startSlide();
 const SITE_DATA = {
   stats: { members: 500, helped: 1000, resources: 350 },
   updates: [
-    { date: "2026-01-16", html: `Paid suggestion paper <a href="https://i.ibb.co/r2ftZ9cV/Whats-App-Image-2026-01-18-at-12-53-56-AM.jpg" style="color:var(--accent)"> open Now</a>` },
+         { date: "2026-05-17", html: `WB CAP 2026 Participating Colleges List  
+<a href="https://wbcap.in/gallery " style="color:var(--accent)"> See</a>` },
+{ date: "2026-05-17", html: `WB CAP 2026 College & Course Details  
+<a href="https://drive.google.com/file/d/18evS8kVrgjxue-wAtWL3C47lNQ4UysRE/view?usp=sharing " style="color:var(--accent)"> See</a>` },
      { date: "2025-11-12", html: `NATIONAL SCHOLARSHIP (NSP) PORTAL IS NOW OPEN 
 <a href="https://scholarships.gov.in/Students " style="color:var(--accent)"> Apply</a>` },
     { date: "2025-11-11", html: `HS SEM-3 Answer Key 2025-2026 <a href="https://drive.google.com/file/d/1L2Yuu_DnprCtSA960ranuwxPjc1Q4sps/view?usp=sharing" style="color:var(--accent)"> open Now</a>` },
@@ -1031,16 +1081,56 @@ function initStreams(){
   });
 }
 
-/* ===== Mobile hamburger toggle & page nav highlight ===== */
+// JavaScript - replace/merge with your initHamburger
 function initHamburger(){
   const btn = document.getElementById('hambBtn');
   const mobileNav = document.getElementById('mobileNav');
+  const links = document.querySelectorAll('.mobile-nav .nav-item');
+
+  // Toggle menu
   btn.addEventListener('click', ()=>{
     const open = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!open));
-    if(open){ mobileNav.style.display = 'none'; } else { mobileNav.style.display = 'block'; }
+    if(open){
+      mobileNav.style.display = 'none';
+    } else {
+      mobileNav.style.display = 'block';
+    }
   });
+
+  // Set active based on current hash (initial load)
+  function setActiveFromHash(){
+    const hash = window.location.hash || '#home';
+    links.forEach(a=>{
+      if(a.getAttribute('href') === hash){
+        a.classList.add('active');
+        // optional: scroll into view if menu open
+        // a.scrollIntoView({block:'nearest'});
+      } else {
+        a.classList.remove('active');
+      }
+    });
+  }
+  setActiveFromHash();
+
+  // Update active on click
+  links.forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      // menu can close on click (optional)
+      links.forEach(l=> l.classList.remove('active'));
+      link.classList.add('active');
+
+      // if you want menu to close after click on mobile:
+      mobileNav.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Update active on hashchange (back/forward)
+  window.addEventListener('hashchange', setActiveFromHash);
 }
+document.addEventListener('DOMContentLoaded', initHamburger);
+
 
 function initPageNav(){
   const links = Array.from(document.querySelectorAll('.nav-link'));
@@ -1141,9 +1231,3 @@ function addBook(section, title, link){
 </script>
 </body>
 </html>
-
-
-
-
-
-

@@ -209,19 +209,19 @@
   <!-- STATS -->
   <div class="stats" style="margin-top:14px">
     <div class="stat-card card" aria-hidden="false">
-      <div class="stat-number" id="helpCount">2500+</div>
+      <div class="stat-number" id="memCount">0+</div>
       <div class="stat-label">Active Members</div>
       <div class="muted">A diverse group of students from all mediums.</div>
     </div>
 
     <div class="stat-card card">
-      <div class="stat-number" id="helpCount">15000+</div>
+      <div class="stat-number" id="helpCount">0+</div>
       <div class="stat-label">Students Helped</div>
       <div class="muted">Notes, guidance, and support since launch.</div>
     </div>
 
     <div class="stat-card card">
-      <div class="stat-number" id="resourcesCount">500+</div>
+      <div class="stat-number" id="resourcesCount">0+</div>
       <div class="stat-label">Resources (PDFs)</div>
       <div class="muted">Notes, books, past papers & more.</div>
     </div>
@@ -564,7 +564,7 @@ html, body{
   const mEl = document.getElementById('wb-mins');
   const sEl = document.getElementById('wb-secs');
 
-  const target = new Date("2026-09-21T11:00:00+05:30").getTime();
+  const target = new Date("2026-09-21T00:11:00+05:30").getTime();
 
   function update(){
     let diff = target - Date.now();
@@ -851,7 +851,7 @@ slider.addEventListener('mouseleave', () => (isDown = false));
    - For production, you can fetch these from data.json or Google Sheets instead
 ================================================================= */
 const SITE_DATA = {
-  stats: { members: 500, helped: 1000, resources: 350 },
+  stats: { members: 2500, helped: 15000, resources: 950 },
   updates: [
          { date: "2026-05-17", html: `WB CAP 2026 Participating Colleges List  
 <a href="https://wbcap.in/gallery " style="color:var(--accent)"> See</a>` },
@@ -1231,3 +1231,12 @@ function addBook(section, title, link){
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

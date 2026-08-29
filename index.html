@@ -1,1242 +1,2172 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <title>WB Students Group IYR | West Bengal Students Support</title>
-<meta name="description" content="Join WB Students Group IYR – A learning and support community for West Bengal students. Get syllabus, notes, question papers, and exam updates.">
-<meta name="keywords" content="WB Students Group, IYR, West Bengal Students, IYR Group, WB Class 11, WB Class 12, WB Board, WBBSE, WBCHSE, Yusuf Khan, Indian Youth Revolution">
-  <meta name="google-site-verification" content="QdWp6KclUO3WdEfBuTkQhXAhnqjiTWrIhc3XT16dT9E" />
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>WB Student Group | IYR — Full</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --blue:#0a74da;
-    --deep:#041731;
-    --accent:#ffcc00;
-    --accent-2:#ffd36b;
-    --bg:#071126;
-    --glass: rgba(255,255,255,0.04);
-    --muted: rgba(230,238,248,0.78);
-    --ui-radius:12px;
-    --ease: cubic-bezier(.2,.9,.3,1);
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    background:linear-gradient(180deg,#041731 0%, #071126 60%);
-    color:#e6eef8;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  }
-  .wrap{max-width:1100px;margin:14px auto;padding:14px;}
-
-  /* TOP NOTICE (will be injected right after <body>) */
-  .top-notice {
-    position: fixed;
-    top: 10px;
-    left: 12px;
-    right: 12px;
-    z-index: 99999;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(2,8,30,0.6);
-    border: 1px solid rgba(255,255,255,0.06);
-    background: linear-gradient(90deg, rgba(255,204,0,0.98), rgba(255,185,0,0.95));
-    color: #071126;
-    font-weight:700;
-    display:flex;
-    align-items:center;
-    padding:8px 10px;
-    gap:10px;
-  }
-  .top-notice .notice-inner { display:flex; align-items:center; gap:12px; width:100%; }
-  .notice-marquee { flex:1 1 auto; overflow:hidden; position:relative; height:28px; }
-  .notice-marquee span{ display:inline-block; white-space:nowrap; padding-right:40px; line-height:28px; }
-  .notice-marquee .track { display:inline-block; position:absolute; left:100%; will-change:transform; animation: marquee 14s linear infinite; }
-  @keyframes marquee { 0%{ transform: translateX(0%);} 100%{ transform: translateX(-100%);} }
-  .notice-wa{ display:inline-flex; align-items:center; gap:8px; background:#071126; color:var(--accent); border-radius:8px; padding:6px 10px; text-decoration:none; font-weight:800; box-shadow:0 8px 18px rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.04); }
-  .notice-close{ background:transparent; border:none; color:#071126; font-weight:900; font-size:18px; cursor:pointer; padding:4px 6px; border-radius:6px; }
-  .top-notice:hover .notice-marquee .track{ animation-play-state: paused; }
-  @media (prefers-reduced-motion: reduce){ .notice-marquee .track{ animation:none; left:0; transform:none; } .notice-marquee{ overflow:auto; } }
-
-  /* TOPBAR */
-  .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:10px;border-radius:12px;background:linear-gradient(90deg, rgba(10,116,218,0.08), rgba(255,204,0,0.02));border:1px solid rgba(255,255,255,0.03)}
-  .brand{display:flex;gap:12px;align-items:center}
-  .brand img{width:56px;height:56px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.06)}
-  .brand .title{font-weight:800;color:var(--accent);font-size:1.02rem}
-  .brand .subtitle{font-size:0.82rem;color:var(--muted)}
-
-  .nav{ display:flex;align-items:center;gap:10px; }
-  .nav a{ color:var(--muted); text-decoration:none; font-weight:700; padding:8px 10px; border-radius:8px; transition: background .18s var(--ease), color .18s, transform .18s; }
-  .nav a:hover, .nav a.active{ background: linear-gradient(90deg, rgba(10,116,218,0.07), rgba(255,204,0,0.03)); color:var(--accent); transform:translateY(-2px); }
-
-  .hamburger{ display:none; width:44px; height:44px; border-radius:10px; align-items:center; justify-content:center; background:transparent; border:1px solid rgba(255,255,255,0.04); cursor:pointer; }
-  .hamburger span{ display:block; width:20px; height:2px; background:#fff; margin:3px 0; transition: transform .22s, opacity .22s; }
-
-  /* Header right */
-  .header-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
-  .header-right .chip{ background:var(--accent); color:#071126; padding:6px 12px; border-radius:10px; font-weight:800; box-shadow:0 8px 30px rgba(255,204,0,0.06); }
-  .header-right .small{ color:var(--accent-2); font-weight:700; }
-
-  /* STATS */
-  .stats{ display:flex; gap:12px; margin-top:12px; flex-wrap:wrap }
-  .stat-card{ flex:1 1 200px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,0.03); box-shadow:0 10px 28px rgba(2,8,30,0.45); }
-  .stat-number{ font-size:1.95rem; font-weight:800; color:var(--accent); margin-bottom:6px; letter-spacing:0.6px; }
-  .stat-label{ font-size:0.95rem; color:var(--muted); margin-bottom:6px; }
-
-  /* GRID */
-  .grid{ display:grid; grid-template-columns: 1fr 320px; gap:18px; margin-top:18px; }
-  @media(max-width:980px){ .grid{ grid-template-columns:1fr; } .nav{ display:none } .hamburger{ display:flex } .header-right{ align-items:center } }
-
-  /* CARD */
-  .card{ background: var(--deep); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.03); color:#eaf4ff; box-shadow: 0 12px 34px rgba(2,8,30,0.5); }
-  .card h3{ margin:0 0 8px 0; color:var(--accent); font-size:1.02rem }
-  .muted{ color:var(--muted); font-size:0.9rem }
-
-  /* UPDATES */
-  #updatesList{ max-height:180px; overflow-y:auto; padding-right:6px; margin-top:8px; }
-  .update{ display:flex; gap:10px; padding:10px; border-radius:10px; background: linear-gradient(90deg, rgba(255,255,255,0.006), rgba(255,255,255,0.003)); margin-bottom:10px; align-items:flex-start }
-  .update .time{ width:92px; font-weight:800; color:rgba(200,220,255,0.86) }
-  .update .txt{ color:rgba(230,238,248,0.96) }
-
-  /* BOOKS */
-  .books-card{ padding:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; }
-  .tabs-inner{ display:flex; gap:8px; position:relative; align-items:flex-end; overflow:auto; padding-bottom:14px; margin-top:6px }
-  .tabBtn{ padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--muted); font-weight:800; cursor:pointer; white-space:nowrap; transition: transform .22s var(--ease), background .22s, color .22s; }
-  .tabBtn.active{ background: linear-gradient(90deg, rgba(10,116,218,0.95), var(--accent)); color:#071126; transform:translateY(-3px); box-shadow:0 10px 20px rgba(2,8,30,0.28); }
-  .tab-underline{ position:absolute; bottom:4px; left:0; height:6px; width:0; border-radius:6px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); box-shadow:0 8px 18px rgba(255,204,0,0.06); transition: transform .30s var(--ease), width .30s var(--ease); }
-
-  .bookSection{ max-height: calc(3 * 68px + 24px); overflow-y:auto; padding-right:6px; margin-top:12px; }
-  .bookItem{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px; border-radius:10px; margin-bottom:10px; background: linear-gradient(90deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006)); border-left:4px solid rgba(255,255,255,0.03); }
-  .bookIcon{ width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--accent); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
-  .open-btn{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#071126; padding:8px 12px; border-radius:10px; font-weight:800; text-decoration:none }
-
-  /* contributors */
-  .contributors-list{ display:flex; flex-direction:column; gap:8px; padding-right:6px; max-height: calc(5 * 64px + 20px); overflow-y:auto; margin-top:8px }
-  .contrib-row{ display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); }
-  .medal{ width:46px; height:46px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#071126; border-radius:8px; }
-
-  /* subjects small tabs */
-  .subjects{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
-  .subject{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:10px; border-radius:8px; min-width:150px; }
-
-  /* SCROLL REVEAL */
-  .scroll-reveal { opacity: 0; transform: translateY(10px); will-change: opacity, transform; }
-  .scroll-reveal.in-view { animation: fadeUp .48s cubic-bezier(.2,.9,.3,1) both; }
-  @keyframes fadeUp { 0%{ opacity: 0; transform: translateY(10px); } 60% { opacity: 1; transform: translateY(-4px);} 100%{ opacity:1; transform:none; } }
-  @media (prefers-reduced-motion: reduce){ .scroll-reveal { transition: none !important; transform:none !important; opacity:1 !important; animation:none !important; } }
-
-  /* small screens */
-  @media(max-width:720px){
-    .brand img{width:48px;height:48px}
-    .tabBtn{ padding:10px 14px; font-size:14px; }
-    .bookItem{ padding:12px; }
-    .bookSection{ max-height: calc(4 * 68px + 24px) }
-    .contributors-list{ max-height: calc(5 * 64px + 20px) }
-    .stat-number{ font-size:1.25rem; }
-    .nav{ display:none }
-    .hamburger{ display:flex }
-  }
-</style>
-</head>
-<body>
-
-<!-- ====== TOP NOTICE BAR (copy-pasted here) ====== -->
-<div id="topNotice" class="top-notice" role="region" aria-label="Important notice">
-  <div class="notice-inner">
-    <div class="notice-marquee" aria-hidden="false">
-      <div class="track" id="noticeTrack" aria-hidden="false">
-        <span>Note for joining WhatsApp group — Be our member: Click the WhatsApp icon and DM Yusuf Khan "Join me in Wb students group"</span>
-        <span>Note for joining WhatsApp group — Be our member: Click the WhatsApp icon and DM Yusuf Khan "Join me in Wb students group"</span>
-      </div>
-    </div>
-    <a class="notice-wa" id="noticeWA" href="https://wa.me/9330395465?text=Join%20me%20in%20Wb%20students%20group" target="_blank" rel="noopener noreferrer" aria-label='Message Yusuf on WhatsApp: "Join me in Wb students group"'>
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="width:18px;height:18px"><path d="M20.52 3.48A11.88 11.88 0 0 0 12.03.12C6.1.12 1.43 4.79 1.43 10.73c0 1.88.49 3.7 1.42 5.33L.12 23.88l7.92-2.09a11.9 11.9 0 0 0 4 0l.02.01 0 0a11.88 11.88 0 0 0 8.44-20.32zM12.03 21.6a9.75 9.75 0 0 1-4.95-1.33l-.35-.2-4.7 1.24 1.24-4.58-.23-.37A9.77 9.77 0 1 1 12.03 21.6zM17.2 14.77c-.27-.13-1.6-.79-1.85-.88-.25-.09-.43-.13-.61.13-.18.26-.69.88-.85 1.06-.16.18-.31.2-.58.07-.27-.13-1.15-.42-2.19-1.36-.81-.72-1.36-1.61-1.52-1.88-.16-.27-.02-.42.12-.55.12-.12.27-.31.41-.46.14-.15.18-.25.28-.42.09-.18.04-.34-.02-.47-.07-.13-.61-1.48-.84-2.03-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.47.07-.72.34-.24.26-.92.9-.92 2.2 0 1.3.94 2.56 1.07 2.74.12.18 1.86 2.95 4.51 4.02 1.46.6 2.12.67 2.88.57.46-.07 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.12-.25-.18-.52-.31z"/></svg>
-      <span style="font-size:13px">WhatsApp</span>
-    </a>
-    <button class="notice-close" id="noticeClose" aria-label="Close notice">×</button>
-  </div>
-</div>
-<!-- ====== END NOTICE ====== -->
-
-<div class="wrap">
-  <!-- TOPBAR -->
-  <div class="topbar" role="banner" id="home">
-    <div style="display:flex;align-items:center;gap:12px">
-      <div class="brand">
-        <img src="https://i.ibb.co/3mxmCNDP/wb-logo.jpg" alt="WB logo">
-        <div>
-          <div class="title">WB Students Group</div>
-          <div class="subtitle">Managed by IYR — Urdu · Hindi · English</div>
-        </div>
-      </div>
-
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#home" class="nav-link">Home</a>
-        <a href="#latest" class="nav-link">Latest</a>
-        <a href="#books" class="nav-link">Books</a>
-        <a href="#history" class="nav-link">History</a>
-        <a href="#rules" class="nav-link">Rules</a>
-        <a href="#streams" class="nav-link">Streams</a>
-      </nav>
-    </div>
-
-    <div style="display:flex;align-items:center;gap:12px">
-      <div class="header-right" aria-hidden="false">
-        <div class="chip">Founder: <strong>Yusuf Khan</strong></div>
-        <div class="small">Since <strong>09-09-2024</strong></div>
-      </div>
-
-      <button class="hamburger" id="hambBtn" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-
-  <!-- HTML -->
-
-<div id="mobileNav" style="display:none;margin-top:10px;border-radius:10px;overflow:hidden;">
-  <nav class="mobile-nav">
-    <a href="#home" class="nav-link mobile nav-item">Home</a>
-    <a href="#latest" class="nav-link mobile nav-item">Latest</a>
-    <a href="#books" class="nav-link mobile nav-item">Books</a>
-    <a href="#history" class="nav-link mobile nav-item">History</a>
-    <a href="#rules" class="nav-link mobile nav-item">Rules</a>
-    <a href="#streams" class="nav-link mobile nav-item">Streams</a>
-  </nav>
-</div>
-
-  <!-- STATS -->
-  <div class="stats" style="margin-top:14px">
-    <div class="stat-card card" aria-hidden="false">
-      <div class="stat-number" id="memCount">0+</div>
-      <div class="stat-label">Active Members</div>
-      <div class="muted">A diverse group of students from all mediums.</div>
-    </div>
-
-    <div class="stat-card card">
-      <div class="stat-number" id="helpCount">0+</div>
-      <div class="stat-label">Students Helped</div>
-      <div class="muted">Notes, guidance, and support since launch.</div>
-    </div>
-
-    <div class="stat-card card">
-      <div class="stat-number" id="resourcesCount">0+</div>
-      <div class="stat-label">Resources (PDFs)</div>
-      <div class="muted">Notes, books, past papers & more.</div>
-    </div>
-  </div>
-
-  <!-- GRID -->
-  <div class="grid" style="margin-top:18px">
-    <main>
-
-<!-- ===== Clean Countdown Card (no visible debug text) ===== -->
-<style>
-  /* Scoped countdown styles */
-  .wb-countdown-wrap{ width:100%; display:flex; justify-content:center; margin:14px 0; }
-  .wb-count-card{
-    width:100%;
-    max-width:980px;
-    border-radius:14px;
-    overflow:hidden;
-    padding:14px;
-    background: linear-gradient(180deg, rgba(6,11,20,0.44), rgba(8,14,28,0.32));
-    border:1px solid rgba(255,255,255,0.04);
-    box-shadow: 0 14px 40px rgba(2,8,30,0.45);
-    color: #e8fbff;
-    display:flex;
-    gap:18px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  .wb-count-left{
-    min-width:0;
-    flex:1 1 360px;
-  }
-  .wb-count-title{
-    font-weight:800;
-    color:var(--accent);
-    font-size:1.05rem;
-    margin-bottom:6px;
-    letter-spacing:0.2px;
-  }
-  .wb-count-sub{
-    color:var(--muted);
-    font-size:0.95rem;
-    margin-bottom:8px;
-  }
-
-  .wb-count-timers{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    justify-content:flex-end;
-    flex:0 0 auto;
-  }
-  .wb-seg{
-    min-width:76px;
-    padding:10px 12px;
-    border-radius:10px;
-    text-align:center;
-    background: linear-gradient(180deg, rgba(255,255,255,0.014), rgba(255,255,255,0.008));
-    border:1px solid rgba(0,255,255,0.03);
-    box-shadow: 0 8px 18px rgba(0,255,255,0.03);
-    transition: transform .18s cubic-bezier(.2,.9,.3,1);
-  }
-  .wb-seg:hover{ transform: translateY(-6px); }
-  .wb-num{
-    font-size:22px;
-    font-weight:800;
-    color:#00e5ff;
-    text-shadow: 0 0 8px rgba(0,229,255,0.24);
-    letter-spacing:0.6px;
-  }
-  .wb-label{
-    font-size:11px;
-    margin-top:6px;
-    color:rgba(230,238,248,0.78);
-    text-transform:uppercase;
-    letter-spacing:1px;
-  }
-
-  .wb-accent-bar{
-    height:4px;
-    width:100%;
-    border-radius:6px;
-    margin-top:10px;
-    background: linear-gradient(90deg, rgba(0,229,255,0.12), rgba(6,182,212,0.95), rgba(9,117,234,0.08));
-    box-shadow: 0 8px 18px rgba(6,182,212,0.06);
-  }
-
-  @media (max-width:720px){
-    .wb-count-card{ padding:12px; gap:12px; }
-    .wb-count-timers{ width:100%; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-    .wb-seg{ min-width:70px; flex:1 1 calc(25% - 8px); }
-    .wb-count-left{ order:2; width:100%; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .wb-seg{ transition:none; transform:none !important; }
-  }
-</style>
-
-<!-- ===== Touch-friendly Simple Scale Countdown Card (3D removed) ===== -->
-<style>
-  /* container */
-  .wb-card-wrap{ width:100%; display:flex; justify-content:center; margin:14px 0; }
-  .wb-card{
-    width:100%; max-width:980px; border-radius:14px; padding:16px 18px;
-    background: linear-gradient(180deg, rgba(6,11,20,0.55), rgba(8,14,28,0.36));
-    border:1px solid rgba(255,255,255,0.04);
-    box-shadow: 0 14px 40px rgba(2,8,30,0.45);
-    color:#e8fbff; display:flex; gap:16px; align-items:center; flex-wrap:wrap;
-    transition: transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms cubic-bezier(.2,.9,.3,1);
-    will-change: transform;
-  }
-
-  /* optional subtle background image (local file path) */
-  .wb-card::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 14px;
-    pointer-events: none;
-    background-image: url("sandbox:/mnt/data/Screenshot 2025-11-21 140334.png");
-    background-size: cover;
-    background-position: center;
-    opacity: 0.06; /* very subtle */
-    mix-blend-mode: screen;
-    z-index:0;
-  }
-  .wb-card > * { position: relative; z-index:1; }
-
-  /* hover (desktop) */
-  .wb-card:hover{
-    transform: scale(1.035);
-    box-shadow: 0 28px 80px rgba(2,8,30,0.7);
-  }
-
-  /* pressed (touch) class applied via JS */
-  .wb-card.pressed{
-    transform: scale(1.045) !important;
-    box-shadow: 0 34px 110px rgba(2,8,30,0.78) !important;
-  }
-
-  .wb-left{ flex:1 1 300px; min-width:0; }
-  .wb-title{ font-weight:800; color:var(--accent); font-size:1.02rem; margin-bottom:6px; }
-  .wb-timers{ display:flex; gap:12px; align-items:center; justify-content:flex-end; flex:0 0 auto; }
-  .wb-seg{
-    min-width:76px; padding:12px 14px; border-radius:12px; text-align:center;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
-    border:1px solid rgba(0,255,255,0.03);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-  }
-  .wb-num{ font-size:22px; font-weight:800; color:#00e5ff; text-shadow:0 0 8px rgba(0,229,255,0.18); }
-  .wb-label{ font-size:11px; color:rgba(230,238,248,0.78); letter-spacing:1px; text-transform:uppercase; margin-top:6px; }
-
-  /* shimmer */
-  .shimmer{
-    background: linear-gradient(90deg, #141820 0%, #222a3b 50%, #141820 100%);
-    background-size:200% 100%;
-    animation: shimmerAnim 1.4s infinite linear;
-    border-radius:6px;
-    display:inline-block;
-    width:100%;
-    height:1.12em;
-  }
-  @keyframes shimmerAnim{ 0%{ background-position:-200% 0 } 100%{ background-position:200% 0 } }
-
-  /* keyboard focus */
-  .wb-card:focus-visible{
-    outline: 3px solid rgba(0,229,255,0.12);
-    outline-offset: 6px;
-    border-radius:14px;
-    transform: scale(1.035);
-  }
-
-  /* responsive */
-  @media(max-width:720px){
-    .wb-timers{ width:100%; justify-content:space-between; }
-    .wb-seg{ min-width:68px; flex:1; }
-    .wb-left{ order:2; width:100%; }
-  }
-
-  /* reduced motion */
-  @media (prefers-reduced-motion: reduce){
-    .wb-card, .wb-seg, .shimmer { transition: none !important; animation: none !important; transform: none !important; }
-  }
-</style>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-
-<!-- 🔒 MOST IMPORTANT FOR MOBILE FIX -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
-<title>Exam Countdown</title>
-
-<style>
-/* ================= GLOBAL MOBILE FIX ================= */
-html, body{
-  width:100%;
-  max-width:100%;
-  overflow-x:hidden;          /* ❌ sideways move band */
-  margin:0;
-  padding:0;
-  touch-action:manipulation; /* ❌ unwanted zoom band */
-  font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-/* ================= WRAPPER ================= */
-.wb-card-wrap{
-  width:100%;
-  max-width:100%;
-  padding:12px;
-}
-
-/* ================= CARD ================= */
-.wb-card{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  padding:16px;
-  border-radius:14px;
-  background:inherit; /* ❗ color change nahi karega */
-}
-
-/* ❌ SCALE EFFECT REMOVE (ROOT CAUSE) */
-.wb-card.pressed{
-  transform:none !important;
-}
-
-/* ================= LEFT ================= */
-.wb-left{
-  flex:1;
-  min-width:0;
-}
-
-.wb-title{
-  font-size:16px;
-  font-weight:600;
-  line-height:1.3;
-}
-
-/* ================= TIMERS ================= */
-.wb-timers{
-  display:flex;
-  gap:10px;
-  max-width:100%;
-  overflow:hidden; /* ❌ overflow stop */
-}
-
-.wb-seg{
-  text-align:center;
-  min-width:52px;
-}
-
-.wb-num{
-  font-size:22px;
-  font-weight:700;
-  line-height:1;
-}
-
-.wb-label{
-  font-size:11px;
-  opacity:.75;
-}
-
-/* ================= SHIMMER ================= */
-.shimmer{
-  color:transparent;
-  background:linear-gradient(
-    90deg,
-    #bdbdbd 25%,
-    #e0e0e0 37%,
-    #bdbdbd 63%
-  );
-  background-size:400% 100%;
-  animation:shimmer 1.4s ease infinite;
-  border-radius:4px;
-}
-
-@keyframes shimmer{
-  0%{background-position:100% 0}
-  100%{background-position:-100% 0}
-}
-
-/* ================= MOBILE STACK ================= */
-@media (max-width:600px){
-  .wb-card{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .wb-timers{
-    width:100%;
-    justify-content:space-between;
-  }
-
-  .wb-seg{
-    flex:1;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="wb-card-wrap">
-  <div class="wb-card" id="wbCard" tabindex="0" role="region" aria-label="Countdown to 4th semester examination">
-
-    <div class="wb-left">
-      <div class="wb-title">TIME LEFT FOR SEMESTER 3</div>
-    </div>
-
-    <div class="wb-timers">
-      <div class="wb-seg">
-        <div class="wb-num shimmer" id="wb-days">--</div>
-        <div class="wb-label">Days</div>
-      </div>
-      <div class="wb-seg">
-        <div class="wb-num shimmer" id="wb-hours">--</div>
-        <div class="wb-label">Hours</div>
-      </div>
-      <div class="wb-seg">
-        <div class="wb-num shimmer" id="wb-mins">--</div>
-        <div class="wb-label">Minutes</div>
-      </div>
-      <div class="wb-seg">
-        <div class="wb-num shimmer" id="wb-secs">--</div>
-        <div class="wb-label">Seconds</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-(function(){
-  const dEl = document.getElementById('wb-days');
-  const hEl = document.getElementById('wb-hours');
-  const mEl = document.getElementById('wb-mins');
-  const sEl = document.getElementById('wb-secs');
-
-  const target = new Date("2026-09-21T00:11:00+05:30").getTime();
-
-  function update(){
-    let diff = target - Date.now();
-
-    if(diff <= 0){
-      [dEl,hEl,mEl,sEl].forEach(el=>{
-        el.textContent = "00";
-        el.classList.remove("shimmer");
-      });
-      return;
+    <meta name="google-site-verification" content="QdWp6KclUO3WdEfBuTkQhXAhnqjiTWrIhc3XT16dT9E" />
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>WB Students Group | Official State Portal & Learning Network</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- QRCode Generator library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#02050D',
+              dark: '#050D1A',
+              card: '#081426',
+              border: '#152945',
+              gold: '#FFB800',
+              goldLight: '#FFE27A',
+              teal: '#00F0FF',
+              accent: '#3B82F6',
+              whatsapp: '#25D366',
+              youtube: '#FF0000',
+              instagram: '#E1306C'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body {
+      background-color: #02050D;
+      color: #F1F5F9;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+    .neon-mesh-bg {
+      background: 
+        radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(255, 184, 0, 0.07) 0%, transparent 45%),
+        #02050D;
+    }
+    .glass-box {
+      background: linear-gradient(135deg, rgba(8, 20, 38, 0.9) 0%, rgba(4, 11, 23, 0.98) 100%);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(21, 41, 69, 0.85);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-box:hover {
+      border-color: rgba(0, 240, 255, 0.45);
+      box-shadow: 0 12px 30px -10px rgba(0, 240, 255, 0.25);
+      transform: translateY(-4px);
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFE27A 0%, #FFB800 50%, #FFA000 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .teal-gradient-text {
+      background: linear-gradient(135deg, #E0FFFF 0%, #00F0FF 50%, #00A3B4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    const days  = Math.floor(diff / 86400000);
-    diff %= 86400000;
-    const hours = Math.floor(diff / 3600000);
-    diff %= 3600000;
-    const mins  = Math.floor(diff / 60000);
-    const secs  = Math.floor((diff % 60000) / 1000);
+    @keyframes slideUpFade {
+      0% { opacity: 0; transform: translateY(40px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-slide-up {
+      animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
 
-    dEl.textContent = String(days).padStart(2,"0");
-    hEl.textContent = String(hours).padStart(2,"0");
-    mEl.textContent = String(mins).padStart(2,"0");
-    sEl.textContent = String(secs).padStart(2,"0");
-
-    [dEl,hEl,mEl,sEl].forEach(el=>el.classList.remove("shimmer"));
-  }
-
-  update();
-  setInterval(update,1000);
-})();
-</script>
-
-</body>
-</html>
-
-
-
-
-      
-      <!-- Latest -->
-      <section id="latest" class="card" aria-labelledby="latestTitle">
-        <h3 id="latestTitle">Latest Updates</h3>
-        <div class="muted">Updated live</div>
-        <div id="updatesList" style="margin-top:8px"></div>
-      </section>
-
-      <!-- Books -->
-      <section id="books" class="card books-card" aria-labelledby="booksTitle" style="margin-top:18px">
-        <h3 id="booksTitle">OUR BOOKS & FREE MATERIAL</h3>
-        <div class="muted" style="margin-bottom:6px">Updated Live — Free PDFs & Notes</div>
-
-        <div class="tabs-inner" role="tablist" aria-label="Books categories">
-          <button class="tabBtn" data-target="langBooks" role="tab" aria-selected="true">Language</button>
-          <button class="tabBtn" data-target="compBooks" role="tab" aria-selected="false">Compulsory</button>
-          <button class="tabBtn" data-target="specialBooks" role="tab" aria-selected="false">Special</button>
-          <div class="tab-underline" aria-hidden="true"></div>
-        </div>
-
-        <div id="langBooks" class="bookSection" aria-live="polite"></div>
-        <div id="compBooks" class="bookSection" style="display:none" aria-live="polite"></div>
-        <div id="specialBooks" class="bookSection" style="display:none" aria-live="polite"></div>
-      </section>
-<!-- ================= IMAGE SLIDER CARD ================= -->
-<div class="slider-card" style="
-  background:#0e1628;
-  padding:20px;
-  border-radius:15px;
-  margin:20px 0;
-  box-shadow:0 0 20px rgba(0,0,0,0.3);
-">
-  <div class="slider" id="imgSlider" style="position:relative;height:230px;overflow:hidden;border-radius:12px;">
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.7); }
+    }
+    .animate-pulse-glow {
+      animation: pulseGlow 2.5s infinite;
+    }
     
-    <!-- Image 1 -->
-    <div class="slide active" style="position:absolute;width:100%;height:100%;opacity:1;transition:opacity 0.7s;">
-      <img src="https://i.ibb.co/r2ftZ9cV/Whats-App-Image-2026-01-18-at-12-53-56-AM.jpg"
-           style="width:100%;height:100%;object-fit:cover;">
-    </div>
-
-    <!-- Image 2 -->
-    <div class="slide" style="position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.7s;">
-      <img src="https://i.ibb.co/4Rhnmnhs/Whats-App-Image-2025-11-21-at-15-04-10-e8d1f3c0.jpg"
-           style="width:100%;height:100%;object-fit:cover;">
-    </div>
-
-    <!-- Image 3 -->
-    <div class="slide" style="position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.7s;">
-      <img src="https://i.ibb.co/Wvn0f5DZ/Whats-App-Image-2025-11-21-at-15-00-19-104e29ba.jpg"
-           style="width:100%;height:100%;object-fit:cover;">
-    </div>
-
-  </div>
-
-  <!-- Dots -->
-  <div class="dots" style="display:flex;justify-content:center;margin-top:12px;">
-    <span class="dot active" style="height:10px;width:10px;background:#00d0ff;border-radius:50%;margin:0 6px;transition:0.3s;cursor:pointer;"></span>
-    <span class="dot" style="height:10px;width:10px;background:#3c4b6b;border-radius:50%;margin:0 6px;transition:0.3s;cursor:pointer;"></span>
-    <span class="dot" style="height:10px;width:10px;background:#3c4b6b;border-radius:50%;margin:0 6px;transition:0.3s;cursor:pointer;"></span>
-  </div>
-</div>
-
-<script>
-let currentSlide = 0;
-let interval;
-let isPaused = false;
-
-const slides = document.querySelectorAll(".slide");
-const dots = document.querySelectorAll(".dot");
-const sliderBox = document.getElementById("imgSlider");
-
-function showSlide(n) {
-  slides.forEach((slide, i) => {
-    slide.style.opacity = i === n ? "1" : "0";
-    dots[i].style.background = i === n ? "#00d0ff" : "#3c4b6b";
-    dots[i].style.transform = i === n ? "scale(1.2)" : "scale(1)";
-  });
-}
-
-function startSlide() {
-  interval = setInterval(() => {
-    if (!isPaused) {
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
+    @keyframes marqueeRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
     }
-  }, 3000);
-}
-
-function stopSlide() {
-  isPaused = true;
-}
-
-function resumeSlide() {
-  isPaused = false;
-}
-
-dots.forEach((dot, i) => {
-  dot.addEventListener("click", () => {
-    currentSlide = i;
-    showSlide(i);
-  });
-});
-
-/* HOLD to pause (mobile + desktop both) */
-sliderBox.addEventListener("mousedown", stopSlide);
-sliderBox.addEventListener("touchstart", stopSlide);
-
-sliderBox.addEventListener("mouseup", resumeSlide);
-sliderBox.addEventListener("mouseleave", resumeSlide);
-sliderBox.addEventListener("touchend", resumeSlide);
-
-startSlide();
-</script>
-<script>
-const slider = document.querySelector('.slider');
-let startX = 0;
-let isDown = false;
-let scrollLeft;
-
-slider.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-}, { passive: true });
-
-slider.addEventListener('touchmove', (e) => {
-    if (!startX) return;
-    let diff = startX - e.touches[0].clientX;
-    if (diff > 40) {
-        nextSlide();
-        startX = 0;
-    } else if (diff < -40) {
-        prevSlide();
-        startX = 0;
+    @keyframes marqueeLeft {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
     }
-}, { passive: true });
-
-slider.addEventListener('touchend', () => {
-    startX = 0;
-});
-
-// ----- Mouse Drag (Desktop) -----
-slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    startX = e.pageX;
-    e.preventDefault();
-});
-
-slider.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    let diff = startX - e.pageX;
-    if (diff > 40) {
-        nextSlide();
-        isDown = false;
-    } else if (diff < -40) {
-        prevSlide();
-        isDown = false;
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
-});
 
-slider.addEventListener('mouseup', () => (isDown = false));
-slider.addEventListener('mouseleave', () => (isDown = false));
-</script>
+    .anim-marquee-right {
+      display: flex;
+      width: max-content;
+      animation: marqueeRight 55s linear infinite;
+    }
+    .anim-marquee-left {
+      display: flex;
+      width: max-content;
+      animation: marqueeLeft 35s linear infinite;
+    }
+    .marquee-wrapper:hover .anim-marquee-right,
+    .marquee-wrapper:hover .anim-marquee-left {
+      animation-play-state: paused;
+    }
+    .anim-float {
+      animation: floatSlow 5s ease-in-out infinite;
+    }
 
-<!-- ================= END SLIDER ================= -->
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="neon-mesh-bg min-h-screen relative flex flex-col justify-between">
 
+  <!-- Ambient Lights -->
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
 
-      <!-- Top Contributors -->
-      <section id="top-contrib" class="card" style="margin-top:18px">
-        <h3>Top Contributors of the Month</h3>
-        <div class="muted">Updated Every Month</div>
-        <div id="contributorsList" class="contributors-list" role="list"></div>
-      </section>
-
-      <!-- History & Rules -->
-      <section style="margin-top:18px">
-        <div class="card" id="history">
-          <h3>History</h3>
-          <p><strong>Founded:</strong> 09-09-2024</p>
-          <p>Yusuf khan founder of Indian youth revolution Founded WB Student Group started to support students of Urdu, Hindi & English mediums. Many students who couldn't afford coaching found free support here help each other.</p>
-        </div>
-
-        <div class="card" id="rules" style="margin-top:12px">
-          <h3>Rules (short)</h3>
-          <ul style="margin:6px 0 0 18px;color:var(--muted)">
-            <li><strong>No PMs:</strong> Report to Admin Yusuf with screenshot.</li>
-            <li><strong>Be respectful:</strong> No insults/bullying.</li>
-            <li><strong>Study only:</strong> No spam, no politics.</li>
-            <li><strong>No promotions:</strong> No external group links or ads.</li>
-            <li><strong>Paid content:</strong> Don't share without permission.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Streams & Subjects -->
-      <section id="streams" class="card" style="margin-top:18px">
-        <h3>Streams & Subjects</h3>
-        <div class="muted">Click a stream to view subjects</div>
-        <div id="tabs" style="margin-top:10px;">
-          <button class="active" data-stream="science">Science</button>
-          <button data-stream="arts">Arts</button>
-          <button data-stream="commerce">Commerce</button>
-        </div>
-        <div class="subjects" id="subjectsArea"></div>
-      </section>
-    </main>
-
-    <!-- SIDEBAR -->
-    <aside>
-      <div class="card" style="padding:12px;">
-        <div style="display:flex;gap:12px;align-items:center">
-          <img src="https://i.ibb.co/3mxmCNDP/wb-logo.jpg" alt="logo" style="width:64px;height:64px;border-radius:8px;object-fit:cover">
-          <div>
-            <div style="font-weight:800">WB Student Group</div>
-            <div class="muted">Managed by IYR</div>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-[#050D1A]/95 backdrop-blur-xl border-b border-[#152945] shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 h-16 sm:h-20 flex items-center justify-between">
+      
+      <div onclick="switchView('home')" class="flex items-center gap-3 cursor-pointer select-none">
+        <img src="https://i.ibb.co/67KV7VvY/wblogo.png" alt="WB Logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-black text-sm sm:text-lg text-white tracking-tight">WB STUDENTS GROUP</span>
+            <span class="hidden sm:inline-block text-[9px] bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-2 py-0.5 rounded-full font-bold ml-1.5">OFFICIAL</span>
           </div>
-        </div>
-
-        <div style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)"><div>Members</div><div style="font-weight:800" id="memberCount">500+</div></div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)"><div>Students helped</div><div style="font-weight:800" id="helpCountSidebar">1000+</div></div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0"><div>Available PDFs</div><div style="font-weight:800" id="pdfCount">350+</div></div>
+          <p class="text-[10px] text-slate-400 hidden sm:block">West Bengal Student & Volunteer Community</p>
         </div>
       </div>
 
-      <div class="card" style="margin-top:12px;padding:12px;">
-        <div style="font-weight:700;color:var(--accent);margin-bottom:8px">Quick Links</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <a href="#" style="color:#cfe8ff">Notes (Urdu)</a>
-          <a href="#" style="color:#cfe8ff">Notes (Hindi)</a>
-          <a href="#" style="color:#cfe8ff">Join Telegram</a>
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-6 text-xs md:text-sm font-bold">
+        <button onclick="switchView('home')" id="nav-home-btn" class="text-brand-teal font-extrabold transition">Home Directory</button>
+        <a href="https://wbstudentsgroup.github.io/Learning/" target="_blank" class="text-brand-gold hover:text-brand-goldLight flex items-center gap-1.5 transition">
+          📚 Learning Portal
+        </a>
+        <a href="#wa-communities" class="text-brand-whatsapp hover:brightness-125 flex items-center gap-1.5 transition">
+          💬 WhatsApp Groups
+        </a>
+        <a href="#app-showcase" class="text-slate-300 hover:text-brand-teal flex items-center gap-1.5 transition">
+          📱 WB STG App
+        </a>
+        <button onclick="switchView('membership')" id="nav-mem-btn" class="text-slate-300 hover:text-white transition">Membership Form</button>
+        <button onclick="openTrackModal()" class="text-slate-300 hover:text-brand-teal flex items-center gap-1.5 transition">
+          🔍 Track Status
+        </button>
+      </nav>
+
+      <!-- Auth Box -->
+      <div id="auth-actions" class="flex items-center gap-2.5"></div>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <main id="main-content" class="flex-1 w-full"></main>
+
+  <!-- Footer -->
+  <footer class="bg-brand-black border-t border-brand-border py-12 px-4 mt-16 text-center md:text-left">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+      <div class="flex items-center gap-3">
+        <img src="https://i.ibb.co/67KV7VvY/wblogo.png" alt="Logo" class="w-10 h-10 object-contain" />
+        <div>
+          <div class="text-white font-black text-sm">WB STUDENTS GROUP</div>
+          <p class="text-[11px] text-slate-500">Autonomous Student Welfare, Digital Education & Volunteer Force • West Bengal</p>
         </div>
       </div>
-    </aside>
-  </div>
 
-  <footer style="text-align:center;color:rgba(200,220,255,0.7);font-size:0.9rem;margin-top:14px;padding:10px">© 2025 WB Student Group · Managed by Yusuf Khan</footer>
-</div>
+      <!-- Dynamic Social Media Links -->
+      <div id="footer-social-links" class="flex flex-wrap items-center justify-center gap-4">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </footer>
 
-<!-- FLOATING WHATSAPP -->
-<a href="https://wa.me/9330395465?text=Join%20me%20in%20Wb%20students%20group" target="_blank" rel="noopener" style="position:fixed;right:14px;bottom:14px;background:linear-gradient(90deg,#25D366,#128C7E);width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(2,10,30,0.5);">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whats" style="width:26px;height:26px;">
-</a>
+  <!-- Modal Layer -->
+  <div id="modal-container" class="relative z-50"></div>
 
-<script>
-/* ====== DATA: Edit here to update site content quickly ======
-   - Replace arrays below with your real links/titles
-   - For production, you can fetch these from data.json or Google Sheets instead
-================================================================= */
-const SITE_DATA = {
-  stats: { members: 2500, helped: 15000, resources: 950 },
-  updates: [
-         { date: "2026-05-17", html: `WB CAP 2026 Participating Colleges List  
-<a href="https://wbcap.in/gallery " style="color:var(--accent)"> See</a>` },
-{ date: "2026-05-17", html: `WB CAP 2026 College & Course Details  
-<a href="https://drive.google.com/file/d/18evS8kVrgjxue-wAtWL3C47lNQ4UysRE/view?usp=sharing " style="color:var(--accent)"> See</a>` },
-     { date: "2025-11-12", html: `NATIONAL SCHOLARSHIP (NSP) PORTAL IS NOW OPEN 
-<a href="https://scholarships.gov.in/Students " style="color:var(--accent)"> Apply</a>` },
-    { date: "2025-11-11", html: `HS SEM-3 Answer Key 2025-2026 <a href="https://drive.google.com/file/d/1L2Yuu_DnprCtSA960ranuwxPjc1Q4sps/view?usp=sharing" style="color:var(--accent)"> open Now</a>` },
-    { date: "2025-11-09", html: `Class 11th Sem 2 English test 1 <a href="https://indianyouthrevolution.github.io/class-11th-test/" style="color:var(--accent)">Give The Test</a>` },
-    { date: "2025-11-09", html: `Amaan Classes Nov Test Routine <a href="https://i.ibb.co/XxFRQdhz/Whats-App-Image-2025-11-10-at-15-24-14-074babe9.jpg" style="color:var(--accent)">Open</a>` },
-    { date: "2025-11-02", html: `Share your result with us <a href="https://form.svhrt.com/690621a211a1c2ba8ca8e8a0" style="color:var(--accent)">Upload</a>` },
-    { date: "2025-10-31", html: `See Your Result SEM 3 <a href="https://result.wb.gov.in/" style="color:var(--accent)">Open</a>` },
-    { date: "2025-10-29", html: `Result semester 3 Notice <a href="https://i.ibb.co/RpH02hxh/Whats-App-Image-2025-10-29-at-18-36-38-3009d5f2.jpg" style="color:var(--accent)">Open</a>` },
-    { date: "2025-09-01", html: `Class 12 second semester notes uploaded (Physics, Chemistry, Biology).` }
-  ],
-  langBooks: [
-    { title: "Urdu Guide Semester 4", link: "https://drive.google.com/file/d/1wOb9EB5Ek4uoimEnnbdf7fK65sPx8MmH/view?usp=sharing" },
-    { title: "Urdu Guide Semester 2", link: "https://i.ibb.co/XxFRQdhz/Whats-App-Image-2025-11-10-at-15-24-14-074babe9.jpg" },
-    { title: "Urdu Revision Notes - Sem 4", link: "https://i.ibb.co/XxFRQdhz/Whats-App-Image-2025-11-10-at-15-24-14-074babe9.jpg" },
-    { title: "Extra Urdu PDF", link: "https://i.ibb.co/XxFRQdhz/Whats-App-Image-2025-11-10-at-15-24-14-074babe9.jpg" }
-  ],
-  compBooks: [
-    { title: "History - Class 12 Notes", link: "https://drive.google.com/file/d/1wDbEQ8MJzx7UtC60POXG6W-eQTdvcoBU/view?usp=drive_link" },
-    { title: "Geography - Class 12 Notes", link: "https://drive.google.com/file/d/1BkLczTSGEKQ617YA1CEtSuAGVy_FBg8I/view?usp=sharing" },
-    { title: "World History Summary", link: "#" }
-  ],
-  specialBooks: [
-    { title: "The Hidden Principle of Human Nature (PDF)", link: "https://acrobat.adobe.com/id/urn:aaid:sc:AP:ee8cbc22-bb87-4986-a891-06bcc24c2889" }
-  ],
-  contributors: ["Samya Wahid","Naaz fatema", "Isha","Sandeep Yadav",],
-  dataStreams: {
-    science:[
-      {title:"Physics (Class 12) - Notes", link:"#"},
-      {title:"Chemistry - Notes", link:"#"},
-      {title:"Biology - Notes", link:"#"},
-      {title:"Mathematics - Notes", link:"#"}
-    ],
-    arts:[
-      {title:"History - Notes", link:"#"},
-      {title:"Geography - Notes", link:"#"},
-      {title:"Political Science - Notes", link:"#"},
-      {title:"Economics - Notes", link:"#"}
-    ],
-    commerce:[
-      {title:"Accountancy - Notes", link:"#"},
-      {title:"Business Studies - Notes", link:"#"},
-      {title:"Economics - Notes", link:"#"},
-      {title:"Mathematics - Notes", link:"#"}
-    ]
-  }
-};
+  <!-- Vanilla JS Engine -->
+  <script>
+    const ADMIN_EMAIL = "yusufkhanyk7310@gmail.com";
+    const ADMIN_PASS = "@Yusufkhan7310";
+    const LOGO_URL = "https://i.ibb.co/67KV7VvY/wblogo.png";
+    const FOUNDER_IMAGE = "https://i.ibb.co/ybmSjDL/yusuf-website.png";
+    const LEARNING_PORTAL = "https://wbstudentsgroup.github.io/Learning/";
+    const OFFICIAL_WHATSAPP = "+919297660041";
 
-/* ===== Helpers ===== */
-const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const INITIAL_WA_GROUPS = [
+      { id: 'wa-1', title: 'College Students', subtitle: 'General College Community & Exam Routine', tag: 'COLLEGE', link: 'https://chat.whatsapp.com/JXtP8NGF6QvGOPRMZ6tqEp?s=cl&p=a&mlu=3' },
+      { id: 'wa-2', title: 'BA Students Group', subtitle: 'Arts & Humanities Semester Discussion', tag: 'UNIVERSITY', link: 'https://chat.whatsapp.com/EHIKBP36ZerCPSsUw2w1Xv' },
+      { id: 'wa-3', title: 'Class 12th Board Group', subtitle: 'HS Semesters, Chapter Notes & Suggestions', tag: 'CLASS 12', link: 'https://chat.whatsapp.com/JnVj21DPzRiIEYWfY38j3x?s=cl&p=a&mlu=3' },
+      { id: 'wa-4', title: 'Class 11th Group', subtitle: '11th Foundation & Semester Guidance', tag: 'CLASS 11', link: 'https://chat.whatsapp.com/GopJmpgZBlR1JLACkNRpOc?s=cl&p=a&mlu=3' },
+      { id: 'wa-5', title: 'Class 10th (Madhyamik)', subtitle: 'Madhyamik Free ABTA Notes & Mock Tests', tag: 'CLASS 10', link: 'https://chat.whatsapp.com/K9aypBUC29w7duOp9rt6MG?s=cl&p=a&mlu=3' },
+      { id: 'wa-6', title: 'Jobs, Schemes & News', subtitle: 'Govt Schemes, Scholarships & Important Alerts', tag: 'MAIN HUB', link: 'https://chat.whatsapp.com/GLGkM7OHfK9K6jSBN1upEY?s=cl&p=a&mlu=3' }
+    ];
 
-/* ===== Render Updates ===== */
-function renderUpdates(){
-  const c = document.getElementById('updatesList');
-  c.innerHTML = '';
-  SITE_DATA.updates.forEach((u, idx)=>{
-    const d = new Date(u.date);
-    const fmt = d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-    const div = document.createElement('div');
-    div.className = 'update scroll-reveal';
-    div.innerHTML = `<div class="time">${fmt}</div><div class="txt">${u.html}</div>`;
-    c.appendChild(div);
-  });
-}
+    const INITIAL_MEMBERS = [
+      { id: 'mem-001', memberId: 'IYR Y73', name: 'Yusuf Khan', role: 'Founder & State Convener', badge: 'FOUNDER', district: 'Kolkata', phone: OFFICIAL_WHATSAPP, showPhone: true, bio: 'Dedicated to student empowerment, educational material accessibility, and student welfare across West Bengal.', joinedDate: 'January 2023', photoUrl: FOUNDER_IMAGE, order: 1 },
+      { id: 'mem-002', memberId: 'IYR A29', name: 'Ananya Banerjee', role: 'Head of Student Welfare', badge: 'CORE TEAM', district: 'North 24 Parganas', phone: '+91 98765 43211', showPhone: false, bio: 'Leading statewide scholarship awareness, notes verification, and academic mentorship drives.', joinedDate: 'March 2023', photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600', order: 2 },
+      { id: 'mem-003', memberId: 'IYR R84', name: 'Rahul Roy Chowdhury', role: 'District Lead - Howrah', badge: 'DISTRICT LEAD', district: 'Howrah', phone: '+91 98765 43212', showPhone: true, bio: 'Grassroots community organizer heading field relief, free study books exchange, and district teams.', joinedDate: 'August 2023', photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600', order: 3 }
+    ];
 
-/* ===== Books rendering ===== */
-function loadBooks(arr, id){
-  const container = document.getElementById(id);
-  if(!container) return;
-  container.innerHTML = '';
-  arr.forEach(item=>{
-    const el = document.createElement('div');
-    el.className = 'bookItem scroll-reveal';
-    el.innerHTML = `<div style="display:flex;align-items:center;gap:12px;min-width:0">
-                      <div class="bookIcon">📄</div>
-                      <div style="min-width:0">
-                        <h4 title="${esc(item.title)}">${esc(item.title)}</h4>
-                        <div class="muted" style="font-size:12px;margin-top:6px">Free material</div>
+    const INITIAL_TASKS = [
+      { id: 'task-1', title: 'Share Madhyamik & HS ABTA PDF in District WhatsApp Group', deadline: 'Today', status: 'active' },
+      { id: 'task-2', title: 'Verify Notes submission for Class 12 Chapter 1 Physics', deadline: 'Tomorrow', status: 'active' }
+    ];
+
+    const INITIAL_SOCIALS = [
+      { id: 'soc-1', name: 'YouTube Channel', url: 'https://www.youtube.com/@WBSTUDENTSGROUP', icon: '📺' },
+      { id: 'soc-2', name: 'Instagram Handle', url: 'https://www.instagram.com/wbstudentsgroup', icon: '📸' },
+      { id: 'soc-3', name: 'Official Email', url: 'mailto:wbstudentsgroup@gmail.com', icon: '✉️' }
+    ];
+
+    const WB_DISTRICTS = [
+      'Alipurduar', 'Bankura', 'Birbhum', 'Cooch Behar', 'Dakshin Dinajpur',
+      'Darjeeling', 'Hooghly', 'Howrah', 'Jalpaiguri', 'Jhargram',
+      'Kalimpong', 'Kolkata', 'Malda', 'Murshidabad', 'Nadia',
+      'North 24 Parganas', 'Paschim Bardhaman', 'Paschim Medinipur',
+      'Purba Bardhaman', 'Purba Medinipur', 'Purulia', 'South 24 Parganas',
+      'Uttar Dinajpur', 'Outside West Bengal'
+    ];
+
+    const CONTRIBUTION_AREAS = [
+      '👑 Become Group Admin (Lead a WhatsApp Group)',
+      '📚 Provide Study Notes & Suggestions',
+      '👨‍🏫 Be an Online / Offline Teacher & Doubt Solver',
+      '🔍 Search & Organize Study Materials',
+      '🤝 Student Welfare & District Helpline Desk',
+      '🚀 Technical, Video & App Moderation'
+    ];
+
+    const getStored = (key, fallback) => {
+      try {
+        const d = localStorage.getItem(key);
+        return d ? JSON.parse(d) : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    };
+    const setStored = (key, val) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch (e) {}
+    };
+
+    // State Store
+    window.state = {
+      members: getStored('wbstg_members', INITIAL_MEMBERS),
+      applications: getStored('wbstg_apps', []),
+      waGroups: getStored('wbstg_wa_groups', INITIAL_WA_GROUPS),
+      tasks: getStored('wbstg_tasks', INITIAL_TASKS),
+      taskSubmissions: getStored('wbstg_task_subs', {}),
+      socials: getStored('wbstg_socials', INITIAL_SOCIALS),
+      currentUser: getStored('wbstg_user', null),
+      appDownloadUrl: getStored('wbstg_app_link', ''),
+      currentView: 'home',
+      adminTab: 'overview',
+      showStatusSection: true,
+      showTasksSection: true
+    };
+
+    window.saveState = function() {
+      setStored('wbstg_members', window.state.members);
+      setStored('wbstg_apps', window.state.applications);
+      setStored('wbstg_wa_groups', window.state.waGroups);
+      setStored('wbstg_tasks', window.state.tasks);
+      setStored('wbstg_task_subs', window.state.taskSubmissions);
+      setStored('wbstg_socials', window.state.socials);
+      setStored('wbstg_user', window.state.currentUser);
+      setStored('wbstg_app_link', window.state.appDownloadUrl);
+      window.renderNav();
+      window.renderMain();
+      window.renderFooterSocials();
+    };
+
+    window.generateApprovedMemberId = function(name) {
+      const cleanName = (name || 'Member').trim().toUpperCase();
+      const firstLetter = cleanName.charAt(0) || 'X';
+      const randomTwoDigit = Math.floor(10 + Math.random() * 90);
+      return `IYR ${firstLetter}${randomTwoDigit}`;
+    };
+
+    window.generateTrackingId = function(name, phone) {
+      const cleanName = (name || 'STU').trim().split(' ')[0].toUpperCase().replace(/[^A-Z]/g, '');
+      const digits = (phone || '0000').replace(/[^0-9]/g, '');
+      const lastFour = digits.length >= 4 ? digits.slice(-4) : digits.padStart(4, '0');
+      return `${cleanName}${lastFour}`;
+    };
+
+    window.getDefaultAvatarHtml = function(name, gender, sizeClass = "w-full h-full") {
+      const initial = (name || 'U').charAt(0).toUpperCase();
+      const bgGradient = gender === 'Female' ? 'from-pink-500 to-rose-600' : (gender === 'Other' ? 'from-purple-500 to-indigo-600' : 'from-cyan-500 to-blue-600');
+      return `
+        <div class="${sizeClass} bg-gradient-to-br ${bgGradient} text-white font-black flex items-center justify-center text-2xl shadow-inner select-none">
+          ${initial}
+        </div>
+      `;
+    };
+
+    window.switchView = function(view) {
+      window.state.currentView = view;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.renderNav();
+      window.renderMain();
+    };
+
+    window.renderFooterSocials = function() {
+      const footerBox = document.getElementById('footer-social-links');
+      if (!footerBox) return;
+      footerBox.innerHTML = window.state.socials.map(s => `
+        <a href="${s.url}" target="_blank" class="text-brand-gold hover:underline font-bold flex items-center gap-1.5 transition hover:text-white">
+          <span>${s.icon || '🔗'}</span> ${s.name}
+        </a>
+      `).join(' • ');
+    };
+
+    // Render Navigation
+    window.renderNav = function() {
+      const authBox = document.getElementById('auth-actions');
+      const isAdmin = window.state.currentUser && window.state.currentUser.email && window.state.currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+      document.getElementById('nav-home-btn').className = window.state.currentView === 'home' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
+      document.getElementById('nav-mem-btn').className = window.state.currentView === 'membership' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
+
+      if (window.state.currentUser) {
+        const firstLetter = (window.state.currentUser.name || 'U').charAt(0).toUpperCase();
+        authBox.innerHTML = `
+          <div class="flex items-center gap-2">
+            ${isAdmin ? `
+              <button onclick="window.switchView('admin')" class="px-3 py-1.5 bg-brand-gold/15 text-brand-gold border border-brand-gold/40 rounded-xl text-xs font-black hover:bg-brand-gold hover:text-brand-black transition flex items-center gap-1 shadow">
+                🛡️ Admin Suite
+              </button>
+            ` : ''}
+            
+            <button onclick="window.openProfileModal()" class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-white font-black text-sm flex items-center justify-center shadow-lg hover:ring-2 hover:ring-brand-teal transition" title="${window.state.currentUser.name}">
+              ${firstLetter}
+            </button>
+          </div>
+        `;
+      } else {
+        authBox.innerHTML = `
+          <button onclick="window.openAuthModal()" class="px-4 py-2 bg-brand-teal/15 hover:bg-brand-teal/25 text-brand-teal border border-brand-teal/40 rounded-xl text-xs font-black flex items-center gap-1.5 transition shadow-lg">
+            👤 Sign In / Register
+          </button>
+        `;
+      }
+      window.renderFooterSocials();
+    };
+
+    // Render Main Area
+    window.renderMain = function() {
+      const container = document.getElementById('main-content');
+      if (window.state.currentView === 'admin') {
+        window.renderAdminPage(container);
+      } else if (window.state.currentView === 'membership') {
+        window.renderMembershipPage(container);
+      } else {
+        window.renderHomePage(container);
+      }
+      window.renderFooterSocials();
+    };
+
+    // Render Home View with Collapsible Status & Tasks Buttons
+    window.renderHomePage = function(container) {
+      const greeting = window.state.currentUser ? `Hi, ${window.state.currentUser.name}! 👋 Welcome Back` : `Hi, Student! 👋 Welcome to WBSTG`;
+      const duplicatedGroups = [...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups];
+      const duplicatedMembers = [...window.state.members, ...window.state.members, ...window.state.members];
+
+      let userAppHtml = '';
+      let memberTasksHtml = '';
+
+      if (window.state.currentUser) {
+        const myApp = window.state.applications.find(a => 
+          (a.email && window.state.currentUser.email && a.email.toLowerCase() === window.state.currentUser.email.toLowerCase()) ||
+          (a.whatsapp && window.state.currentUser.phone && a.whatsapp === window.state.currentUser.phone) ||
+          (a.fullName && window.state.currentUser.name && a.fullName.toLowerCase() === window.state.currentUser.name.toLowerCase())
+        );
+
+        if (myApp) {
+          const isApproved = myApp.status === 'approved';
+          const isRejected = myApp.status === 'not_selected';
+
+          userAppHtml = `
+            <div class="max-w-4xl mx-auto px-4 pt-6 animate-slide-up">
+              <div class="glass-box p-5 sm:p-6 rounded-3xl border ${isApproved ? 'border-emerald-500/50' : 'border-brand-teal/50'} shadow-2xl text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-teal/10 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 mb-3 border-b border-brand-border">
+                  <div class="flex items-center gap-2">
+                    <button onclick="window.toggleSection('status')" class="text-xs font-bold text-brand-teal hover:underline flex items-center gap-1">
+                      <span>${window.state.showStatusSection ? '▼' : '▶'}</span> Application Tracking Overview
+                    </button>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-black ${isApproved ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : (isRejected ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-amber-500/20 text-brand-gold border border-brand-gold/30')}">
+                      ${isApproved ? '✓ APPROVED & VERIFIED' : (isRejected ? '✕ REJECTED' : '⏳ UNDER REVIEW')}
+                    </span>
+                    ${isApproved ? `
+                      <button onclick="window.openIdCardPreviewModal('${myApp.id}')" class="px-3.5 py-1.5 bg-gradient-to-r from-brand-gold to-amber-500 hover:from-amber-400 hover:to-amber-500 text-brand-black font-black text-xs rounded-xl shadow-lg transition flex items-center gap-1 transform hover:scale-105">
+                        🆔 Download ID Card
+                      </button>
+                    ` : ''}
+                  </div>
+                </div>
+
+                ${window.state.showStatusSection ? `
+                  <div class="py-2 mb-4 animate-slide-up">
+                    <div class="flex justify-between items-center relative max-w-sm mx-auto mb-3">
+                      <div class="absolute left-0 right-0 h-1 bg-slate-800 top-1/2 -translate-y-1/2 z-0"></div>
+                      
+                      <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-7 h-7 rounded-full bg-emerald-500 text-brand-black font-black flex items-center justify-center text-[10px] shadow">✓</div>
+                        <span class="text-[9px] text-slate-300 mt-1 font-semibold">Submitted</span>
+                      </div>
+
+                      <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-7 h-7 rounded-full ${isRejected ? 'bg-rose-500 text-white' : (isApproved ? 'bg-emerald-500 text-brand-black' : 'bg-brand-gold text-brand-black animate-pulse')} font-black flex items-center justify-center text-[10px] shadow">
+                          ${isRejected ? '✕' : (isApproved ? '✓' : '⏳')}
+                        </div>
+                        <span class="text-[9px] text-slate-300 mt-1 font-semibold">${isRejected ? 'Rejected' : 'Review'}</span>
+                      </div>
+
+                      <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-7 h-7 rounded-full ${isApproved ? 'bg-emerald-500 text-brand-black shadow' : 'bg-slate-800 text-slate-500'} font-black flex items-center justify-center text-[10px]">
+                          ${isApproved ? '✓' : '🔒'}
+                        </div>
+                        <span class="text-[9px] text-slate-300 mt-1 font-semibold">ID Issued</span>
                       </div>
                     </div>
-                    <a class="open-btn" href="${item.link}" target="_blank" rel="noopener">Open</a>`;
-    container.appendChild(el);
-  });
-}
 
-/* ===== Subjects (Streams) - reveal-enabled ===== */
-function loadSubjects(streamKey){
-  const area = document.getElementById('subjectsArea');
-  area.innerHTML = '';
-  const arr = SITE_DATA.dataStreams[streamKey] || [];
-  arr.forEach(s=>{
-    const el = document.createElement('div');
-    el.className = 'subject scroll-reveal';
-    el.innerHTML = `<strong style="color:var(--accent)">${esc(s.title)}</strong><div style="margin-top:6px"><a href="${s.link}" target="_blank" style="color:#cfe8ff;text-decoration:none;font-weight:700">Open / Download</a></div>`;
-    area.appendChild(el);
-  });
-}
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs bg-slate-900/80 p-3.5 rounded-2xl border border-brand-border">
+                      <div>
+                        <span class="text-slate-500 block text-[9px]">TRACKING ID</span>
+                        <strong class="text-white font-mono">${myApp.trackingId}</strong>
+                      </div>
+                      <div>
+                        <span class="text-slate-500 block text-[9px]">MEMBER ID</span>
+                        <strong class="text-brand-gold font-mono">${myApp.memberId || 'Pending State Approval'}</strong>
+                      </div>
+                      <div>
+                        <span class="text-slate-500 block text-[9px]">TARGET GROUP ADMIN</span>
+                        <strong class="text-brand-whatsapp">${myApp.targetLeadGroup || 'None'}</strong>
+                      </div>
+                    </div>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
 
-/* ===== Contributors render (scroll after >5 via CSS) ===== */
-function renderContributors(){
-  const list = document.getElementById('contributorsList');
-  list.innerHTML = '';
-  SITE_DATA.contributors.forEach((name,i)=>{
-    const row = document.createElement('div');
-    row.className = 'contrib-row scroll-reveal';
-    const bg = i===0 ? 'linear-gradient(180deg,#ffd36b,#ffb400)' : i===1 ? 'linear-gradient(180deg,#cfcfcf,#9fa6b2)' : i===2 ? 'linear-gradient(180deg,#e6a46c,#b87442)' : 'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))';
-    row.innerHTML = `<div class="medal" style="background:${bg}">${i+1}</div><div style="font-weight:700">${esc(name)}</div>`;
-    list.appendChild(row);
-  });
-}
+          // If Approved, show Task Management Section with collapsible button
+          if (isApproved) {
+            const subs = window.state.taskSubmissions[myApp.id] || [];
+            memberTasksHtml = `
+              <div class="max-w-4xl mx-auto px-4 pt-4 animate-slide-up">
+                <div class="glass-box p-5 sm:p-6 rounded-3xl border border-brand-gold/40 shadow-2xl text-left">
+                  <div class="flex items-center justify-between pb-3 mb-3 border-b border-brand-border">
+                    <button onclick="window.toggleSection('tasks')" class="text-xs font-black text-white flex items-center gap-2 hover:text-brand-teal transition">
+                      <span>${window.state.showTasksSection ? '▼' : '▶'}</span> Assigned State Tasks (${window.state.tasks.length})
+                    </button>
+                    <span class="text-[10px] bg-brand-gold/15 text-brand-gold px-2.5 py-0.5 rounded-full font-bold">Verified Member Taskforce</span>
+                  </div>
 
-/* ===== Scroll reveal (IntersectionObserver) ===== */
-function initScrollReveal(selectors = ['.bookItem', '.update', '.contrib-row', '.subject']) {
-  if (window.__scrollRevealInitialized) return;
-  window.__scrollRevealInitialized = true;
-
-  const rootMargin = '0px 0px -8% 0px';
-  const threshold = 0.12;
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const siblings = Array.from(el.parentElement.querySelectorAll('.scroll-reveal'));
-      const idx = siblings.indexOf(el);
-      const delay = (idx >= 0 ? idx : 0) * 70;
-      el.style.animationDelay = `${delay}ms`;
-      el.classList.add('in-view');
-      obs.unobserve(el);
-    });
-  }, { root: null, rootMargin, threshold });
-
-  // Observe current matches
-  const all = document.querySelectorAll(selectors.join(','));
-  all.forEach(el => {
-    if (!el.classList.contains('scroll-reveal')) el.classList.add('scroll-reveal');
-    observer.observe(el);
-  });
-
-  window.__scrollRevealObserver = observer;
-}
-
-function observeNewContent(containerSelector, selectors = ['.bookItem', '.update', '.contrib-row', '.subject']) {
-  const container = document.querySelector(containerSelector);
-  if (!container) return;
-  const nodes = container.querySelectorAll(selectors.join(','));
-  nodes.forEach(n => {
-    if (!n.classList.contains('scroll-reveal')) n.classList.add('scroll-reveal');
-    if (window.__scrollRevealObserver) window.__scrollRevealObserver.observe(n);
-  });
-}
-
-/* ===== Counters: animate when visible ===== */
-function animateCounter(el, target, duration=900){
-  if(!el) return;
-  const start = 0;
-  let startTime = null;
-  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-  function frame(ts){
-    if(!startTime) startTime = ts;
-    const progress = Math.min((ts - startTime)/duration, 1);
-    const eased = easeOutCubic(progress);
-    const val = Math.floor(start + (target - start) * eased);
-    el.textContent = val + (target >= 100 ? '+' : '');
-    if(progress < 1) requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-}
-
-function initStatObservers(){
-  const memEl = document.getElementById('memCount');
-  const helpEl = document.getElementById('helpCount');
-  const resEl = document.getElementById('resourcesCount');
-  const options = { root: null, rootMargin: "0px", threshold: 0.3 };
-  const obs = new IntersectionObserver((entries, o)=>{
-    entries.forEach(ent=>{
-      if(ent.isIntersecting){
-        animateCounter(memEl, SITE_DATA.stats.members, 900);
-        animateCounter(helpEl, SITE_DATA.stats.helped, 900);
-        animateCounter(resEl, SITE_DATA.stats.resources, 900);
-        o.disconnect();
+                  ${window.state.showTasksSection ? `
+                    <div class="space-y-3 animate-slide-up">
+                      ${window.state.tasks.map(t => {
+                        const isDone = subs.includes(t.id);
+                        return `
+                          <div class="p-3.5 rounded-2xl bg-slate-900 border ${isDone ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-brand-border'} flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+                            <div>
+                              <h4 class="font-bold text-white">${t.title}</h4>
+                              <p class="text-[10px] text-slate-400 mt-0.5">Deadline: <span class="text-brand-gold font-semibold">${t.deadline}</span></p>
+                            </div>
+                            <div>
+                              ${isDone ? `
+                                <span class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-400 font-bold text-[11px] border border-emerald-500/30 flex items-center gap-1">
+                                  ✓ Completed & Submitted to Admin
+                                </span>
+                              ` : `
+                                <button onclick="window.markTaskDone('${myApp.id}', '${t.id}')" class="px-4 py-2 bg-brand-teal hover:bg-cyan-300 text-brand-black font-black rounded-xl text-xs transition shadow-lg">
+                                  Mark as Done ✓
+                                </button>
+                              `}
+                            </div>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            `;
+          }
+        }
       }
-    });
-  }, options);
-  obs.observe(memEl);
-}
 
-/* ===== Tab indicator (books) ===== */
-function updateTabIndicator(){
-  const tabs = document.querySelector('.tabs-inner');
-  const indicator = document.querySelector('.tab-underline');
-  if(!tabs || !indicator) return;
-  const active = tabs.querySelector('.tabBtn.active') || tabs.querySelector('.tabBtn');
-  if(!active){ indicator.style.width = '0'; return; }
-  const left = active.offsetLeft;
-  const width = active.offsetWidth;
-  indicator.style.width = width + 'px';
-  indicator.style.transform = `translateX(${left}px)`;
-}
-function showBookSection(id){
-  document.querySelectorAll('.bookSection').forEach(s=>{
-    s.style.display = s.id === id ? 'block' : 'none';
-  });
-  document.querySelectorAll('.tabs-inner .tabBtn').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('data-target') === id);
-    b.setAttribute('aria-selected', b.classList.contains('active') ? 'true' : 'false');
-  });
-  setTimeout(()=> {
-    updateTabIndicator();
-    observeNewContent('#' + id, ['.bookItem']);
-  }, 60);
-}
+      container.innerHTML = `
+        ${userAppHtml}
+        ${memberTasksHtml}
 
-/* ===== Streams (small tabs) handled separately ===== */
-function initStreams(){
-  document.getElementById('tabs')?.addEventListener('click', (e)=>{
-    const btn = e.target.closest('button');
-    if(!btn) return;
-    document.querySelectorAll('#tabs button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadSubjects(btn.getAttribute('data-stream'));
-    // observe subjects for reveal
-    setTimeout(()=> observeNewContent('#subjectsArea', ['.subject']), 60);
-  });
-}
+        <!-- Hero Section -->
+        <section class="pt-10 md:pt-16 pb-12 px-4 max-w-6xl mx-auto text-center relative">
+          
+          <div class="inline-flex items-center gap-2 bg-brand-teal/10 border border-brand-teal/30 px-4 py-1.5 rounded-full text-brand-teal text-xs font-black mb-4 shadow-lg shadow-brand-teal/10">
+            <span>✨</span> ${greeting}
+          </div>
 
-// JavaScript - replace/merge with your initHamburger
-function initHamburger(){
-  const btn = document.getElementById('hambBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  const links = document.querySelectorAll('.mobile-nav .nav-item');
+          <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight md:leading-none mb-6">
+            Bengal’s Premier <br />
+            <span class="gold-gradient-text">Student Welfare & Learning Force</span>
+          </h1>
 
-  // Toggle menu
-  btn.addEventListener('click', ()=>{
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    if(open){
-      mobileNav.style.display = 'none';
-    } else {
-      mobileNav.style.display = 'block';
-    }
-  });
+          <p class="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed px-2">
+            WB Students Group delivers free syllabus notes, Madhyamik & HS batch guidance, mock tests, and grassroots youth leadership across Bengal.
+          </p>
 
-  // Set active based on current hash (initial load)
-  function setActiveFromHash(){
-    const hash = window.location.hash || '#home';
-    links.forEach(a=>{
-      if(a.getAttribute('href') === hash){
-        a.classList.add('active');
-        // optional: scroll into view if menu open
-        // a.scrollIntoView({block:'nearest'});
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto">
+            <a href="${LEARNING_PORTAL}" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-gold to-amber-500 hover:from-amber-400 hover:to-amber-500 text-brand-black font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 transition transform hover:scale-105 active:scale-95">
+              📚 Explore Web Portal ❯
+            </a>
+            <button onclick="window.switchView('membership')" class="w-full sm:w-auto px-8 py-4 bg-brand-card hover:bg-brand-border text-brand-teal font-black text-sm rounded-2xl border border-brand-teal/40 transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-lg">
+              👥 Membership Form →
+            </button>
+          </div>
+
+          <!-- Metric Counters (Active students updated to 2,500+) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-4xl mx-auto mt-14">
+            <div class="glass-box p-4 rounded-2xl text-center shadow-lg">
+              <div class="text-xl sm:text-2xl font-black text-brand-gold">2,500+</div>
+              <div class="text-[11px] text-slate-400 font-semibold mt-1">Active Students</div>
+            </div>
+            <div class="glass-box p-4 rounded-2xl text-center shadow-lg">
+              <div class="text-xl sm:text-2xl font-black text-brand-teal">23 / 23</div>
+              <div class="text-[11px] text-slate-400 font-semibold mt-1">WB Districts</div>
+            </div>
+            <div class="glass-box p-4 rounded-2xl text-center shadow-lg">
+              <div class="text-xl sm:text-2xl font-black text-white">1,200+</div>
+              <div class="text-[11px] text-slate-400 font-semibold mt-1">Free PDF Materials</div>
+            </div>
+            <div class="glass-box p-4 rounded-2xl text-center shadow-lg">
+              <div class="text-xl sm:text-2xl font-black text-brand-teal">${window.state.members.length}+</div>
+              <div class="text-[11px] text-slate-400 font-semibold mt-1">Verified Leaders</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WhatsApp Groups Slider (With WhatsApp Logo SVG) -->
+        <section id="wa-communities" class="py-12 border-y border-brand-border/60 bg-brand-dark/60 relative overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <div>
+              <span class="text-brand-whatsapp text-xs font-black uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5 mb-1">
+                <svg class="w-4 h-4 text-brand-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                Official Verified WhatsApp Groups
+              </span>
+              <h3 class="text-xl sm:text-2xl font-black text-white">Join Your Class & District Community</h3>
+            </div>
+            <span class="text-[11px] text-slate-400 italic">✨ Continuous Smooth Auto-Scroll (Hover to Pause)</span>
+          </div>
+
+          <div class="marquee-wrapper w-full overflow-hidden relative">
+            <div class="anim-marquee-right flex gap-4">
+              ${duplicatedGroups.map(grp => `
+                <div class="w-[280px] sm:w-[320px] glass-box p-4 rounded-2xl flex flex-col justify-between shadow-xl flex-shrink-0">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full bg-brand-whatsapp/15 text-brand-whatsapp border border-brand-whatsapp/30">
+                        ${grp.tag}
+                      </span>
+                      <svg class="w-5 h-5 text-brand-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    </div>
+                    <h4 class="text-base font-black text-white truncate">${grp.title}</h4>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2 leading-relaxed">${grp.subtitle}</p>
+                  </div>
+                  <a href="${grp.link}" target="_blank" class="mt-4 w-full py-2.5 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    Join WhatsApp Group
+                  </a>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Leaders Slider -->
+        <section class="py-16 relative overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-center sm:text-left">
+            <div>
+              <div class="text-brand-gold text-xs font-black uppercase tracking-widest mb-1">
+                🏆 State Executive Directory
+              </div>
+              <h2 class="text-2xl sm:text-4xl font-black text-white">Verified Team Leaders</h2>
+            </div>
+            <span class="text-xs text-brand-teal bg-brand-teal/10 border border-brand-teal/30 px-3 py-1 rounded-full font-bold self-center sm:self-auto">
+              Continuous Live Directory
+            </span>
+          </div>
+
+          <div class="marquee-wrapper w-full overflow-hidden relative">
+            <div class="anim-marquee-left flex gap-6">
+              ${duplicatedMembers.map(m => `
+                <div onclick="window.openMemberModal('${m.id}')" class="w-[280px] sm:w-[310px] glass-box rounded-2xl overflow-hidden shadow-2xl cursor-pointer flex-shrink-0">
+                  <div class="relative h-64 w-full bg-slate-900">
+                    ${m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" class="w-full h-full object-cover object-top" />` : window.getDefaultAvatarHtml(m.name, 'Male')}
+                    <div class="absolute top-3 left-3 bg-brand-gold text-brand-black font-black text-[10px] px-3 py-1 rounded-full uppercase shadow-lg">
+                      ${m.badge}
+                    </div>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="text-base font-black text-white">${m.name}</h3>
+                    <p class="text-brand-teal text-xs font-semibold mb-2">${m.role}</p>
+                    <p class="text-slate-400 text-xs line-clamp-2 mb-3 leading-relaxed">${m.bio}</p>
+                    <div class="flex items-center justify-between text-xs text-slate-400 pt-2.5 border-t border-brand-border">
+                      <span>${m.district}</span>
+                      <span class="text-brand-gold font-bold">Open Pass →</span>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- GOAT App Section -->
+        <section id="app-showcase" class="py-20 px-4 max-w-5xl mx-auto relative text-center">
+          <div class="inline-flex items-center gap-2 mb-3 text-brand-teal">
+            <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              <span class="teal-gradient-text">GOAT App</span> for Students 🚀
+            </h2>
+          </div>
+
+          <div class="relative my-10 flex items-center justify-center">
+            <div class="hidden md:flex flex-col gap-8 absolute left-6 top-1/2 -translate-y-1/2 z-20">
+              <div class="glass-box p-3 rounded-2xl flex items-center gap-3 anim-float">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-brand-gold flex items-center justify-center text-lg">🏆</div>
+                <div class="text-left">
+                  <div class="text-xs font-black text-white">Career Guidance</div>
+                  <div class="text-[10px] text-slate-400">Stream selection help</div>
+                </div>
+              </div>
+              <div class="glass-box p-3 rounded-2xl flex items-center gap-3 anim-float">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-brand-teal flex items-center justify-center text-lg">📊</div>
+                <div class="text-left">
+                  <div class="text-xs font-black text-white">Track Performance</div>
+                  <div class="text-[10px] text-slate-400">Real-time marks analysis</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phone Mockup -->
+            <div class="relative w-64 sm:w-72 aspect-[9/18.5] bg-[#000000] border-4 border-brand-border rounded-[42px] p-2.5 shadow-2xl shadow-brand-teal/20 anim-float z-10">
+              <div class="w-full h-full bg-[#040A14] rounded-[34px] overflow-hidden flex flex-col justify-between p-3.5 border border-brand-border/60">
+                <div>
+                  <div class="flex justify-between items-center text-[10px] text-slate-400 pb-2 border-b border-brand-border">
+                    <span class="font-mono text-brand-teal font-bold flex items-center gap-1">
+                      <img src="${LOGO_URL}" class="w-3.5 h-3.5 object-contain" /> WB STG App
+                    </span>
+                    <span>8:55 PM 5G</span>
+                  </div>
+
+                  <div class="mt-3 bg-gradient-to-br from-brand-card to-brand-dark p-3 rounded-xl border border-brand-border text-left">
+                    <div class="text-[10px] text-brand-gold font-black uppercase">TOP STUDY COURSE</div>
+                    <div class="text-xs font-black text-white mt-0.5">Madhyamik & HS ABTA 2026 Batch</div>
+                    <p class="text-[9px] text-slate-400 mt-0.5">Full syllabus solved papers & chapter notes.</p>
+                  </div>
+
+                  <div class="mt-3 bg-brand-card p-2.5 rounded-xl border border-brand-teal/30 text-left">
+                    <div class="text-[8px] text-brand-teal font-black uppercase tracking-wider">ACTIVE STUDY BATCH</div>
+                    <div class="text-[11px] font-black text-white mt-0.5 truncate">ARAMBH 12TH SEMESTER</div>
+                    <div class="w-full bg-slate-900 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-brand-teal h-full w-2/3"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[8px] text-slate-400 mt-1">
+                      <span>65% Completed</span>
+                      <span class="text-brand-gold font-bold">Continue →</span>
+                    </div>
+                  </div>
+
+                  <div class="mt-3 bg-brand-card/80 p-2 rounded-lg border border-brand-border text-[8px] text-slate-300 text-left">
+                    <div class="text-brand-gold mb-0.5 font-bold">★★★★★ Verified Student</div>
+                    <p class="italic leading-tight">"Exam routine, notes & mock test ek jagah mil jata hai!"</p>
+                    <span class="text-brand-teal font-bold block mt-0.5">— Class 12 Student</span>
+                  </div>
+                </div>
+
+                <div class="bg-brand-card py-1.5 px-3 rounded-full flex justify-between text-[9px] text-slate-400 border border-brand-border">
+                  <span class="text-brand-teal font-bold">Home</span>
+                  <span>Study</span>
+                  <span>Notes</span>
+                  <span>Updates</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:flex flex-col gap-8 absolute right-6 top-1/2 -translate-y-1/2 z-20">
+              <div class="glass-box p-3 rounded-2xl flex items-center gap-3 anim-float">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg">📖</div>
+                <div class="text-left">
+                  <div class="text-xs font-black text-white">Study Material</div>
+                  <div class="text-[10px] text-slate-400">Madhyamik & HS Free PDFs</div>
+                </div>
+              </div>
+              <div class="glass-box p-3 rounded-2xl flex items-center gap-3 anim-float">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">📝</div>
+                <div class="text-left">
+                  <div class="text-xs font-black text-white">Mock Test Exam</div>
+                  <div class="text-[10px] text-slate-400">Chapter-wise online tests</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed font-medium">
+            Prepare for Madhyamik & Higher Secondary School Board Exam with Smart Notes, Mocktest & Suggestions.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div class="w-full sm:w-auto px-6 py-3 bg-brand-card/90 border border-brand-gold/40 text-white rounded-2xl flex items-center justify-center gap-3">
+              <span class="text-brand-gold text-lg">⏳</span>
+              <div class="text-left">
+                <div class="text-[9px] text-brand-gold uppercase font-black">PLAYSTORE APP</div>
+                <div class="text-xs font-bold text-slate-200">COMING SOON</div>
+              </div>
+            </div>
+
+            <a href="${LEARNING_PORTAL}" target="_blank" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 transition transform hover:scale-105 active:scale-95">
+              🔍 Explore Web Portal ❯
+            </a>
+          </div>
+        </section>
+
+        <!-- Our History & Purpose Section at the Bottom -->
+        <section class="py-16 px-4 max-w-5xl mx-auto">
+          <div class="glass-box p-8 sm:p-12 rounded-3xl border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
+            <div class="absolute -right-10 -bottom-10 text-9xl opacity-5 pointer-events-none select-none">📖</div>
+            
+            <div class="inline-flex items-center gap-2 bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-3.5 py-1 rounded-full text-xs font-bold mb-4">
+              🏛️ Founded on 09-09-2024
+            </div>
+
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-4">Our History, Purpose & Core Values</h2>
+            
+            <div class="space-y-4 text-slate-300 text-xs sm:text-sm leading-relaxed">
+              <p>
+                This group was founded on <strong class="text-brand-teal">09-09-2024</strong> specifically for West Bengal students belonging to <strong class="text-white">Hindi, English, and Urdu mediums</strong>. Our primary purpose is to study together, share knowledge, help each other, and maintain a positive, encouraging educational environment.
+              </p>
+              <p>
+                We deeply understand that many students across Bengal cannot afford expensive tuitions or private coaching. Therefore, this platform is built to support, mentor, and guide them completely free of cost. Here, everyone can learn, ask questions, and grow together without financial barriers.
+              </p>
+              <div class="p-4 bg-brand-card rounded-2xl border border-brand-border flex items-center gap-3">
+                <span class="text-2xl">✨</span>
+                <p class="font-bold text-white text-xs sm:text-sm">
+                  We respect every language and subject equally, and here every student is equal.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    };
+
+    window.toggleSection = function(sectionName) {
+      if (sectionName === 'status') {
+        window.state.showStatusSection = !window.state.showStatusSection;
+      } else if (sectionName === 'tasks') {
+        window.state.showTasksSection = !window.state.showTasksSection;
+      }
+      window.renderMain();
+    };
+
+    window.markTaskDone = function(appId, taskId) {
+      if (!window.state.taskSubmissions[appId]) {
+        window.state.taskSubmissions[appId] = [];
+      }
+      if (!window.state.taskSubmissions[appId].includes(taskId)) {
+        window.state.taskSubmissions[appId].push(taskId);
+        window.saveState();
+        alert("Task marked as done and submitted to State Admin!");
+      }
+    };
+
+    // Render Professional Membership Application Page
+    window.renderMembershipPage = function(container) {
+      if (!window.state.currentUser) {
+        container.innerHTML = `
+          <div class="py-16 px-4 max-w-xl mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-brand-gold/40 shadow-2xl">
+              <div class="w-16 h-16 bg-brand-gold/10 text-brand-gold rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                🛡️
+              </div>
+              <h2 class="text-2xl font-black text-white mb-2">Student Authentication Required</h2>
+              <p class="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">
+                Log in or register with your student phone number to submit authentic membership form.
+              </p>
+              <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <button onclick="window.openAuthModal()" class="px-7 py-3.5 bg-brand-gold hover:bg-brand-goldLight text-brand-black font-black rounded-xl text-sm transition shadow-lg">
+                  Sign In or Instant Register
+                </button>
+                <button onclick="window.switchView('home')" class="px-5 py-3.5 bg-brand-card hover:bg-brand-border text-slate-300 rounded-xl text-sm font-bold border border-brand-border transition">
+                  ← Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const existingApp = window.state.applications.find(a => 
+        (a.email && window.state.currentUser.email && a.email.toLowerCase() === window.state.currentUser.email.toLowerCase()) ||
+        (a.whatsapp && window.state.currentUser.phone && a.whatsapp === window.state.currentUser.phone)
+      );
+
+      if (existingApp) {
+        container.innerHTML = `
+          <div class="py-16 px-4 max-w-xl mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-brand-teal/40 shadow-2xl text-left">
+              <div class="flex items-center gap-3 pb-4 mb-4 border-b border-brand-border">
+                <span class="text-3xl">📋</span>
+                <div>
+                  <h3 class="text-xl font-black text-white">Application Already Submitted</h3>
+                  <p class="text-xs text-brand-teal">You have already registered for membership.</p>
+                </div>
+              </div>
+
+              <div class="space-y-2.5 text-xs text-slate-300 mb-6 bg-brand-card p-4 rounded-2xl border border-brand-border">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Applicant Name:</span>
+                  <strong class="text-white">${existingApp.fullName}</strong>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Tracking ID:</span>
+                  <strong class="text-brand-teal font-mono">${existingApp.trackingId}</strong>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Application Status:</span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${existingApp.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-brand-gold border border-brand-gold/30'}">
+                    ${existingApp.status === 'approved' ? 'APPROVED' : (existingApp.status === 'under_review' ? 'UNDER REVIEW' : 'REJECTED')}
+                  </span>
+                </div>
+                ${existingApp.memberId ? `
+                  <div class="flex justify-between pt-2 border-t border-brand-border">
+                    <span class="text-slate-400">Approved Member ID:</span>
+                    <strong class="text-brand-gold font-mono font-black text-sm">${existingApp.memberId}</strong>
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="window.switchView('home')" class="flex-1 py-3 bg-brand-teal text-brand-black font-black rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
+                  🏠 Return to Home Status
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="py-10 px-4 max-w-3xl mx-auto animate-slide-up">
+          <div class="glass-box p-6 sm:p-10 rounded-3xl shadow-2xl">
+            
+            <div class="flex items-center justify-between pb-4 mb-6 border-b border-brand-border">
+              <div>
+                <button onclick="window.switchView('home')" class="inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-brand-teal mb-2 transition">
+                  ← Back to Home Directory
+                </button>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">Membership Form</h2>
+                <p class="text-slate-400 text-xs mt-0.5">Join Bengal's largest student welfare and grassroots educational network.</p>
+              </div>
+              <img src="${LOGO_URL}" class="w-12 h-12 object-contain hidden sm:block" />
+            </div>
+
+            <form id="membership-form" onsubmit="window.handleMembershipSubmit(event)" class="space-y-6 text-left">
+              
+              <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-border text-center sm:text-left">
+                <div id="photo-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-teal/50 flex items-center justify-center flex-shrink-0 text-slate-500 text-2xl shadow-inner">
+                  📷
+                </div>
+                <div>
+                  <label class="text-xs font-bold text-white block mb-1">Passport Size Profile Photo <span class="text-slate-400 font-normal">(Optional)</span></label>
+                  <p class="text-[11px] text-slate-400 mb-2">You can upload a photo or skip this. Default icon will be used if left blank.</p>
+                  <label class="inline-block px-3.5 py-1.5 bg-brand-card hover:bg-brand-border text-brand-teal text-xs font-bold rounded-lg border border-brand-border cursor-pointer transition">
+                    Choose Photo File
+                    <input type="file" accept="image/*" onchange="window.handlePhotoUpload(event)" class="hidden" />
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">1. Personal & Contact Information</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">FULL NAME *</label>
+                    <input type="text" id="app-name" required value="${window.state.currentUser.name || ''}" placeholder="Enter your full name" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">GENDER *</label>
+                    <select id="app-gender" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none">
+                      <option value="" disabled selected>Select gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">AGE *</label>
+                    <input type="number" id="app-age" min="14" max="40" required placeholder="Your age" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT / REGION *</label>
+                    <select id="app-district" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none">
+                      <option value="" disabled selected>Select district</option>
+                      ${WB_DISTRICTS.map(d => `<option value="${d}" ${d === window.state.currentUser.district ? 'selected' : ''}>${d}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">WHATSAPP NUMBER *</label>
+                    <input type="tel" id="app-whatsapp" required value="${window.state.currentUser.phone || ''}" placeholder="10-digit number" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">EMAIL ADDRESS *</label>
+                    <input type="email" id="app-email" required value="${window.state.currentUser.email || ''}" placeholder="name@email.com" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">2. Academic, Motivation & Skills</h4>
+                
+                <div class="space-y-4">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">CURRENT EDUCATION LEVEL *</label>
+                    <select id="app-education" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none">
+                      <option value="" disabled selected>Select your education level</option>
+                      <option value="Class 10 (Madhyamik Batch)">Class 10 (Madhyamik Batch)</option>
+                      <option value="Class 11 / 12 (Higher Secondary Batch)">Class 11 / 12 (Higher Secondary Batch)</option>
+                      <option value="Undergraduate College (BA / B.Sc / B.Com / B.Tech)">Undergraduate College (BA / B.Sc / B.Com / B.Tech)</option>
+                      <option value="Postgraduate / Higher Studies">Postgraduate / Higher Studies</option>
+                      <option value="Diploma / Technical Stream">Diploma / Technical Stream</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">
+                      WHAT SKILLS DO YOU HAVE? <span class="text-brand-teal font-normal">(Optional)</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="app-skills" 
+                      placeholder="e.g. Teaching, Video Editing, Content Writing, Graphic Design, Web Development..." 
+                      class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" 
+                    />
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">WHY DO YOU WANT TO JOIN WB STUDENTS GROUP? *</label>
+                    <textarea id="app-why-join" rows="2" required placeholder="Explain your interest in joining our student advocacy and digital study group..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white outline-none"></textarea>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">HOW CAN YOU HELP NEEDY STUDENTS IN OUR COMMUNITY? *</label>
+                    <textarea id="app-how-help" rows="2" required placeholder="Share how you can contribute (sharing notes, solving doubts, helping poor students)..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white outline-none"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">3. Areas of Contribution & Group Leadership</h4>
+                <p class="text-[11px] text-slate-400 mb-3">Select your desired contributions below. You must choose at least one or check the Group Admin option.</p>
+                
+                <div class="space-y-3">
+                  <div class="grid grid-cols-1 gap-2">
+                    ${CONTRIBUTION_AREAS.map(a => `
+                      <label class="flex items-center gap-2.5 p-3 rounded-xl bg-brand-card border border-brand-border cursor-pointer text-slate-200 hover:border-brand-teal/50 transition text-xs">
+                        <input type="checkbox" name="contrib" value="${a}" class="rounded text-brand-teal w-4 h-4" />
+                        <span class="font-semibold">${a}</span>
+                      </label>
+                    `).join('')}
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-brand-card border border-brand-whatsapp/40 space-y-3 mt-3">
+                    <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-brand-whatsapp">
+                      <input type="checkbox" id="lead-group-checkbox" onchange="window.toggleLeadGroupDropdown(this.checked)" class="rounded text-brand-whatsapp w-4 h-4" />
+                      <span>👑 Become Group Admin (Lead a WhatsApp Group)</span>
+                    </label>
+
+                    <div id="lead-group-container" class="hidden pt-2 border-t border-brand-border space-y-2">
+                      <label class="text-[10px] font-bold text-slate-300 block">WHICH WHATSAPP GROUP WOULD YOU LIKE TO LEAD?</label>
+                      <select id="app-lead-target-group" class="w-full bg-brand-dark border border-brand-whatsapp/50 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                        ${window.state.waGroups.map(g => `<option value="${g.title}">${g.title} (${g.tag})</option>`).join('')}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">4. Communication Preferences</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">TEAM WORK *</label>
+                    <select id="app-work-pref" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                      <option value="Frontend Team (Ground / Student Desk)">Frontend Team (Ground / Student Desk)</option>
+                      <option value="Backend Team (Notes & Tech)">Backend Team (Notes & Tech)</option>
+                      <option value="Both Frontend & Backend">Both Frontend & Backend</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">ALLOW STUDENT DMS? *</label>
+                    <select id="app-allow-dm" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                      <option value="Yes (Allowed)">Yes, Students can DM me</option>
+                      <option value="No (Group Only)">No, Groups Only</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-1">ALLOW PHONE CALLS? *</label>
+                    <select id="app-allow-calls" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                      <option value="Yes (Allowed)">Yes, Calls Allowed</option>
+                      <option value="No (Messages Only)">No, Messages Only</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-4 bg-brand-card/90 rounded-2xl border border-brand-border space-y-3">
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-teal flex items-center gap-1.5">
+                  <span>📜</span> Terms of Membership & Code of Conduct
+                </h4>
+                
+                <ul class="text-[11px] text-slate-300 space-y-1.5 list-disc list-inside leading-relaxed">
+                  <li><strong>Non-Profit Mission:</strong> WB Students Group is a non-profit platform dedicated purely to helping needy students across 23 districts in West Bengal.</li>
+                  <li><strong>Voluntary Contribution:</strong> Currently, all roles are voluntary (unpaid). As the organization scales up, financial honorarium or stipends may be provided.</li>
+                  <li><strong>Leadership & Protocol:</strong> All members must adhere to directives and state guidelines under Founder & State Convener <strong>Yusuf Khan</strong>.</li>
+                  <li><strong>Removal Policy:</strong> Any member or group admin can be removed from their position at any time by state administration in case of indiscipline or policy violations.</li>
+                </ul>
+
+                <div class="pt-2 border-t border-brand-border/60">
+                  <label class="flex items-start gap-2.5 cursor-pointer text-xs text-white font-semibold">
+                    <input type="checkbox" id="app-agree-rules" required class="mt-0.5 rounded text-brand-teal focus:ring-brand-teal" />
+                    <span>I have read and agree to all rules, code of conduct, and membership guidelines of WB Students Group.</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-brand-teal to-cyan-400 hover:from-cyan-300 hover:to-brand-teal text-brand-black font-black rounded-xl text-sm transition shadow-xl">
+                  Submit Membership Form & Get Tracking ID
+                </button>
+                <button type="button" onclick="window.switchView('home')" class="py-4 px-6 bg-brand-card hover:bg-brand-border text-slate-300 font-bold rounded-xl text-xs border border-brand-border transition">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    };
+
+    window.toggleLeadGroupDropdown = function(isChecked) {
+      const box = document.getElementById('lead-group-container');
+      if (isChecked) {
+        box.classList.remove('hidden');
       } else {
-        a.classList.remove('active');
+        box.classList.add('hidden');
       }
-    });
-  }
-  setActiveFromHash();
+    };
 
-  // Update active on click
-  links.forEach(link=>{
-    link.addEventListener('click', (e)=>{
-      // menu can close on click (optional)
-      links.forEach(l=> l.classList.remove('active'));
-      link.classList.add('active');
+    window.uploadedPhotoUrl = "";
+    window.handlePhotoUpload = function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          window.uploadedPhotoUrl = reader.result;
+          document.getElementById('photo-preview-box').innerHTML = `<img src="${window.uploadedPhotoUrl}" class="w-full h-full object-cover" />`;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
 
-      // if you want menu to close after click on mobile:
-      mobileNav.style.display = 'none';
-      btn.setAttribute('aria-expanded', 'false');
-    });
-  });
+    window.handleMembershipSubmit = function(e) {
+      e.preventDefault();
+      const agreed = document.getElementById('app-agree-rules').checked;
+      if (!agreed) {
+        alert("Please accept the code of conduct and rules to proceed.");
+        return;
+      }
 
-  // Update active on hashchange (back/forward)
-  window.addEventListener('hashchange', setActiveFromHash);
-}
-document.addEventListener('DOMContentLoaded', initHamburger);
+      const checkedContribs = Array.from(document.querySelectorAll('input[name="contrib"]:checked')).map(c => c.value);
+      const wantToLeadGroup = document.getElementById('lead-group-checkbox').checked;
+      const targetLeadGroup = wantToLeadGroup ? document.getElementById('app-lead-target-group').value : 'None';
 
+      if (checkedContribs.length === 0 && !wantToLeadGroup) {
+        alert("Please select at least one area of contribution or select group leadership.");
+        return;
+      }
 
-function initPageNav(){
-  const links = Array.from(document.querySelectorAll('.nav-link'));
-  const sections = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
-  window.addEventListener('scroll', ()=>{
-    let current = sections[0];
-    const offset = 140;
-    sections.forEach(sec => { if(sec.getBoundingClientRect().top - offset <= 0) current = sec; });
-    if(current) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
-  }, {passive:true});
+      const name = document.getElementById('app-name').value;
+      const gender = document.getElementById('app-gender').value;
+      const age = document.getElementById('app-age').value;
+      const district = document.getElementById('app-district').value;
+      const whatsapp = document.getElementById('app-whatsapp').value;
+      const email = document.getElementById('app-email').value;
+      const education = document.getElementById('app-education').value;
 
-  document.querySelectorAll('.nav a, #mobileNav a').forEach(a=>{
-    a.addEventListener('click', ()=> {
-      document.querySelectorAll('.nav a').forEach(n=>n.classList.remove('active'));
-      a.classList.add('active');
-      // hide mobile nav on click
-      const mobileNav = document.getElementById('mobileNav');
-      if(mobileNav) mobileNav.style.display = 'none';
-      const btn = document.getElementById('hambBtn');
-      if(btn) btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-}
+      const skills = document.getElementById('app-skills').value;
+      const whyJoin = document.getElementById('app-why-join').value;
+      const howHelp = document.getElementById('app-how-help').value;
+      const workPref = document.getElementById('app-work-pref').value;
+      const allowDm = document.getElementById('app-allow-dm').value;
+      const allowCalls = document.getElementById('app-allow-calls').value;
 
-/* ===== Top notice: dismiss handling ===== */
-(function initTopNotice(){
-  const key = 'wb_top_notice_closed_v1';
-  const topNotice = document.getElementById('topNotice');
-  const closeBtn = document.getElementById('noticeClose');
-  const waLink = document.getElementById('noticeWA');
-  if(localStorage.getItem(key) === '1'){ topNotice.style.display = 'none'; }
-  closeBtn.addEventListener('click', () => {
-    topNotice.style.transition = 'opacity .28s ease';
-    topNotice.style.opacity = 0;
-    setTimeout(()=> topNotice.style.display = 'none', 300);
-    try { localStorage.setItem(key, '1'); } catch(e){}
-  });
-  waLink.addEventListener('click', () => {
-    try { localStorage.setItem(key, '1'); } catch(e){}
-    setTimeout(()=> { topNotice.style.display = 'none'; }, 400);
-  });
-})();
+      const trackingId = window.generateTrackingId(name, whatsapp);
 
-/* ===== Init after load ===== */
-window.addEventListener('load', ()=>{
-  renderUpdates();
-  loadBooks(SITE_DATA.langBooks, 'langBooks');
-  loadBooks(SITE_DATA.compBooks, 'compBooks');
-  loadBooks(SITE_DATA.specialBooks, 'specialBooks');
-  renderContributors();
-  loadSubjects('science');
+      const app = {
+        id: 'app-' + Date.now(),
+        trackingId: trackingId,
+        memberId: null,
+        fullName: name,
+        gender: gender,
+        age: age,
+        district: district,
+        whatsapp: whatsapp,
+        email: email,
+        education: education,
+        skills: skills || 'N/A',
+        whyJoin: whyJoin,
+        howHelp: howHelp,
+        wantToLeadGroup: wantToLeadGroup,
+        targetLeadGroup: targetLeadGroup,
+        workPreference: workPref,
+        allowDm: allowDm,
+        allowCalls: allowCalls,
+        contributions: checkedContribs,
+        photoUrl: window.uploadedPhotoUrl || "", 
+        status: 'under_review',
+        submittedAt: Date.now()
+      };
 
-  // UI init
-  document.querySelectorAll('.tabs-inner .tabBtn').forEach((b, idx, arr)=>{
-    b.addEventListener('click', ()=> showBookSection(b.getAttribute('data-target')));
-    b.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowRight') arr[(idx+1)%arr.length].focus();
-      if(e.key === 'ArrowLeft') arr[(idx-1+arr.length)%arr.length].focus();
-      if(e.key === 'Enter' || e.key === ' ') showBookSection(b.getAttribute('data-target'));
-    });
-  });
-  showBookSection('langBooks');
-  updateTabIndicator();
-  window.addEventListener('resize', ()=> setTimeout(updateTabIndicator, 80));
+      window.state.applications.unshift(app);
+      window.saveState();
+      window.openTrackSuccessModal(app);
+    };
 
-  initStreams();
-  initStatObservers();
-  initHamburger();
-  initPageNav();
+    // PREMIUM ID CARD PREVIEW & CINEMATIC DOWNLOAD MODAL
+    window.openIdCardPreviewModal = function(appId) {
+      const app = window.state.applications.find(a => a.id === appId);
+      if (!app || !app.memberId) return;
 
-  // populate sidebar counts quickly (mirror)
-  document.getElementById('memberCount').textContent = SITE_DATA.stats.members + '+';
-  document.getElementById('helpCountSidebar').textContent = SITE_DATA.stats.helped + '+';
-  document.getElementById('pdfCount').textContent = SITE_DATA.stats.resources + '+';
+      const modal = document.getElementById('modal-container');
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 animate-slide-up">
+          <div class="relative w-full max-w-xl bg-brand-dark border-2 border-brand-gold/60 p-6 rounded-3xl shadow-2xl text-center">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white">✕</button>
+            
+            <div class="inline-flex items-center gap-2 bg-brand-gold/20 text-brand-gold border border-brand-gold/40 px-3 py-1 rounded-full text-xs font-black mb-3">
+              ✨ Verified Executive ID Pass Ready
+            </div>
+            
+            <h3 class="text-xl font-black text-white mb-4">Congratulations, ${app.fullName}!</h3>
 
-  // init reveal observer
-  initScrollReveal();
-  // ensure new lists are observed
-  observeNewContent('#langBooks');
-  observeNewContent('#compBooks');
-  observeNewContent('#specialBooks');
-  observeNewContent('#updatesList');
-  observeNewContent('#contributorsList');
-  observeNewContent('#subjectsArea');
-});
+            <!-- Preview Card Box -->
+            <div id="id-card-preview-box" class="w-full aspect-[12/7] bg-gradient-to-br from-[#02050D] via-[#050D1A] to-[#081426] border-2 border-brand-teal rounded-2xl p-5 relative overflow-hidden text-left shadow-2xl mb-6">
+              <div class="flex justify-between items-start border-b border-brand-border pb-2 mb-3">
+                <div class="flex items-center gap-2">
+                  <img src="${LOGO_URL}" class="w-8 h-8 object-contain" />
+                  <div>
+                    <div class="text-[11px] font-black text-brand-teal tracking-tight">WB STUDENTS GROUP</div>
+                    <div class="text-[8px] text-slate-400">OFFICIAL STATE EXECUTIVE PASS</div>
+                  </div>
+                </div>
+                <span class="text-[8px] bg-brand-gold text-brand-black px-2 py-0.5 rounded-full font-black">VERIFIED</span>
+              </div>
 
-/* ===== Optional admin helper: addBook('lang'|'comp'|'special','Title','link') ===== */
-function addBook(section, title, link){
-  if(section === 'lang') SITE_DATA.langBooks.unshift({title,link});
-  if(section === 'comp') SITE_DATA.compBooks.unshift({title,link});
-  if(section === 'special') SITE_DATA.specialBooks.unshift({title,link});
-  loadBooks(SITE_DATA.langBooks, 'langBooks');
-  loadBooks(SITE_DATA.compBooks, 'compBooks');
-  loadBooks(SITE_DATA.specialBooks, 'specialBooks');
-  // observe newly added content
-  setTimeout(()=> observeNewContent('#' + (section==='lang' ? 'langBooks' : section==='comp' ? 'compBooks' : 'specialBooks')), 60);
-}
-</script>
+              <div class="grid grid-cols-3 gap-2 items-center">
+                <div class="col-span-2 space-y-1">
+                  <div class="text-[8px] text-slate-400 uppercase font-bold">Role / Assignment</div>
+                  <div class="text-xs font-black text-brand-gold truncate">${app.wantToLeadGroup ? 'GROUP ADMIN: ' + app.targetLeadGroup.toUpperCase() : 'STATE VOLUNTEER'}</div>
+                  
+                  <div class="text-[8px] text-slate-400 uppercase font-bold mt-1">Full Name</div>
+                  <div class="text-sm font-black text-white truncate">${app.fullName}</div>
+
+                  <div class="text-[8px] text-slate-400 uppercase font-bold mt-1">Member ID & District</div>
+                  <div class="text-xs font-mono text-brand-teal font-bold">${app.memberId} • ${app.district}</div>
+                </div>
+
+                <div class="flex flex-col items-center justify-center">
+                  <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-brand-teal shadow-md bg-slate-900">
+                    ${app.photoUrl ? `<img src="${app.photoUrl}" class="w-full h-full object-cover" />` : window.getDefaultAvatarHtml(app.fullName, app.gender, 'w-full h-full')}
+                  </div>
+                  <span class="text-[7px] text-brand-gold font-bold mt-1">SECURE STG PASS</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <button onclick="window.downloadIdCardCanvas('${app.id}')" class="flex-1 py-3.5 bg-gradient-to-r from-brand-teal to-cyan-400 hover:from-cyan-300 hover:to-brand-teal text-brand-black font-black rounded-xl text-xs transition shadow-xl flex items-center justify-center gap-2">
+                📥 Download High-Res ID Card (JPG)
+              </button>
+              <button onclick="window.closeModal()" class="py-3.5 px-6 bg-brand-card hover:bg-brand-border text-slate-300 font-bold rounded-xl text-xs border border-brand-border transition">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    window.downloadIdCardCanvas = async function(appId) {
+      const app = window.state.applications.find(a => a.id === appId);
+      if (!app || !app.memberId) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 700;
+      const ctx = canvas.getContext('2d');
+
+      const grad = ctx.createLinearGradient(0, 0, 1200, 700);
+      grad.addColorStop(0, '#02050D');
+      grad.addColorStop(0.5, '#050D1A');
+      grad.addColorStop(1, '#081426');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1200, 700);
+
+      ctx.strokeStyle = '#00F0FF';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(30, 30, 1140, 640);
+      ctx.strokeStyle = '#FFB800';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(40, 40, 1120, 620);
+
+      // Header Text
+      ctx.fillStyle = '#00F0FF';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.fillText('WB STUDENTS GROUP', 90, 105);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '600 18px sans-serif';
+      ctx.fillText('OFFICIAL VERIFIED STATE EXECUTIVE ID PASS', 90, 138);
+
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(90, 165);
+      ctx.lineTo(1110, 165);
+      ctx.stroke();
+
+      ctx.fillStyle = '#FFB800';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('ASSIGNED ROLE / GROUP ADMIN', 90, 215);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 28px sans-serif';
+      const roleText = app.wantToLeadGroup ? `GROUP ADMIN: ${app.targetLeadGroup.toUpperCase()}` : 'STATE VOLUNTEER & MEMBER';
+      ctx.fillText(roleText, 90, 255);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '18px sans-serif';
+      ctx.fillText('FULL NAME', 90, 315);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.fillText(app.fullName, 90, 350);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '18px sans-serif';
+      ctx.fillText('OFFICIAL MEMBER ID', 90, 410);
+      ctx.fillStyle = '#00F0FF';
+      ctx.font = 'bold 26px monospace';
+      ctx.fillText(app.memberId, 90, 445);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '18px sans-serif';
+      ctx.fillText('DISTRICT / REGION', 90, 505);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText(app.district, 90, 540);
+
+      // Verified Badge Stamp
+      ctx.fillStyle = '#FFB800';
+      ctx.beginPath();
+      ctx.arc(670, 470, 45, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#02050D';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('VERIFIED', 670, 465);
+      ctx.fillText('STG 2026', 670, 485);
+      ctx.textAlign = 'left';
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '16px sans-serif';
+      ctx.fillText(`WBSTG Learning Network • Helpline: ${OFFICIAL_WHATSAPP}`, 90, 620);
+
+      // QR Code with branding
+      try {
+        const qr = qrcode(0, 'L');
+        qr.addData(`https://wbstudentsgroup.github.io/Portal/verify?id=${app.memberId}`);
+        qr.make();
+        const tileW = 140 / qr.getModuleCount();
+        const startX = 930;
+        const startY = 320;
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(startX - 10, startY - 10, 160, 160);
+
+        ctx.fillStyle = '#02050D';
+        for (let r = 0; r < qr.getModuleCount(); r++) {
+          for (let c = 0; c < qr.getModuleCount(); c++) {
+            if (qr.isDark(r, c)) {
+              ctx.fillRect(startX + c * tileW, startY + r * tileW, tileW + 0.5, tileW + 0.5);
+            }
+          }
+        }
+        ctx.fillStyle = '#00F0FF';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText('SCAN TO VERIFY', startX + 15, startY + 180);
+      } catch (err) {}
+
+      // Load Logo and Avatar
+      const logoImg = new Image();
+      logoImg.crossOrigin = 'anonymous';
+      logoImg.src = LOGO_URL;
+      logoImg.onload = () => {
+        ctx.drawImage(logoImg, 90, 60, 40, 40);
+
+        if (app.photoUrl) {
+          const photoImg = new Image();
+          photoImg.crossOrigin = 'anonymous';
+          photoImg.src = app.photoUrl;
+          photoImg.onload = () => {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(770, 350, 130, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(photoImg, 640, 220, 260, 260);
+            ctx.restore();
+
+            ctx.strokeStyle = '#00F0FF';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.arc(770, 350, 130, 0, Math.PI * 2);
+            ctx.stroke();
+            triggerDownload(canvas);
+          };
+          photoImg.onerror = () => {
+            drawDefaultAvatarOnCanvas(ctx, app);
+            triggerDownload(canvas);
+          };
+        } else {
+          drawDefaultAvatarOnCanvas(ctx, app);
+          triggerDownload(canvas);
+        }
+      };
+      logoImg.onerror = () => {
+        triggerDownload(canvas);
+      };
+    };
+
+    function drawDefaultAvatarOnCanvas(ctx, app) {
+      ctx.fillStyle = '#1E293B';
+      ctx.beginPath();
+      ctx.arc(770, 350, 130, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#00F0FF';
+      ctx.font = 'bold 64px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(app.fullName.charAt(0).toUpperCase(), 770, 372);
+      ctx.textAlign = 'left';
+
+      ctx.strokeStyle = '#00F0FF';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(770, 350, 130, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    function triggerDownload(canvas) {
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/jpeg', 0.95);
+      a.download = `WBSTG_ID_CARD_${Date.now()}.jpg`;
+      a.click();
+    }
+
+    // Full-Page Dedicated Admin Suite View (With Socials & Tasks)
+    window.renderAdminPage = function(container) {
+      const isAdmin = window.state.currentUser && window.state.currentUser.email && window.state.currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+      if (!isAdmin) {
+        container.innerHTML = `
+          <div class="py-20 px-4 max-w-md mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-rose-500/40 shadow-2xl">
+              <div class="text-3xl mb-3">🚫</div>
+              <h3 class="text-xl font-black text-rose-400 mb-2">Access Restricted</h3>
+              <p class="text-xs text-slate-300 mb-6">This section is exclusively reserved for the State Administrator (${ADMIN_EMAIL}).</p>
+              <button onclick="window.switchView('home')" class="px-6 py-2.5 bg-brand-teal text-brand-black font-bold rounded-xl text-xs">Return Home</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const activeTab = window.state.adminTab || 'overview';
+
+      container.innerHTML = `
+        <div class="max-w-6xl mx-auto px-4 py-10 animate-slide-up">
+          
+          <div class="glass-box p-6 rounded-3xl mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <img src="${LOGO_URL}" class="w-12 h-12 object-contain" />
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-brand-gold">MASTER ADMINISTRATIVE CONTROL</span>
+                <h1 class="text-2xl font-black text-white">State Executive Dashboard</h1>
+                <p class="text-xs text-emerald-400 font-mono mt-0.5">Active Admin: ${ADMIN_EMAIL}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="window.switchView('home')" class="px-4 py-2 bg-brand-card hover:bg-brand-border text-slate-300 rounded-xl text-xs font-bold border border-brand-border transition">
+                ← Back to Portal
+              </button>
+              <button onclick="window.handleLogout()" class="px-4 py-2 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white rounded-xl text-xs font-bold border border-rose-500/30 transition">
+                Logout Admin
+              </button>
+            </div>
+          </div>
+
+          <div class="flex overflow-x-auto gap-2 pb-4 mb-6 no-scrollbar">
+            <button onclick="window.setAdminTab('overview')" class="px-4 py-2.5 rounded-xl text-xs font-black transition whitespace-nowrap ${activeTab === 'overview' ? 'bg-brand-teal text-brand-black shadow-lg' : 'bg-brand-card text-slate-400 hover:text-white'}">
+              📊 Overview
+            </button>
+            <button onclick="window.setAdminTab('apps')" class="px-4 py-2.5 rounded-xl text-xs font-black transition whitespace-nowrap ${activeTab === 'apps' ? 'bg-brand-teal text-brand-black shadow-lg' : 'bg-brand-card text-slate-400 hover:text-white'}">
+              📝 Applications (${window.state.applications.length})
+            </button>
+            <button onclick="window.setAdminTab('tasks')" class="px-4 py-2.5 rounded-xl text-xs font-black transition whitespace-nowrap ${activeTab === 'tasks' ? 'bg-brand-gold text-brand-black shadow-lg' : 'bg-brand-card text-slate-400 hover:text-white'}">
+              📋 Tasks (${window.state.tasks.length})
+            </button>
+            <button onclick="window.setAdminTab('socials')" class="px-4 py-2.5 rounded-xl text-xs font-black transition whitespace-nowrap ${activeTab === 'socials' ? 'bg-brand-teal text-brand-black shadow-lg' : 'bg-brand-card text-slate-400 hover:text-white'}">
+              🌐 Social Media Hub (${window.state.socials.length})
+            </button>
+            <button onclick="window.setAdminTab('wagroups')" class="px-4 py-2.5 rounded-xl text-xs font-black transition whitespace-nowrap ${activeTab === 'wagroups' ? 'bg-brand-whatsapp text-slate-950 shadow-lg' : 'bg-brand-card text-slate-400 hover:text-white'}">
+              💬 WhatsApp (${window.state.waGroups.length})
+            </button>
+            <button onclick="window.setAdminTab('directory')" class="px-4 py-2.5 rounded-xl text-xs font-black transition whitespace-nowrap ${activeTab === 'directory' ? 'bg-brand-teal text-brand-black shadow-lg' : 'bg-brand-card text-slate-400 hover:text-white'}">
+              👥 Directory
+            </button>
+          </div>
+
+          <div id="admin-tab-container">
+            ${window.renderAdminTabContent(activeTab)}
+          </div>
+        </div>
+      `;
+    };
+
+    window.setAdminTab = function(tabName) {
+      window.state.adminTab = tabName;
+      window.renderMain();
+    };
+
+    window.renderAdminTabContent = function(tab) {
+      if (tab === 'overview') {
+        return `
+          <div class="space-y-6">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div class="glass-box p-5 rounded-2xl">
+                <span class="text-xs text-slate-400 block font-semibold">Total Applications</span>
+                <span class="text-2xl sm:text-3xl font-black text-brand-teal mt-1 block">${window.state.applications.length}</span>
+              </div>
+              <div class="glass-box p-5 rounded-2xl">
+                <span class="text-xs text-slate-400 block font-semibold">Active WA Channels</span>
+                <span class="text-2xl sm:text-3xl font-black text-brand-whatsapp mt-1 block">${window.state.waGroups.length}</span>
+              </div>
+              <div class="glass-box p-5 rounded-2xl">
+                <span class="text-xs text-slate-400 block font-semibold">Verified Leaders</span>
+                <span class="text-2xl sm:text-3xl font-black text-brand-gold mt-1 block">${window.state.members.length}</span>
+              </div>
+              <div class="glass-box p-5 rounded-2xl">
+                <span class="text-xs text-slate-400 block font-semibold">Assigned Tasks</span>
+                <span class="text-2xl sm:text-3xl font-black text-brand-teal mt-1 block">${window.state.tasks.length}</span>
+              </div>
+            </div>
+
+            <div class="glass-box p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div>
+                <h4 class="font-bold text-white text-base">Export Student Registration Database</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Download entire membership applications record in standard CSV/Excel format.</p>
+              </div>
+              <button onclick="window.exportAdminCSV()" class="px-5 py-3 bg-brand-teal hover:bg-cyan-300 text-brand-black font-black text-xs rounded-xl flex items-center gap-2 shadow-lg transition">
+                📥 Export Applications (.CSV)
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      if (tab === 'apps') {
+        return `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="text-sm font-bold text-slate-300 uppercase">Membership Form Reviews</h3>
+              <button onclick="window.exportAdminCSV()" class="text-xs text-brand-teal font-bold hover:underline">📥 Download CSV</button>
+            </div>
+
+            ${window.state.applications.length === 0 ? '<div class="glass-box p-8 rounded-2xl text-center text-slate-500 text-xs">No membership forms submitted yet.</div>' : window.state.applications.map(app => `
+              <div class="glass-box p-4 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-brand-teal/40 flex-shrink-0">
+                    ${app.photoUrl ? `<img src="${app.photoUrl}" class="w-full h-full object-cover" />` : window.getDefaultAvatarHtml(app.fullName, app.gender)}
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-bold text-white text-base">${app.fullName}</h4>
+                      <span class="text-[10px] font-mono bg-slate-900 text-brand-teal px-2 py-0.5 rounded border border-brand-border">${app.trackingId}</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">${app.gender || 'Student'} • Age ${app.age || '19'} • ${app.district}</p>
+                    <p class="text-xs text-slate-300 mt-0.5">WA: <strong class="font-mono text-white">${app.whatsapp}</strong> | Email: ${app.email}</p>
+                    <div class="text-[11px] text-slate-400 mt-1 space-x-2">
+                      <span>Skills: <strong class="text-white">${app.skills || 'N/A'}</strong></span>
+                      ${app.wantToLeadGroup ? `<span class="bg-brand-whatsapp/20 text-brand-whatsapp px-2 py-0.5 rounded font-bold">👑 Group Admin Target: ${app.targetLeadGroup}</span>` : ''}
+                    </div>
+                    ${app.memberId ? `<div class="text-brand-gold font-mono font-black text-xs mt-1">Permanent Approved ID: ${app.memberId}</div>` : ''}
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 self-end md:self-center">
+                  <button onclick="window.adminApproveApp('${app.id}')" class="px-3 py-2 rounded-xl text-xs font-bold transition ${app.status === 'approved' ? 'bg-emerald-500 text-brand-black shadow-lg' : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'}">
+                    ${app.status === 'approved' ? '✓ Approved' : 'Approve & Issue ID'}
+                  </button>
+                  <button onclick="window.adminRejectApp('${app.id}')" class="px-3 py-2 rounded-xl text-xs font-bold transition ${app.status === 'not_selected' ? 'bg-rose-500 text-white shadow-lg' : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'}">
+                    Reject
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      if (tab === 'tasks') {
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 glass-box p-5 rounded-2xl text-left">
+              <h4 class="font-bold text-brand-gold text-sm mb-4">➕ Assign New Task to Members</h4>
+              <form onsubmit="window.handleAddTask(event)" class="space-y-3">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">TASK TITLE / INSTRUCTION</label>
+                  <textarea id="new-task-title" rows="3" required placeholder="e.g. Verify notes submission..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-gold"></textarea>
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">DEADLINE</label>
+                  <input type="text" id="new-task-deadline" required placeholder="e.g. Today / Tomorrow" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-gold" />
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-gold text-brand-black font-black rounded-xl text-xs transition shadow-lg mt-2">
+                  Publish Task to Approved Members
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-3">
+              <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Active Assigned Tasks (${window.state.tasks.length})</h4>
+              ${window.state.tasks.map(t => `
+                <div class="glass-box p-4 rounded-xl flex justify-between items-center text-xs">
+                  <div>
+                    <div class="font-bold text-white text-sm">${t.title}</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Deadline: <span class="text-brand-gold">${t.deadline}</span></div>
+                  </div>
+                  <button onclick="window.handleDeleteTask('${t.id}')" class="text-rose-400 hover:text-rose-300 p-2 font-bold">
+                    🗑️
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (tab === 'socials') {
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 glass-box p-5 rounded-2xl text-left">
+              <h4 class="font-bold text-brand-teal text-sm mb-4">➕ Add New Social Media Link</h4>
+              <form onsubmit="window.handleAddSocial(event)" class="space-y-3">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">PLATFORM NAME</label>
+                  <input type="text" id="new-soc-name" required placeholder="e.g. Telegram Channel" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">EMOJI / ICON</label>
+                  <input type="text" id="new-soc-icon" required placeholder="e.g. 📢" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">URL LINK</label>
+                  <input type="url" id="new-soc-url" required placeholder="https://..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white font-mono outline-none focus:border-brand-teal" />
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-teal text-brand-black font-black rounded-xl text-xs transition shadow-lg mt-2">
+                  Publish Link in Footer
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-2">
+              <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Active Social Links (${window.state.socials.length})</h4>
+              ${window.state.socials.map(s => `
+                <div class="glass-box p-3.5 rounded-xl flex justify-between items-center text-xs">
+                  <div class="truncate pr-2">
+                    <div class="font-bold text-white truncate">${s.icon} ${s.name}</div>
+                    <div class="text-[10px] text-brand-teal font-mono truncate">${s.url}</div>
+                  </div>
+                  <button onclick="window.handleDeleteSocial('${s.id}')" class="text-rose-400 hover:text-rose-300 p-1.5 font-bold">
+                    🗑️
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (tab === 'wagroups') {
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 glass-box p-5 rounded-2xl text-left">
+              <h4 class="font-bold text-brand-whatsapp text-sm mb-4">➕ Add New WhatsApp Community</h4>
+              <form onsubmit="window.handleAddWaGroup(event)" class="space-y-3">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">GROUP TITLE</label>
+                  <input type="text" id="new-wa-title" required placeholder="e.g. Class 12 Science Batch" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-whatsapp" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">TAG / PILL</label>
+                  <input type="text" id="new-wa-tag" required placeholder="e.g. CLASS 12" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-whatsapp" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">SUBTITLE</label>
+                  <input type="text" id="new-wa-sub" required placeholder="Short description" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-whatsapp" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">WHATSAPP INVITE URL</label>
+                  <input type="url" id="new-wa-link" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white font-mono outline-none focus:border-brand-whatsapp" />
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-whatsapp text-slate-950 font-black rounded-xl text-xs transition shadow-lg mt-2">
+                  Publish to Live Ticker
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-2">
+              <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Live WhatsApp Channels (${window.state.waGroups.length})</h4>
+              ${window.state.waGroups.map(g => `
+                <div class="glass-box p-3.5 rounded-xl flex justify-between items-center text-xs">
+                  <div class="truncate pr-2">
+                    <div class="font-bold text-white truncate">${g.title}</div>
+                    <div class="text-[10px] text-brand-whatsapp font-mono truncate">${g.tag} • ${g.link}</div>
+                  </div>
+                  <button onclick="window.handleDeleteWaGroup('${g.id}')" class="text-rose-400 hover:text-rose-300 p-1.5 font-bold">
+                    🗑️
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (tab === 'directory') {
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 glass-box p-5 rounded-2xl text-left">
+              <h4 class="font-bold text-brand-teal text-sm mb-4">➕ Add Verified Executive Leader</h4>
+              <form onsubmit="window.handleAddLeader(event)" class="space-y-3">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">LEADER NAME</label>
+                  <input type="text" id="new-lead-name" required placeholder="Full Name" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">ROLE / DESIGNATION</label>
+                  <input type="text" id="new-lead-role" required placeholder="e.g. District Lead - Howrah" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">BADGE</label>
+                  <select id="new-lead-badge" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal">
+                    <option value="CORE TEAM">CORE TEAM</option>
+                    <option value="DISTRICT LEAD">DISTRICT LEAD</option>
+                    <option value="COORDINATOR">COORDINATOR</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT</label>
+                  <select id="new-lead-district" class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal">
+                    ${WB_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+                  </select>
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">PHOTO URL <span class="text-slate-500 font-normal">(Optional)</span></label>
+                  <input type="text" id="new-lead-photo" placeholder="https://..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white font-mono outline-none focus:border-brand-teal" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">BIO / CONTRIBUTIONS</label>
+                  <textarea id="new-lead-bio" rows="2" placeholder="Responsibilities..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand-teal"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-brand-teal text-brand-black font-bold rounded">Publish to Directory</button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-2">
+              <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Live Verified Leaders (${window.state.members.length})</h4>
+              ${window.state.members.map(m => `
+                <div class="glass-box p-3.5 rounded-xl flex justify-between items-center text-xs">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0">
+                      ${m.photoUrl ? `<img src="${m.photoUrl}" class="w-full h-full object-cover" />` : window.getDefaultAvatarHtml(m.name, 'Male', 'w-full h-full')}
+                    </div>
+                    <div>
+                      <div class="font-bold text-white">${m.name}</div>
+                      <div class="text-[10px] text-brand-teal">${m.role} • <span class="font-mono text-brand-gold">${m.memberId}</span></div>
+                    </div>
+                  </div>
+                  <button onclick="window.handleDeleteLeader('${m.id}')" class="text-rose-400 hover:text-rose-300 p-1.5 font-bold">
+                    🗑️
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      return '';
+    };
+
+    // Admin Action Handlers
+    window.adminApproveApp = function(id) {
+      const app = window.state.applications.find(a => a.id === id);
+      if (app) {
+        app.status = 'approved';
+        if (!app.memberId) {
+          app.memberId = window.generateApprovedMemberId(app.fullName);
+        }
+        window.saveState();
+      }
+    };
+
+    window.adminRejectApp = function(id) {
+      const app = window.state.applications.find(a => a.id === id);
+      if (app) {
+        app.status = 'not_selected';
+        window.saveState();
+      }
+    };
+
+    window.handleAddTask = function(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-task-title').value;
+      const deadline = document.getElementById('new-task-deadline').value;
+      window.state.tasks.push({ id: 'task-' + Date.now(), title, deadline });
+      window.saveState();
+      alert("Task published successfully!");
+    };
+
+    window.handleDeleteTask = function(id) {
+      window.state.tasks = window.state.tasks.filter(t => t.id !== id);
+      window.saveState();
+    };
+
+    window.handleAddSocial = function(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-soc-name').value;
+      const icon = document.getElementById('new-soc-icon').value;
+      const url = document.getElementById('new-soc-url').value;
+      window.state.socials.push({ id: 'soc-' + Date.now(), name, icon, url });
+      window.saveState();
+      alert("Social link added to footer!");
+    };
+
+    window.handleDeleteSocial = function(id) {
+      window.state.socials = window.state.socials.filter(s => s.id !== id);
+      window.saveState();
+    };
+
+    window.handleAddWaGroup = function(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-wa-title').value;
+      const tag = document.getElementById('new-wa-tag').value;
+      const sub = document.getElementById('new-wa-sub').value;
+      const link = document.getElementById('new-wa-link').value;
+      window.state.waGroups.push({ id: 'wa-' + Date.now(), title, tag: tag.toUpperCase(), subtitle: sub, link });
+      window.saveState();
+      alert("WhatsApp Group published!");
+    };
+
+    window.handleDeleteWaGroup = function(id) {
+      window.state.waGroups = window.state.waGroups.filter(g => g.id !== id);
+      window.saveState();
+    };
+
+    window.handleAddLeader = function(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-lead-name').value;
+      const role = document.getElementById('new-lead-role').value;
+      const badge = document.getElementById('new-lead-badge').value;
+      const district = document.getElementById('new-lead-district').value;
+      const photo = document.getElementById('new-lead-photo').value;
+      const bio = document.getElementById('new-lead-bio').value;
+
+      window.state.members.push({
+        id: 'mem-' + Date.now(),
+        memberId: window.generateApprovedMemberId(name),
+        name, role, badge, district,
+        phone: OFFICIAL_WHATSAPP,
+        showPhone: true,
+        bio: bio || "Dedicated student volunteer.",
+        joinedDate: "Present",
+        photoUrl: photo || "",
+        order: window.state.members.length + 1
+      });
+      window.saveState();
+      alert("Leader published!");
+    };
+
+    window.handleDeleteLeader = function(id) {
+      window.state.members = window.state.members.filter(m => m.id !== id);
+      window.saveState();
+    };
+
+    window.exportAdminCSV = function() {
+      const headers = ['Tracking ID,Member ID,Full Name,Gender,Age,District,WhatsApp,Email,Lead Group,Skills,Status\n'];
+      const rows = window.state.applications.map(a => `"${a.trackingId}","${a.memberId || 'N/A'}","${a.fullName}","${a.gender || 'N/A'}","${a.age || 'N/A'}","${a.district}","${a.whatsapp}","${a.email}","${a.targetLeadGroup || 'None'}","${a.skills || 'N/A'}","${a.status}"\n`);
+      const blob = new Blob([...headers, ...rows], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `WBSTG_Applications_${Date.now()}.csv`;
+      a.click();
+    };
+
+    // Modal Handlers
+    window.closeModal = function() {
+      document.getElementById('modal-container').innerHTML = '';
+    };
+
+    window.openAuthModal = function() {
+      window.isLoginMode = true;
+      const modal = document.getElementById('modal-container');
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-sm bg-brand-dark border border-brand-border p-6 rounded-3xl shadow-2xl animate-slide-up">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white">✕</button>
+
+            <div class="flex bg-brand-card p-1 rounded-xl border border-brand-border mb-5">
+              <button onclick="window.toggleAuthTab(true)" id="tab-login" class="flex-1 py-2 text-xs font-black rounded-lg bg-brand-teal text-brand-black shadow-lg">Sign In</button>
+              <button onclick="window.toggleAuthTab(false)" id="tab-reg" class="flex-1 py-2 text-xs font-black rounded-lg text-slate-400">Create Account</button>
+            </div>
+
+            <div class="text-center mb-4">
+              <h3 id="auth-heading" class="text-xl font-black text-white">Welcome Back!</h3>
+              <p id="auth-sub" class="text-xs text-slate-400 mt-0.5">Enter your credentials to continue</p>
+            </div>
+
+            <form onsubmit="window.handleAuthSubmit(event)" class="space-y-3 text-left">
+              <div id="extra-reg-fields" class="hidden space-y-3">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">FULL NAME *</label>
+                  <input type="text" id="auth-name" placeholder="Your Full Name" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">WHATSAPP NUMBER *</label>
+                  <input type="tel" id="auth-phone" placeholder="10-digit number" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none" />
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT *</label>
+                  <select id="auth-district" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none">
+                    ${WB_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-[10px] font-bold text-slate-300 block mb-1">EMAIL ADDRESS *</label>
+                <input type="email" id="auth-email" required placeholder="name@email.com" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none" />
+              </div>
+
+              <div>
+                <label class="text-[10px] font-bold text-slate-300 block mb-1">PASSWORD *</label>
+                <input type="password" id="auth-pass" required placeholder="••••••••••••" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none" />
+              </div>
+
+              <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-brand-teal hover:bg-cyan-300 text-brand-black font-black rounded-xl text-xs shadow-lg transition mt-4">
+                Sign In to Portal
+              </button>
+            </form>
+
+            <div class="relative my-4">
+              <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-brand-border"></div></div>
+              <div class="relative flex justify-center text-[9px] uppercase font-black text-slate-500 bg-brand-dark px-2">Quick 1-Click Access</div>
+            </div>
+
+            <button onclick="window.handleOneClickAdmin()" class="w-full py-2.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-brand-black font-black rounded-xl text-xs border border-brand-gold/30 transition flex items-center justify-center gap-1.5">
+              🛡️ ⚡ Yusuf Khan (Master Admin 1-Click)
+            </button>
+          </div>
+        </div>
+      `;
+    };
+
+    window.toggleAuthTab = function(login) {
+      window.isLoginMode = login;
+      document.getElementById('tab-login').className = login ? 'flex-1 py-2 text-xs font-black rounded-lg bg-brand-teal text-brand-black shadow-lg' : 'flex-1 py-2 text-xs font-black rounded-lg text-slate-400';
+      document.getElementById('tab-reg').className = !login ? 'flex-1 py-2 text-xs font-black rounded-lg bg-brand-gold text-brand-black shadow-lg' : 'flex-1 py-2 text-xs font-black rounded-lg text-slate-400';
+      
+      document.getElementById('auth-heading').innerText = login ? 'Welcome Back!' : 'Join WB Students Group';
+      document.getElementById('auth-sub').innerText = login ? 'Enter your credentials to continue' : 'Create verified student account';
+      document.getElementById('extra-reg-fields').className = login ? 'hidden space-y-3' : 'space-y-3';
+      document.getElementById('auth-submit-btn').innerText = login ? 'Sign In to Portal' : 'Register Account';
+      document.getElementById('auth-submit-btn').className = login ? 'w-full py-3 bg-brand-teal hover:bg-cyan-300 text-brand-black font-black rounded-xl text-xs shadow-lg transition mt-4' : 'w-full py-3 bg-brand-gold hover:bg-brand-goldLight text-brand-black font-black rounded-xl text-xs shadow-lg transition mt-4';
+    };
+
+    window.handleAuthSubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim();
+      const pass = document.getElementById('auth-pass').value;
+
+      if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS) {
+        window.state.currentUser = {
+          name: "Yusuf Khan",
+          email: ADMIN_EMAIL,
+          phone: OFFICIAL_WHATSAPP,
+          district: "Kolkata"
+        };
+        window.saveState();
+        window.closeModal();
+        window.switchView('admin');
+        return;
+      }
+
+      if (window.isLoginMode) {
+        window.state.currentUser = {
+          name: email.split('@')[0],
+          email: email,
+          phone: "",
+          district: "Kolkata"
+        };
+      } else {
+        const name = document.getElementById('auth-name').value;
+        const phone = document.getElementById('auth-phone').value;
+        const district = document.getElementById('auth-district').value;
+        window.state.currentUser = {
+          name: name || email.split('@')[0],
+          email: email,
+          phone: phone,
+          district: district
+        };
+      }
+
+      window.saveState();
+      window.closeModal();
+    };
+
+    window.handleOneClickAdmin = function() {
+      window.state.currentUser = {
+        name: "Yusuf Khan",
+        email: ADMIN_EMAIL,
+        phone: OFFICIAL_WHATSAPP,
+        district: "Kolkata"
+      };
+      window.saveState();
+      window.closeModal();
+      window.switchView('admin');
+    };
+
+    window.handleLogout = function() {
+      window.state.currentUser = null;
+      window.state.currentView = 'home';
+      window.saveState();
+      window.closeModal();
+    };
+
+    window.openProfileModal = function() {
+      const modal = document.getElementById('modal-container');
+      const u = window.state.currentUser;
+      const firstLetter = (u.name || 'U').charAt(0).toUpperCase();
+
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-sm bg-brand-dark border border-brand-border p-6 rounded-3xl shadow-2xl text-center animate-slide-up">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white">✕</button>
+            
+            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-xl ring-4 ring-brand-teal/30">
+              ${firstLetter}
+            </div>
+            
+            <h3 class="text-lg font-black text-white">${u.name}</h3>
+            <p class="text-xs text-brand-teal font-mono mb-4">${u.email}</p>
+
+            <div class="bg-brand-card p-3.5 rounded-2xl border border-brand-border text-xs text-left space-y-1.5 mb-6 text-slate-300">
+              <div>District: <strong class="text-white">${u.district || 'Kolkata'}</strong></div>
+              <div>WhatsApp: <strong class="text-white">${u.phone || 'Not Provided'}</strong></div>
+            </div>
+
+            <div class="space-y-2">
+              <button onclick="window.closeModal(); window.openProfileEditForm();" class="w-full py-2.5 bg-brand-card hover:bg-brand-border text-slate-200 font-bold rounded-xl text-xs border border-brand-border transition">
+                Edit Personal Info ✎
+              </button>
+              <button onclick="window.handleLogout()" class="w-full py-2.5 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white font-bold rounded-xl text-xs border border-rose-500/30 transition">
+                Sign Out / Logout 🚪
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    window.openProfileEditForm = function() {
+      const modal = document.getElementById('modal-container');
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-sm bg-brand-dark border border-brand-border p-6 rounded-3xl shadow-2xl animate-slide-up">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white">✕</button>
+            <h3 class="text-xl font-black text-white mb-1">Edit Profile</h3>
+            <p class="text-xs text-slate-400 mb-4 font-mono">${window.state.currentUser.email}</p>
+
+            <form onsubmit="window.handleProfileSave(event)" class="space-y-3.5 text-left">
+              <div>
+                <label class="text-[10px] font-bold text-slate-300 block mb-1">FULL NAME</label>
+                <input type="text" id="edit-name" required value="${window.state.currentUser.name || ''}" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none" />
+              </div>
+
+              <div>
+                <label class="text-[10px] font-bold text-slate-300 block mb-1">WHATSAPP NUMBER</label>
+                <input type="tel" id="edit-phone" value="${window.state.currentUser.phone || ''}" placeholder="10-digit number" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none" />
+              </div>
+
+              <div>
+                <label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT</label>
+                <select id="edit-district" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none">
+                  ${WB_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+                </select>
+              </div>
+
+              <button type="submit" class="w-full py-3 bg-brand-teal hover:bg-cyan-300 text-brand-black font-black rounded-xl text-xs transition shadow-lg mt-4">
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
+      `;
+    };
+
+    window.handleProfileSave = function(e) {
+      e.preventDefault();
+      window.state.currentUser.name = document.getElementById('edit-name').value;
+      window.state.currentUser.phone = document.getElementById('edit-phone').value;
+      window.state.currentUser.district = document.getElementById('edit-district').value;
+      window.saveState();
+      window.closeModal();
+      alert("Profile updated successfully!");
+    };
+
+    window.openTrackModal = function() {
+      const modal = document.getElementById('modal-container');
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-md bg-brand-dark border border-brand-border p-6 rounded-3xl shadow-2xl animate-slide-up">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white">✕</button>
+            <h3 class="text-xl font-black text-white mb-1">Track Membership Application</h3>
+            <p class="text-xs text-slate-400 mb-4">Enter Tracking ID, Phone or Email</p>
+
+            <form onsubmit="window.handleTrackSearch(event)" class="flex gap-2 mb-4">
+              <input type="text" id="track-query" required placeholder="e.g. YUSUF4041, phone, email" class="flex-1 bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white" />
+              <button type="submit" class="px-5 bg-brand-teal text-brand-black font-bold text-xs rounded-xl">Track</button>
+            </form>
+
+            <div id="track-result-box"></div>
+          </div>
+        </div>
+      `;
+    };
+
+    window.handleTrackSearch = function(e) {
+      e.preventDefault();
+      const q = document.getElementById('track-query').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+      const match = window.state.applications.find(a => {
+        const trackMatch = (a.trackingId || '').toLowerCase().replace(/[^a-z0-9]/g, '').includes(q);
+        const phoneMatch = (a.whatsapp || '').replace(/[^0-9]/g, '').includes(q);
+        const emailMatch = (a.email || '').toLowerCase().includes(q);
+        const memMatch = (a.memberId || '').toLowerCase().replace(/[^a-z0-9]/g, '').includes(q);
+        return trackMatch || phoneMatch || emailMatch || memMatch;
+      });
+
+      const box = document.getElementById('track-result-box');
+      if (match) {
+        box.innerHTML = `
+          <div class="bg-brand-card p-4 rounded-xl border border-brand-border text-xs space-y-3">
+            <div class="flex justify-between items-center pb-2 border-b border-brand-border">
+              <span class="font-bold text-white text-sm">${match.fullName}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${match.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-brand-gold'}">
+                ${match.status.toUpperCase()}
+              </span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div><span class="text-slate-500 block text-[9px]">TRACKING ID</span><strong class="text-white font-mono">${match.trackingId}</strong></div>
+              <div><span class="text-slate-500 block text-[9px]">OFFICIAL MEMBER ID</span><strong class="text-brand-gold font-mono">${match.memberId || 'Pending Approval'}</strong></div>
+            </div>
+          </div>
+        `;
+      } else {
+        box.innerHTML = `<p class="text-rose-400 text-xs text-center py-4">No application found.</p>`;
+      }
+    };
+
+    window.openTrackSuccessModal = function(app) {
+      const modal = document.getElementById('modal-container');
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-md bg-brand-dark border border-brand-border p-6 rounded-3xl shadow-2xl text-center animate-slide-up">
+            <h2 class="text-2xl font-black text-white mb-1">Application Submitted!</h2>
+            <p class="text-slate-400 text-xs mb-4">Your Tracking ID is: <strong class="font-mono text-brand-teal text-base">${app.trackingId}</strong></p>
+            <p class="text-[11px] text-amber-400 mb-6">Status: <strong>Under Review</strong>. Official Member ID will be issued after state approval.</p>
+            <button onclick="window.closeModal()" class="w-full py-3 bg-brand-teal text-brand-black font-black rounded-xl text-xs">Done</button>
+          </div>
+        </div>
+      `;
+    };
+
+    window.openMemberModal = function(id) {
+      const m = window.state.members.find(x => x.id === id);
+      if (!m) return;
+      const modal = document.getElementById('modal-container');
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-xl bg-brand-dark border border-brand-border rounded-3xl p-6 shadow-2xl animate-slide-up">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white">✕</button>
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div class="w-40 aspect-[4/5] rounded-2xl overflow-hidden flex-shrink-0 border-2 border-brand-teal">
+                ${m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" class="w-full h-full object-cover object-top" />` : window.getDefaultAvatarHtml(m.name, 'Male', 'w-full h-full')}
+              </div>
+              <div class="flex-1 text-center sm:text-left">
+                <span class="text-brand-gold text-[10px] font-black uppercase tracking-widest">${m.badge}</span>
+                <h3 class="text-2xl font-black text-white mt-0.5">${m.name}</h3>
+                <p class="text-brand-teal text-xs font-bold mb-3">${m.role}</p>
+                <p class="text-xs text-slate-400 mb-4 font-mono">ID: ${m.memberId} • District: ${m.district}</p>
+                <div class="bg-brand-card p-3.5 rounded-xl text-xs text-slate-300 leading-relaxed border border-brand-border">${m.bio}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    // Initialize State
+    window.saveState();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

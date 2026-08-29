@@ -116,9 +116,7 @@
     .solar-system:hover .orbit-planet,
     .solar-system:hover .orbit-planet span { animation-play-state: paused !important; }
 
-    .orbit-planet {
-      z-index: 20;
-    }
+    .orbit-planet { z-index: 20; }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -192,7 +190,9 @@
   <div id="modal-container" class="relative z-50"></div>
 
   <script>
-    // 1. FIREBASE SETUP
+    // ==========================================
+    // 🔥 1. FIREBASE CONFIGURATION & INIT 🔥
+    // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyA0ATw5yADdJbluhBV7fuEYx3i-Ye1biMU",
       authDomain: "wbstudenntsgroup.firebaseapp.com",
@@ -212,10 +212,13 @@
       console.error("Firebase Connection Error:", error);
     }
 
-    // 2. CONSTANTS
+    // ==========================================
+    // 🗂️ 2. CONSTANTS & INITIAL DATA
+    // ==========================================
     const ADMIN_EMAIL = "yusufkhanyk7310@gmail.com";
     const ADMIN_PASS = "@Yusufkhan7310";
     const LOGO_URL = "https://i.ibb.co/67KV7VvY/wblogo.png";
+    const FOUNDER_IMAGE = "https://i.ibb.co/ybmSjDL/yusuf-website.png";
     const LEARNING_PORTAL = "https://wbstudentsgroup.github.io/Learning/";
     const OFFICIAL_WHATSAPP = "+919297660041";
 
@@ -229,7 +232,7 @@
     ];
 
     const INITIAL_MEMBERS = [
-      { id: 'mem-001', memberId: 'IYR Y73', name: 'Yusuf Khan', role: 'Founder & State Convener', badge: 'FOUNDER', district: 'Kolkata', phone: OFFICIAL_WHATSAPP, showPhone: true, bio: 'Dedicated to student empowerment, educational material accessibility, and student welfare across West Bengal.', joinedDate: 'January 2023', photoUrl: 'https://i.ibb.co/ybmSjDL/yusuf-website.png', order: 1 },
+      { id: 'mem-001', memberId: 'IYR Y73', name: 'Yusuf Khan', role: 'Founder & State Convener', badge: 'FOUNDER', district: 'Kolkata', phone: OFFICIAL_WHATSAPP, showPhone: true, bio: 'Dedicated to student empowerment, educational material accessibility, and student welfare across West Bengal.', joinedDate: 'January 2023', photoUrl: FOUNDER_IMAGE, order: 1 },
       { id: 'mem-002', memberId: 'IYR B45', name: 'Basharat Mustafa', role: 'DOUBT SOLVER', badge: 'CORE TEAM', district: 'Kolkata', phone: '', showPhone: false, bio: 'Dedicated student volunteer.', joinedDate: 'August 2026', photoUrl: '', order: 2 },
       { id: 'mem-003', memberId: 'IYR S22', name: 'Sariq Sadab', role: 'DOUBT SOLVER', badge: 'CORE TEAM', district: 'Kolkata', phone: '', showPhone: false, bio: 'Dedicated student volunteer.', joinedDate: 'August 2026', photoUrl: '', order: 3 },
       { id: 'mem-004', memberId: 'IYR S88', name: 'Samaya Wahid', role: 'BA GROUP ADMIN', badge: 'CORE TEAM', district: 'Hooghly', phone: '', showPhone: false, bio: 'Dedicated student volunteer.', joinedDate: 'August 2026', photoUrl: '', order: 4 },
@@ -237,6 +240,7 @@
     ];
 
     const INITIAL_TASKS = [];
+
     const INITIAL_SOCIALS = [
       { id: 'soc-1', name: 'YouTube Channel', url: 'https://www.youtube.com/@WBSTUDENTSGROUP', icon: '📺' },
       { id: 'soc-2', name: 'Instagram Handle', url: 'https://www.instagram.com/wbstudentsgroup', icon: '📸' },
@@ -268,13 +272,15 @@
       try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
     };
 
-    // 3. INITIALIZE STATE
     let storedMembers = getStored('wbstg_members', INITIAL_MEMBERS);
     if(storedMembers.length < 5) storedMembers = INITIAL_MEMBERS; // Force update new members if missing
 
     const urlParams = new URLSearchParams(window.location.search);
     const initialViewParam = urlParams.get('view') || 'home';
 
+    // ==========================================
+    // 🔄 3. STATE MANAGEMENT & FIREBASE SYNC
+    // ==========================================
     window.state = {
       users: [], 
       members: storedMembers,
@@ -291,42 +297,47 @@
       showTasksSection: true
     };
 
-    // 4. FIREBASE SYNC CONTROLLER
+    // ONLY REAL-TIME SYNC TO PREVENT CONFLICTS
     window.initFirebaseSync = function() {
       if (!db) return;
+
       const syncCol = (colName, stateKey, sortKey) => {
         db.collection(colName).onSnapshot(snap => {
-          if (!snap.empty) {
-            const arr = [];
-            snap.forEach(doc => arr.push(doc.data()));
-            if(sortKey) {
-              arr.sort((a,b) => (b[sortKey] || 0) - (a[sortKey] || 0));
-            }
+          const arr = [];
+          snap.forEach(doc => arr.push(doc.data()));
+          
+          if(sortKey) {
+            arr.sort((a,b) => (b[sortKey] || 0) - (a[sortKey] || 0));
+          }
+          
+          if(arr.length > 0) {
             window.state[stateKey] = arr;
           }
-          window.renderMain(); 
-        });
+          window.renderMain(); // Auto-render UI when DB changes
+        }, err => console.error(`Error syncing ${colName}:`, err));
       };
 
       syncCol("users", "users", "createdAt");
       syncCol("applications", "applications", "submittedAt");
       syncCol("notifications", "notifications", "timestamp");
-      syncCol("members", "members");
-      syncCol("tasks", "tasks");
+      syncCol("members", "members", "order");
     };
 
     if (db) { window.initFirebaseSync(); }
 
     window.dbSave = function(collection, id, data) {
-      if (db) db.collection(collection).doc(id).set(data, { merge: true }).catch(console.error);
+      if (db) {
+        db.collection(collection).doc(id).set(data, { merge: true })
+          .then(() => console.log(`Saved to ${collection} DB`))
+          .catch(console.error);
+      }
     };
 
     window.dbDelete = function(collection, id) {
       if (db) db.collection(collection).doc(id).delete().catch(console.error);
     };
 
-    window.saveState = function() {
-      setStored('wbstg_user', window.state.currentUser);
+    window.saveState = function(firebaseDataUpdate = false, type = null, data = null) {
       setStored('wbstg_members', window.state.members);
       setStored('wbstg_apps', window.state.applications);
       setStored('wbstg_wa_groups', window.state.waGroups);
@@ -334,13 +345,21 @@
       setStored('wbstg_task_subs', window.state.taskSubmissions);
       setStored('wbstg_socials', window.state.socials);
       setStored('wbstg_notifs', window.state.notifications);
+      setStored('wbstg_user', window.state.currentUser);
+
+      if (db && firebaseDataUpdate && type && data) {
+        window.dbSave(type, data.id, data);
+      }
+
       window.renderNav();
       window.renderMain();
       window.renderFooterSocials();
       window.updateBottomNavUI();
     };
 
-    // 5. HELPER FUNCTIONS
+    // ==========================================
+    // 🛠️ 4. HELPER FUNCTIONS & ROUTING
+    // ==========================================
     window.generateApprovedMemberId = function(name) {
       const cleanName = (name || 'Member').trim().toUpperCase();
       const firstLetter = cleanName.charAt(0) || 'X';
@@ -360,14 +379,13 @@
       return `<div class="${sizeClass} bg-gradient-to-br ${bgGradient} text-white font-black flex items-center justify-center text-2xl shadow-inner select-none">${initial}</div>`;
     };
 
-    // 6. ROUTING SYSTEM
     window.switchView = function(view) {
       window.state.currentView = view;
       try {
         const newUrl = view === 'home' ? window.location.pathname : `?view=${view}`;
         window.history.pushState({ view: view }, '', newUrl);
       } catch (e) {
-        window.location.hash = view; // Safe fallback
+        window.location.hash = view;
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
       window.renderNav();
@@ -383,7 +401,6 @@
       window.updateBottomNavUI();
     });
 
-    // 7. RENDERERS
     window.updateBottomNavUI = function() {
       const view = window.state.currentView;
       const navs = ['home', 'study', 'store', 'updates', 'foryou'];
@@ -396,6 +413,9 @@
       });
     }
 
+    // ==========================================
+    // 🎨 5. UI RENDERERS
+    // ==========================================
     window.renderFooterSocials = function() {
       const footerBox = document.getElementById('footer-social-links');
       if (!footerBox) return;
@@ -412,8 +432,10 @@
 
       const homeBtn = document.getElementById('nav-home-btn');
       const memBtn = document.getElementById('nav-mem-btn');
+      const studyBtn = document.getElementById('nav-study-btn');
       if (homeBtn) homeBtn.className = window.state.currentView === 'home' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
       if (memBtn) memBtn.className = window.state.currentView === 'membership' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
+      if (studyBtn) studyBtn.className = window.state.currentView === 'study' ? 'text-brand-gold font-extrabold transition' : 'text-brand-gold hover:text-brand-goldLight transition';
 
       if (window.state.currentUser) {
         const firstLetter = (window.state.currentUser.name || 'U').charAt(0).toUpperCase();
@@ -450,10 +472,9 @@
       else if (v === 'updates') window.renderUpdatesPage(container);
       else if (v === 'foryou') window.renderForYouPage(container);
       else window.renderHomePage(container);
-      
-      window.updateBottomNavUI();
     };
 
+    // Sub-Pages
     window.renderStudyPage = function(container) {
       container.innerHTML = `
         <div class="w-full h-[calc(100vh-130px)] flex flex-col animate-slide-up">
@@ -472,9 +493,7 @@
           <div class="glass-box p-10 rounded-3xl border border-brand-gold/40 shadow-2xl space-y-4">
             <div class="text-5xl">🛍️</div>
             <h2 class="text-2xl font-black text-white">WBSTG Store</h2>
-            <p class="text-brand-black text-sm font-bold bg-brand-gold py-2.5 px-4 rounded-xl shadow-lg shadow-brand-gold/20">
-              Coming soon we are working on it
-            </p>
+            <p class="text-brand-black text-sm font-bold bg-brand-gold py-2.5 px-4 rounded-xl shadow-lg shadow-brand-gold/20">Coming soon we are working on it</p>
             <p class="text-xs text-slate-400">Get physical notes, sample question papers and merchandise directly delivered.</p>
             <button onclick="window.switchView('home')" class="mt-4 w-full py-3 bg-brand-card text-brand-teal font-black text-xs rounded-xl border border-brand-teal/30 hover:border-brand-teal transition">Return Home</button>
           </div>
@@ -566,6 +585,7 @@
       `;
     };
 
+    // 🏠 Home Page Controller
     window.renderHomePage = function(container) {
       const greeting = window.state.currentUser ? `Hi, ${window.state.currentUser.name}! 👋` : `Hi, Student! 👋`;
       const duplicatedGroups = [...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups];
@@ -587,7 +607,6 @@
           const statusColor = isApproved ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' : (isRejected ? 'text-rose-400 bg-rose-500/10 border-rose-500/30' : 'text-brand-gold bg-brand-gold/10 border-brand-gold/30');
           const statusIcon = isApproved ? '✓ APPROVED' : (isRejected ? '✕ REJECTED' : '⏳ UNDER REVIEW');
 
-          // Premium Dashboard Card
           userAppHtml = `
             <div class="max-w-4xl mx-auto px-4 pt-6 animate-slide-up">
               <div class="bg-gradient-to-br from-[#12111A] to-[#0A0B14] p-6 sm:p-8 rounded-[32px] border border-slate-800/80 shadow-2xl relative overflow-hidden">
@@ -603,6 +622,7 @@
                       <p class="text-xs text-slate-400 font-medium">Tracking ID: <span class="text-brand-teal font-mono">${myApp.trackingId}</span></p>
                     </div>
                   </div>
+                  
                   <div class="flex items-center gap-2">
                     <span class="px-4 py-1.5 rounded-xl text-[10px] font-black border ${statusColor} shadow-sm">${statusIcon}</span>
                   </div>
@@ -645,7 +665,6 @@
             </div>
           `;
 
-          // Premium Task Tracker
           if (isApproved) {
             const subs = window.state.taskSubmissions[myApp.id] || [];
             memberTasksHtml = `
@@ -699,7 +718,7 @@
         ${memberTasksHtml}
 
         <section class="pt-10 md:pt-16 pb-12 px-4 max-w-6xl mx-auto text-center relative">
-          <div class="inline-flex items-center gap-2 bg-brand-teal/10 border border-brand-teal/30 px-4 py-1.5 rounded-full text-brand-teal text-xs font-black mb-4 shadow-lg">
+          <div class="inline-flex items-center gap-2 bg-brand-teal/10 border border-brand-teal/30 px-4 py-1.5 rounded-full text-brand-teal text-xs font-black mb-4 shadow-lg shadow-brand-teal/10">
             <span>✨</span> ${greeting}
           </div>
 
@@ -780,19 +799,6 @@
               </div>
             </div>
           </div>
-
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-            <div class="w-full sm:w-auto px-6 py-3 bg-brand-card/90 border border-brand-gold/40 text-white rounded-2xl flex items-center justify-center gap-3">
-              <span class="text-brand-gold text-lg">⏳</span>
-              <div class="text-left">
-                <div class="text-[9px] text-brand-gold uppercase font-black">PLAYSTORE APP</div>
-                <div class="text-xs font-bold text-slate-200">COMING SOON</div>
-              </div>
-            </div>
-            <button onclick="window.switchView('study')" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 transition">
-              <span>Explore Portal</span> ❯
-            </button>
-          </div>
         </section>
 
         <section id="wa-communities" class="py-12 border-y border-brand-border/60 bg-brand-dark/60 relative overflow-hidden">
@@ -825,14 +831,10 @@
         <section class="py-16 relative overflow-hidden">
           <div class="max-w-7xl mx-auto px-4 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-center sm:text-left">
             <div>
-              <div class="text-brand-gold text-xs font-black uppercase tracking-widest mb-1">
-                🏆 State Executive Directory
-              </div>
+              <div class="text-brand-gold text-xs font-black uppercase tracking-widest mb-1">🏆 State Executive Directory</div>
               <h2 class="text-2xl sm:text-4xl font-black text-white">Verified Team Leaders</h2>
             </div>
-            <span class="text-xs text-brand-teal bg-brand-teal/10 border border-brand-teal/30 px-3 py-1 rounded-full font-bold self-center sm:self-auto">
-              Continuous Live Directory
-            </span>
+            <span class="text-xs text-brand-teal bg-brand-teal/10 border border-brand-teal/30 px-3 py-1 rounded-full font-bold self-center sm:self-auto">Continuous Live Directory</span>
           </div>
 
           <div class="marquee-wrapper w-full overflow-hidden relative">
@@ -841,9 +843,7 @@
                 <div onclick="window.openMemberModal('${m.id}')" class="w-[280px] sm:w-[310px] glass-box rounded-2xl overflow-hidden shadow-2xl cursor-pointer flex-shrink-0">
                   <div class="relative h-64 w-full bg-slate-900">
                     ${m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" class="w-full h-full object-cover object-top" />` : window.getDefaultAvatarHtml(m.name, 'Male', 'w-full h-full')}
-                    <div class="absolute top-3 left-3 bg-brand-gold text-brand-black font-black text-[10px] px-3 py-1 rounded-full uppercase shadow-lg">
-                      ${m.badge}
-                    </div>
+                    <div class="absolute top-3 left-3 bg-brand-gold text-brand-black font-black text-[10px] px-3 py-1 rounded-full uppercase shadow-lg">${m.badge}</div>
                   </div>
                   <div class="p-4">
                     <h3 class="text-base font-black text-white">${m.name}</h3>
@@ -863,25 +863,14 @@
         <section class="py-16 px-4 max-w-5xl mx-auto">
           <div class="glass-box p-8 sm:p-12 rounded-3xl border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
             <div class="absolute -right-10 -bottom-10 text-9xl opacity-5 pointer-events-none select-none">📖</div>
-            
-            <div class="inline-flex items-center gap-2 bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-3.5 py-1 rounded-full text-xs font-bold mb-4">
-              🏛️ Founded on 09-09-2024
-            </div>
-
+            <div class="inline-flex items-center gap-2 bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-3.5 py-1 rounded-full text-xs font-bold mb-4">🏛️ Founded on 09-09-2024</div>
             <h2 class="text-2xl sm:text-3xl font-black text-white mb-4">Our History, Purpose & Core Values</h2>
-            
             <div class="space-y-4 text-slate-300 text-xs sm:text-sm leading-relaxed">
-              <p>
-                This group was founded on <strong class="text-brand-teal">09-09-2024</strong> specifically for West Bengal students belonging to <strong class="text-white">Hindi, English, and Urdu mediums</strong>. Our primary purpose is to study together, share knowledge, help each other, and maintain a positive, encouraging educational environment.
-              </p>
-              <p>
-                We deeply understand that many students across Bengal cannot afford expensive tuitions or private coaching. Therefore, this platform is built to support, mentor, and guide them completely free of cost. Here, everyone can learn, ask questions, and grow together without financial barriers.
-              </p>
+              <p>This group was founded on <strong class="text-brand-teal">09-09-2024</strong> specifically for West Bengal students belonging to <strong class="text-white">Hindi, English, and Urdu mediums</strong>. Our primary purpose is to study together, share knowledge, help each other, and maintain a positive, encouraging educational environment.</p>
+              <p>We deeply understand that many students across Bengal cannot afford expensive tuitions or private coaching. Therefore, this platform is built to support, mentor, and guide them completely free of cost.</p>
               <div class="p-4 bg-brand-card rounded-2xl border border-brand-border flex items-center gap-3">
                 <span class="text-2xl">✨</span>
-                <p class="font-bold text-white text-xs sm:text-sm">
-                  We respect every language and subject equally, and here every student is equal.
-                </p>
+                <p class="font-bold text-white text-xs sm:text-sm">We respect every language and subject equally, and here every student is equal.</p>
               </div>
             </div>
           </div>
@@ -893,38 +882,31 @@
       if (!window.state.taskSubmissions[appId]) window.state.taskSubmissions[appId] = [];
       if (!window.state.taskSubmissions[appId].includes(taskId)) {
         window.state.taskSubmissions[appId].push(taskId);
-        window.dbSave('taskSubmissions', appId, { tasks: window.state.taskSubmissions[appId] }); // Save to Firebase
+        window.dbSave('taskSubmissions', appId, { tasks: window.state.taskSubmissions[appId] });
         window.saveState();
         alert("Task marked as done!");
       }
     };
 
     window.reapplyMembership = function(appId) {
-      window.dbDelete('applications', appId); // Delete from DB
+      window.dbDelete('applications', appId);
       window.state.applications = window.state.applications.filter(a => a.id !== appId);
       window.saveState();
       window.switchView('membership');
     };
 
+    // ✨ FULL MEMBERSHIP FORM
     window.renderMembershipPage = function(container) {
       if (!window.state.currentUser) {
         container.innerHTML = `
           <div class="py-16 px-4 max-w-xl mx-auto text-center animate-slide-up">
             <div class="glass-box p-8 rounded-3xl border border-brand-gold/40 shadow-2xl">
-              <div class="w-16 h-16 bg-brand-gold/10 text-brand-gold rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
-                🛡️
-              </div>
+              <div class="w-16 h-16 bg-brand-gold/10 text-brand-gold rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">🛡️</div>
               <h2 class="text-2xl font-black text-white mb-2">Student Authentication Required</h2>
-              <p class="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">
-                Log in or register with your student phone number to submit authentic membership form.
-              </p>
+              <p class="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">Log in or register with your student phone number to submit authentic membership form.</p>
               <div class="flex flex-col sm:flex-row justify-center gap-3">
-                <button onclick="window.openAuthModal()" class="px-7 py-3.5 bg-brand-gold hover:bg-brand-goldLight text-brand-black font-black rounded-xl text-sm transition shadow-lg">
-                  Sign In or Instant Register
-                </button>
-                <button onclick="window.switchView('home')" class="px-5 py-3.5 bg-brand-card hover:bg-brand-border text-slate-300 rounded-xl text-sm font-bold border border-brand-border transition">
-                  ← Back to Home
-                </button>
+                <button onclick="window.openAuthModal()" class="px-7 py-3.5 bg-brand-gold hover:bg-brand-goldLight text-brand-black font-black rounded-xl text-sm transition shadow-lg">Sign In or Instant Register</button>
+                <button onclick="window.switchView('home')" class="px-5 py-3.5 bg-brand-card hover:bg-brand-border text-slate-300 rounded-xl text-sm font-bold border border-brand-border transition">← Back to Home</button>
               </div>
             </div>
           </div>
@@ -950,19 +932,11 @@
               </div>
 
               <div class="space-y-2.5 text-xs text-slate-300 mb-6 bg-brand-card p-4 rounded-2xl border border-brand-border">
-                <div class="flex justify-between">
-                  <span class="text-slate-400">Applicant Name:</span>
-                  <strong class="text-white">${existingApp.fullName}</strong>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-slate-400">Tracking ID:</span>
-                  <strong class="text-brand-teal font-mono">${existingApp.trackingId}</strong>
-                </div>
+                <div class="flex justify-between"><span class="text-slate-400">Applicant Name:</span><strong class="text-white">${existingApp.fullName}</strong></div>
+                <div class="flex justify-between"><span class="text-slate-400">Tracking ID:</span><strong class="text-brand-teal font-mono">${existingApp.trackingId}</strong></div>
                 <div class="flex justify-between">
                   <span class="text-slate-400">Application Status:</span>
-                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${existingApp.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : (existingApp.status === 'not_selected' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-amber-500/20 text-brand-gold border border-brand-gold/30')}">
-                    ${existingApp.status === 'approved' ? 'APPROVED' : (existingApp.status === 'under_review' ? 'UNDER REVIEW' : 'REJECTED')}
-                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${existingApp.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : (existingApp.status === 'not_selected' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-amber-500/20 text-brand-gold border border-brand-gold/30')}">${existingApp.status === 'approved' ? 'APPROVED' : (existingApp.status === 'under_review' ? 'UNDER REVIEW' : 'REJECTED')}</span>
                 </div>
                 ${existingApp.status === 'not_selected' ? `
                   <div class="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 mt-2">
@@ -973,13 +947,9 @@
               </div>
 
               <div class="flex flex-col sm:flex-row gap-3">
-                <button onclick="window.switchView('home')" class="flex-1 py-3 bg-brand-teal text-brand-black font-black rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
-                  🏠 Return to Home Status
-                </button>
+                <button onclick="window.switchView('home')" class="flex-1 py-3 bg-brand-teal text-brand-black font-black rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">🏠 Return to Home Status</button>
                 ${existingApp.status === 'not_selected' ? `
-                  <button onclick="window.reapplyMembership('${existingApp.id}')" class="flex-1 py-3 bg-rose-500 text-white font-black rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
-                    🔄 Re-fill Form
-                  </button>
+                  <button onclick="window.reapplyMembership('${existingApp.id}')" class="flex-1 py-3 bg-rose-500 text-white font-black rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">🔄 Re-fill Form</button>
                 ` : ''}
               </div>
             </div>
@@ -994,9 +964,7 @@
             
             <div class="flex items-center justify-between pb-4 mb-6 border-b border-brand-border">
               <div>
-                <button onclick="window.switchView('home')" class="inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-brand-teal mb-2 transition">
-                  ← Back to Home Directory
-                </button>
+                <button onclick="window.switchView('home')" class="inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-brand-teal mb-2 transition">← Back to Home Directory</button>
                 <h2 class="text-2xl sm:text-3xl font-black text-white">Membership Form</h2>
                 <p class="text-slate-400 text-xs mt-0.5">Join Bengal's largest student welfare and grassroots educational network.</p>
               </div>
@@ -1004,11 +972,8 @@
             </div>
 
             <form id="membership-form" onsubmit="window.handleMembershipSubmit(event)" class="space-y-6 text-left">
-              
               <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-border text-center sm:text-left">
-                <div id="photo-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-teal/50 flex items-center justify-center flex-shrink-0 text-slate-500 text-2xl shadow-inner">
-                  📷
-                </div>
+                <div id="photo-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-teal/50 flex items-center justify-center flex-shrink-0 text-slate-500 text-2xl shadow-inner">📷</div>
                 <div>
                   <label class="text-xs font-bold text-white block mb-1">Passport Size Profile Photo <span class="text-slate-400 font-normal">(Optional)</span></label>
                   <p class="text-[11px] text-slate-400 mb-2">You can upload a photo or skip this. Default icon will be used if left blank.</p>
@@ -1022,107 +987,35 @@
               <div>
                 <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">1. Personal & Contact Information</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">FULL NAME *</label>
-                    <input type="text" id="app-name" required value="${window.state.currentUser.name || ''}" placeholder="Enter your full name" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">GENDER *</label>
-                    <select id="app-gender" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none">
-                      <option value="" disabled selected>Select gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">AGE *</label>
-                    <input type="number" id="app-age" min="14" max="40" required placeholder="Your age" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT / REGION *</label>
-                    <select id="app-district" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none">
-                      <option value="" disabled selected>Select district</option>
-                      ${WB_DISTRICTS.map(d => `<option value="${d}" ${d === window.state.currentUser.district ? 'selected' : ''}>${d}</option>`).join('')}
-                    </select>
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">WHATSAPP NUMBER *</label>
-                    <input type="tel" id="app-whatsapp" required value="${window.state.currentUser.phone || ''}" placeholder="10-digit number" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">EMAIL ADDRESS *</label>
-                    <input type="email" id="app-email" required value="${window.state.currentUser.email || ''}" placeholder="name@email.com" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" />
-                  </div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">FULL NAME *</label><input type="text" id="app-name" required value="${window.state.currentUser.name || ''}" placeholder="Enter your full name" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" /></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">GENDER *</label><select id="app-gender" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none"><option value="" disabled selected>Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">AGE *</label><input type="number" id="app-age" min="14" max="40" required placeholder="Your age" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" /></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT / REGION *</label><select id="app-district" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none"><option value="" disabled selected>Select district</option>${WB_DISTRICTS.map(d => `<option value="${d}" ${d === window.state.currentUser.district ? 'selected' : ''}>${d}</option>`).join('')}</select></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">WHATSAPP NUMBER *</label><input type="tel" id="app-whatsapp" required value="${window.state.currentUser.phone || ''}" placeholder="10-digit number" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" /></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">EMAIL ADDRESS *</label><input type="email" id="app-email" required value="${window.state.currentUser.email || ''}" placeholder="name@email.com" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" /></div>
                 </div>
               </div>
 
               <div>
                 <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">2. Academic, Motivation & Skills</h4>
-                
                 <div class="space-y-4">
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">CURRENT EDUCATION LEVEL *</label>
-                    <select id="app-education" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none">
-                      <option value="" disabled selected>Select your education level</option>
-                      <option value="Class 10 (Madhyamik Batch)">Class 10 (Madhyamik Batch)</option>
-                      <option value="Class 11 / 12 (Higher Secondary Batch)">Class 11 / 12 (Higher Secondary Batch)</option>
-                      <option value="Undergraduate College (BA / B.Sc / B.Com / B.Tech)">Undergraduate College (BA / B.Sc / B.Com / B.Tech)</option>
-                      <option value="Postgraduate / Higher Studies">Postgraduate / Higher Studies</option>
-                      <option value="Diploma / Technical Stream">Diploma / Technical Stream</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">
-                      WHAT SKILLS DO YOU HAVE? <span class="text-brand-teal font-normal">(Optional)</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      id="app-skills" 
-                      placeholder="e.g. Teaching, Video Editing, Content Writing, Graphic Design, Web Development..." 
-                      class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" 
-                    />
-                  </div>
-
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">WHY DO YOU WANT TO JOIN WB STUDENTS GROUP? *</label>
-                    <textarea id="app-why-join" rows="2" required placeholder="Explain your interest in joining our student advocacy and digital study group..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white outline-none"></textarea>
-                  </div>
-
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">HOW CAN YOU HELP NEEDY STUDENTS IN OUR COMMUNITY? *</label>
-                    <textarea id="app-how-help" rows="2" required placeholder="Share how you can contribute (sharing notes, solving doubts, helping poor students)..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white outline-none"></textarea>
-                  </div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">CURRENT EDUCATION LEVEL *</label><select id="app-education" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none"><option value="" disabled selected>Select your education level</option><option value="Class 10 (Madhyamik Batch)">Class 10 (Madhyamik Batch)</option><option value="Class 11 / 12 (Higher Secondary Batch)">Class 11 / 12 (Higher Secondary Batch)</option><option value="Undergraduate College (BA / B.Sc / B.Com / B.Tech)">Undergraduate College (BA / B.Sc / B.Com / B.Tech)</option><option value="Postgraduate / Higher Studies">Postgraduate / Higher Studies</option><option value="Diploma / Technical Stream">Diploma / Technical Stream</option></select></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">WHAT SKILLS DO YOU HAVE? <span class="text-brand-teal font-normal">(Optional)</span></label><input type="text" id="app-skills" placeholder="e.g. Teaching, Video Editing, Content Writing, Graphic Design..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-xs text-white outline-none" /></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">WHY DO YOU WANT TO JOIN WB STUDENTS GROUP? *</label><textarea id="app-why-join" rows="2" required placeholder="Explain your interest in joining..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white outline-none"></textarea></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">HOW CAN YOU HELP NEEDY STUDENTS IN OUR COMMUNITY? *</label><textarea id="app-how-help" rows="2" required placeholder="Share how you can contribute..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs text-white outline-none"></textarea></div>
                 </div>
               </div>
 
               <div>
                 <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">3. Areas of Contribution & Group Leadership</h4>
                 <p class="text-[11px] text-slate-400 mb-3">Select your desired contributions below. You must choose at least one or check the Group Admin option.</p>
-                
                 <div class="space-y-3">
                   <div class="grid grid-cols-1 gap-2">
-                    ${CONTRIBUTION_AREAS.map(a => `
-                      <label class="flex items-center gap-2.5 p-3 rounded-xl bg-brand-card border border-brand-border cursor-pointer text-slate-200 hover:border-brand-teal/50 transition text-xs">
-                        <input type="checkbox" name="contrib" value="${a}" class="rounded text-brand-teal w-4 h-4" />
-                        <span class="font-semibold">${a}</span>
-                      </label>
-                    `).join('')}
+                    ${CONTRIBUTION_AREAS.map(a => `<label class="flex items-center gap-2.5 p-3 rounded-xl bg-brand-card border border-brand-border cursor-pointer text-slate-200 hover:border-brand-teal/50 transition text-xs"><input type="checkbox" name="contrib" value="${a}" class="rounded text-brand-teal w-4 h-4" /><span class="font-semibold">${a}</span></label>`).join('')}
                   </div>
-
                   <div class="p-4 rounded-2xl bg-brand-card border border-brand-whatsapp/40 space-y-3 mt-3">
-                    <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-brand-whatsapp">
-                      <input type="checkbox" id="lead-group-checkbox" onchange="window.toggleLeadGroupDropdown(this.checked)" class="rounded text-brand-whatsapp w-4 h-4" />
-                      <span>👑 Become Group Admin (Lead a WhatsApp Group)</span>
-                    </label>
-
-                    <div id="lead-group-container" class="hidden pt-2 border-t border-brand-border space-y-2">
-                      <label class="text-[10px] font-bold text-slate-300 block">WHATSAPP GROUP WOULD YOU LIKE TO LEAD?</label>
-                      <select id="app-lead-target-group" class="w-full bg-brand-dark border border-brand-whatsapp/50 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
-                        ${window.state.waGroups.map(g => `<option value="${g.title}">${g.title} (${g.tag})</option>`).join('')}
-                      </select>
-                    </div>
+                    <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-brand-whatsapp"><input type="checkbox" id="lead-group-checkbox" onchange="window.toggleLeadGroupDropdown(this.checked)" class="rounded text-brand-whatsapp w-4 h-4" /><span>👑 Become Group Admin (Lead a WhatsApp Group)</span></label>
+                    <div id="lead-group-container" class="hidden pt-2 border-t border-brand-border space-y-2"><label class="text-[10px] font-bold text-slate-300 block">WHATSAPP GROUP WOULD YOU LIKE TO LEAD?</label><select id="app-lead-target-group" class="w-full bg-brand-dark border border-brand-whatsapp/50 rounded-xl px-3 py-2.5 text-xs text-white outline-none">${window.state.waGroups.map(g => `<option value="${g.title}">${g.title} (${g.tag})</option>`).join('')}</select></div>
                   </div>
                 </div>
               </div>
@@ -1130,60 +1023,28 @@
               <div>
                 <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">4. Communication Preferences</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">TEAM WORK *</label>
-                    <select id="app-work-pref" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none">
-                      <option value="Frontend Team (Ground / Student Desk)">Frontend Team (Ground / Student Desk)</option>
-                      <option value="Backend Team (Notes & Tech)">Backend Team (Notes & Tech)</option>
-                      <option value="Both Frontend & Backend">Both Frontend & Backend</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">ALLOW STUDENT DMS? *</label>
-                    <select id="app-allow-dm" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none">
-                      <option value="Yes (Allowed)">Yes, Students can DM me</option>
-                      <option value="No (Group Only)">No, Groups Only</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-300 block mb-1">ALLOW PHONE CALLS? *</label>
-                    <select id="app-allow-calls" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none">
-                      <option value="Yes (Allowed)">Yes, Calls Allowed</option>
-                      <option value="No (Messages Only)">No, Messages Only</option>
-                    </select>
-                  </div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">TEAM WORK *</label><select id="app-work-pref" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none"><option value="Frontend Team (Ground / Student Desk)">Frontend Team</option><option value="Backend Team (Notes & Tech)">Backend Team</option><option value="Both Frontend & Backend">Both</option></select></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">ALLOW STUDENT DMS? *</label><select id="app-allow-dm" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none"><option value="Yes (Allowed)">Yes</option><option value="No (Group Only)">No</option></select></div>
+                  <div><label class="text-[10px] font-bold text-slate-300 block mb-1">ALLOW PHONE CALLS? *</label><select id="app-allow-calls" required class="w-full bg-brand-card border border-brand-border rounded-xl px-3 py-2.5 text-xs text-white outline-none"><option value="Yes (Allowed)">Yes</option><option value="No (Messages Only)">No</option></select></div>
                 </div>
               </div>
 
               <div class="p-4 bg-brand-card/90 rounded-2xl border border-brand-border space-y-3">
-                <h4 class="text-xs font-black uppercase tracking-wider text-brand-teal flex items-center gap-1.5">
-                  <span>📜</span> Terms of Membership & Code of Conduct
-                </h4>
-                
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-teal flex items-center gap-1.5"><span>📜</span> Terms of Membership</h4>
                 <ul class="text-[11px] text-slate-300 space-y-1.5 list-disc list-inside leading-relaxed">
-                  <li><strong>Non-Profit Mission:</strong> WB Students Group is a non-profit platform dedicated purely to helping needy students across 23 districts in West Bengal.</li>
-                  <li><strong>Voluntary Contribution:</strong> Currently, all roles are voluntary (unpaid). As the organization scales up, financial honorarium or stipends may be provided.</li>
-                  <li><strong>Leadership & Protocol:</strong> All members must adhere to directives and state guidelines under Founder & State Convener <strong>Yusuf Khan</strong>.</li>
-                  <li><strong>Removal Policy:</strong> Any member or group admin can be removed from their position at any time by state administration in case of indiscipline or policy violations.</li>
+                  <li><strong>Non-Profit Mission:</strong> WB Students Group is a non-profit platform dedicated purely to helping needy students.</li>
+                  <li><strong>Voluntary Contribution:</strong> Currently, all roles are voluntary (unpaid).</li>
+                  <li><strong>Leadership:</strong> All members must adhere to directives from Founder & State Convener <strong>Yusuf Khan</strong>.</li>
+                  <li><strong>Removal Policy:</strong> Any member can be removed for indiscipline or policy violations.</li>
                 </ul>
-
                 <div class="pt-2 border-t border-brand-border/60">
-                  <label class="flex items-start gap-2.5 cursor-pointer text-xs text-white font-semibold">
-                    <input type="checkbox" id="app-agree-rules" required class="mt-0.5 rounded text-brand-teal focus:ring-brand-teal" />
-                    <span>I have read and agree to all rules, code of conduct, and membership guidelines of WB Students Group.</span>
-                  </label>
+                  <label class="flex items-start gap-2.5 cursor-pointer text-xs text-white font-semibold"><input type="checkbox" id="app-agree-rules" required class="mt-0.5 rounded text-brand-teal focus:ring-brand-teal" /><span>I have read and agree to all rules.</span></label>
                 </div>
               </div>
 
               <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-brand-teal to-cyan-400 hover:from-cyan-300 hover:to-brand-teal text-brand-black font-black rounded-xl text-sm transition shadow-xl">
-                  Submit Membership Form & Get Tracking ID
-                </button>
-                <button type="button" onclick="window.switchView('home')" class="py-4 px-6 bg-brand-card hover:bg-brand-border text-slate-300 font-bold rounded-xl text-xs border border-brand-border transition">
-                  Cancel
-                </button>
+                <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-brand-teal to-cyan-400 hover:from-cyan-300 hover:to-brand-teal text-brand-black font-black rounded-xl text-sm transition shadow-xl">Submit Membership Form & Get Tracking ID</button>
+                <button type="button" onclick="window.switchView('home')" class="py-4 px-6 bg-brand-card hover:bg-brand-border text-slate-300 font-bold rounded-xl text-xs border border-brand-border transition">Cancel</button>
               </div>
             </form>
           </div>
@@ -1193,11 +1054,8 @@
 
     window.toggleLeadGroupDropdown = function(isChecked) {
       const box = document.getElementById('lead-group-container');
-      if (isChecked) {
-        box.classList.remove('hidden');
-      } else {
-        box.classList.add('hidden');
-      }
+      if (isChecked) box.classList.remove('hidden');
+      else box.classList.add('hidden');
     };
 
     window.uploadedPhotoUrl = "";
@@ -1278,6 +1136,7 @@
       window.openTrackSuccessModal(app);
     };
 
+    // 🛡️ ADMIN PANEL
     window.renderAdminPage = function(container) {
       const isAdmin = window.state.currentUser && window.state.currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
       if (!isAdmin) {
@@ -1636,6 +1495,7 @@
 
     window.toggleAuthTab = function(login) {
       window.isLoginMode = login;
+      
       const tabLogin = document.getElementById('tab-login');
       const tabReg = document.getElementById('tab-reg');
       

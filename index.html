@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta name="google-site-verification" content="QdWp6KclUO3WdEfBuTkQhXAhnqjiTWrIhc3XT16dT9E" />
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="google-site-verification" content="QdWp6KclUO3WdEfBuTkQhXAhnqjiTWrIhc3XT16dT9E" />
   <title>WB Students Group | Official State Portal & Learning Network</title>
 
   <!-- Tailwind CSS CDN -->
@@ -257,7 +256,10 @@
       } catch (e) {}
     };
 
-    // State Store
+    // State Store (URL query check on load)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialViewParam = urlParams.get('view') || 'home';
+
     window.state = {
       members: getStored('wbstg_members', INITIAL_MEMBERS),
       applications: getStored('wbstg_apps', []),
@@ -267,7 +269,7 @@
       socials: getStored('wbstg_socials', INITIAL_SOCIALS),
       currentUser: getStored('wbstg_user', null),
       appDownloadUrl: getStored('wbstg_app_link', ''),
-      currentView: 'home',
+      currentView: initialViewParam,
       adminTab: 'overview',
       showStatusSection: true,
       showTasksSection: true
@@ -313,10 +315,24 @@
 
     window.switchView = function(view) {
       window.state.currentView = view;
+      
+      // Update Browser URL seamlessly
+      const newUrl = view === 'home' ? window.location.pathname : `?view=${view}`;
+      window.history.pushState({ view: view }, '', newUrl);
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
       window.renderNav();
       window.renderMain();
     };
+
+    // Handle Browser Back/Forward buttons
+    window.addEventListener('popstate', function(event) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const viewParam = urlParams.get('view') || 'home';
+      window.state.currentView = viewParam;
+      window.renderNav();
+      window.renderMain();
+    });
 
     window.renderFooterSocials = function() {
       const footerBox = document.getElementById('footer-social-links');
@@ -333,8 +349,10 @@
       const authBox = document.getElementById('auth-actions');
       const isAdmin = window.state.currentUser && window.state.currentUser.email && window.state.currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
-      document.getElementById('nav-home-btn').className = window.state.currentView === 'home' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
-      document.getElementById('nav-mem-btn').className = window.state.currentView === 'membership' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
+      const homeBtn = document.getElementById('nav-home-btn');
+      const memBtn = document.getElementById('nav-mem-btn');
+      if (homeBtn) homeBtn.className = window.state.currentView === 'home' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
+      if (memBtn) memBtn.className = window.state.currentView === 'membership' ? 'text-brand-teal font-extrabold transition' : 'text-slate-300 hover:text-white transition';
 
       if (window.state.currentUser) {
         const firstLetter = (window.state.currentUser.name || 'U').charAt(0).toUpperCase();
@@ -364,6 +382,7 @@
     // Render Main Area
     window.renderMain = function() {
       const container = document.getElementById('main-content');
+      if (!container) return;
       if (window.state.currentView === 'admin') {
         window.renderAdminPage(container);
       } else if (window.state.currentView === 'membership') {
@@ -374,7 +393,7 @@
       window.renderFooterSocials();
     };
 
-    // Render Home View with Collapsible Status & Tasks Buttons
+    // Render Home View
     window.renderHomePage = function(container) {
       const greeting = window.state.currentUser ? `Hi, ${window.state.currentUser.name}! 👋 Welcome Back` : `Hi, Student! 👋 Welcome to WBSTG`;
       const duplicatedGroups = [...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups];
@@ -462,7 +481,6 @@
             </div>
           `;
 
-          // If Approved, show Task Management Section with collapsible button
           if (isApproved) {
             const subs = window.state.taskSubmissions[myApp.id] || [];
             memberTasksHtml = `
@@ -537,7 +555,7 @@
             </button>
           </div>
 
-          <!-- Metric Counters (Active students updated to 2,500+) -->
+          <!-- Metric Counters -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-4xl mx-auto mt-14">
             <div class="glass-box p-4 rounded-2xl text-center shadow-lg">
               <div class="text-xl sm:text-2xl font-black text-brand-gold">2,500+</div>
@@ -558,7 +576,7 @@
           </div>
         </section>
 
-        <!-- WhatsApp Groups Slider (With WhatsApp Logo SVG) -->
+        <!-- WhatsApp Groups Slider -->
         <section id="wa-communities" class="py-12 border-y border-brand-border/60 bg-brand-dark/60 relative overflow-hidden">
           <div class="max-w-7xl mx-auto px-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
             <div>
@@ -742,7 +760,7 @@
           </div>
         </section>
 
-        <!-- Our History & Purpose Section at the Bottom -->
+        <!-- Our History & Purpose Section -->
         <section class="py-16 px-4 max-w-5xl mx-auto">
           <div class="glass-box p-8 sm:p-12 rounded-3xl border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
             <div class="absolute -right-10 -bottom-10 text-9xl opacity-5 pointer-events-none select-none">📖</div>
@@ -792,7 +810,7 @@
       }
     };
 
-    // Render Professional Membership Application Page
+    // Render Membership Application Page
     window.renderMembershipPage = function(container) {
       if (!window.state.currentUser) {
         container.innerHTML = `
@@ -1000,7 +1018,7 @@
                     </label>
 
                     <div id="lead-group-container" class="hidden pt-2 border-t border-brand-border space-y-2">
-                      <label class="text-[10px] font-bold text-slate-300 block">WHICH WHATSAPP GROUP WOULD YOU LIKE TO LEAD?</label>
+                      <label class="text-[10px] font-bold text-slate-300 block">WHATSAPP GROUP WOULD YOU LIKE TO LEAD?</label>
                       <select id="app-lead-target-group" class="w-full bg-brand-dark border border-brand-whatsapp/50 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
                         ${window.state.waGroups.map(g => `<option value="${g.title}">${g.title} (${g.tag})</option>`).join('')}
                       </select>
@@ -1159,7 +1177,7 @@
       window.openTrackSuccessModal(app);
     };
 
-    // PREMIUM ID CARD PREVIEW & CINEMATIC DOWNLOAD MODAL
+    // ID Card Preview Modal
     window.openIdCardPreviewModal = function(appId) {
       const app = window.state.applications.find(a => a.id === appId);
       if (!app || !app.memberId) return;
@@ -1176,7 +1194,6 @@
             
             <h3 class="text-xl font-black text-white mb-4">Congratulations, ${app.fullName}!</h3>
 
-            <!-- Preview Card Box -->
             <div id="id-card-preview-box" class="w-full aspect-[12/7] bg-gradient-to-br from-[#02050D] via-[#050D1A] to-[#081426] border-2 border-brand-teal rounded-2xl p-5 relative overflow-hidden text-left shadow-2xl mb-6">
               <div class="flex justify-between items-start border-b border-brand-border pb-2 mb-3">
                 <div class="flex items-center gap-2">
@@ -1246,7 +1263,6 @@
       ctx.lineWidth = 2;
       ctx.strokeRect(40, 40, 1120, 620);
 
-      // Header Text
       ctx.fillStyle = '#00F0FF';
       ctx.font = 'bold 36px sans-serif';
       ctx.fillText('WB STUDENTS GROUP', 90, 105);
@@ -1292,7 +1308,6 @@
       ctx.font = 'bold 24px sans-serif';
       ctx.fillText(app.district, 90, 540);
 
-      // Verified Badge Stamp
       ctx.fillStyle = '#FFB800';
       ctx.beginPath();
       ctx.arc(670, 470, 45, 0, Math.PI * 2);
@@ -1309,7 +1324,6 @@
       ctx.font = '16px sans-serif';
       ctx.fillText(`WBSTG Learning Network • Helpline: ${OFFICIAL_WHATSAPP}`, 90, 620);
 
-      // QR Code with branding
       try {
         const qr = qrcode(0, 'L');
         qr.addData(`https://wbstudentsgroup.github.io/Portal/verify?id=${app.memberId}`);
@@ -1334,7 +1348,6 @@
         ctx.fillText('SCAN TO VERIFY', startX + 15, startY + 180);
       } catch (err) {}
 
-      // Load Logo and Avatar
       const logoImg = new Image();
       logoImg.crossOrigin = 'anonymous';
       logoImg.src = LOGO_URL;
@@ -1400,7 +1413,7 @@
       a.click();
     }
 
-    // Full-Page Dedicated Admin Suite View (With Socials & Tasks)
+    // Admin Page View
     window.renderAdminPage = function(container) {
       const isAdmin = window.state.currentUser && window.state.currentUser.email && window.state.currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
@@ -1747,7 +1760,7 @@
       return '';
     };
 
-    // Admin Action Handlers
+    // Admin Handlers
     window.adminApproveApp = function(id) {
       const app = window.state.applications.find(a => a.id === id);
       if (app) {
@@ -1854,7 +1867,8 @@
 
     // Modal Handlers
     window.closeModal = function() {
-      document.getElementById('modal-container').innerHTML = '';
+      const container = document.getElementById('modal-container');
+      if (container) container.innerHTML = '';
     };
 
     window.openAuthModal = function() {
@@ -1907,15 +1921,6 @@
                 Sign In to Portal
               </button>
             </form>
-
-            <div class="relative my-4">
-              <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-brand-border"></div></div>
-              <div class="relative flex justify-center text-[9px] uppercase font-black text-slate-500 bg-brand-dark px-2">Quick 1-Click Access</div>
-            </div>
-
-            <button onclick="window.handleOneClickAdmin()" class="w-full py-2.5 bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-brand-black font-black rounded-xl text-xs border border-brand-gold/30 transition flex items-center justify-center gap-1.5">
-              🛡️ ⚡ Yusuf Khan (Master Admin 1-Click)
-            </button>
           </div>
         </div>
       `;
@@ -1974,21 +1979,9 @@
       window.closeModal();
     };
 
-    window.handleOneClickAdmin = function() {
-      window.state.currentUser = {
-        name: "Yusuf Khan",
-        email: ADMIN_EMAIL,
-        phone: OFFICIAL_WHATSAPP,
-        district: "Kolkata"
-      };
-      window.saveState();
-      window.closeModal();
-      window.switchView('admin');
-    };
-
     window.handleLogout = function() {
       window.state.currentUser = null;
-      window.state.currentView = 'home';
+      window.switchView('home');
       window.saveState();
       window.closeModal();
     };
@@ -2051,7 +2044,7 @@
               <div>
                 <label class="text-[10px] font-bold text-slate-300 block mb-1">DISTRICT</label>
                 <select id="edit-district" class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white outline-none">
-                  ${WB_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+                  ${WB_DISTRICTS.map(d => `<option value="${d}" ${d === window.state.currentUser.district ? 'selected' : ''}>${d}</option>`).join('')}
                 </select>
               </div>
 
@@ -2165,7 +2158,7 @@
       `;
     };
 
-    // Initialize State
+    // Initialize State & Views
     window.saveState();
   </script>
 </body>

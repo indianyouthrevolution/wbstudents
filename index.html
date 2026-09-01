@@ -277,12 +277,12 @@
     const OFFICIAL_WHATSAPP = "+919297660041";
 
     const INITIAL_WA_GROUPS = [
-      { id: 'wa-1', name: 'College Students Batch', category: 'College', link: 'https://chat.whatsapp.com/JXtP8NGF6QvGOPRMZ6tqEp?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 450, status: 'active', isTargetGroup: true, isRecommended: true, description: 'General College Community & Exam Routine Guidance' },
-      { id: 'wa-2', name: 'BA Students Group', category: 'College', link: 'https://chat.whatsapp.com/EHIKBP36ZerCPSsUw2w1Xv', memberLimit: 1024, currentCount: 320, status: 'active', isTargetGroup: true, isRecommended: false, description: 'Arts & Humanities Semester Discussion & Study Notes' },
-      { id: 'wa-3', name: 'Class 12th Board Group', category: 'Class 12th', link: 'https://chat.whatsapp.com/JnVj21DPzRiIEYWfY38j3x?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 650, status: 'active', isTargetGroup: true, isRecommended: true, description: 'HS Semesters, Chapter Notes, Suggestions & Test Papers' },
-      { id: 'wa-4', name: 'Class 11th Foundation', category: 'Class 11th', link: 'https://chat.whatsapp.com/GopJmpgZBlR1JLACkNRpOc?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 280, status: 'active', isTargetGroup: true, isRecommended: false, description: '11th Foundation, Semester Guidance & Chapter Help' },
-      { id: 'wa-5', name: 'Class 10th (Madhyamik)', category: 'Class 10th', link: 'https://chat.whatsapp.com/K9aypBUC29w7duOp9rt6MG?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 520, status: 'active', isTargetGroup: true, isRecommended: true, description: 'Madhyamik Free ABTA Notes, Model Papers & Mock Tests' },
-      { id: 'wa-6', name: 'Kolkata North Division Volunteer Team', category: 'District & Special', link: 'https://chat.whatsapp.com/GLGkM7OHfK9K6jSBN1upEY?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 145, status: 'active', isTargetGroup: true, isRecommended: false, description: 'Official regional WhatsApp group for North Kolkata students.' }
+      { id: 'wa-1', name: 'College Students Batch', category: 'College', link: 'https://chat.whatsapp.com/JXtP8NGF6QvGOPRMZ6tqEp?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 450, status: 'active', isTargetGroup: true, description: 'General College Community & Exam Routine Guidance' },
+      { id: 'wa-2', name: 'BA Students Group', category: 'College', link: 'https://chat.whatsapp.com/EHIKBP36ZerCPSsUw2w1Xv', memberLimit: 1024, currentCount: 320, status: 'active', isTargetGroup: true, description: 'Arts & Humanities Semester Discussion & Study Notes' },
+      { id: 'wa-3', name: 'Class 12th Board Group', category: 'Class 12th', link: 'https://chat.whatsapp.com/JnVj21DPzRiIEYWfY38j3x?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 650, status: 'active', isTargetGroup: true, description: 'HS Semesters, Chapter Notes, Suggestions & Test Papers' },
+      { id: 'wa-4', name: 'Class 11th Foundation', category: 'Class 11th', link: 'https://chat.whatsapp.com/GopJmpgZBlR1JLACkNRpOc?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 280, status: 'active', isTargetGroup: true, description: '11th Foundation, Semester Guidance & Chapter Help' },
+      { id: 'wa-5', name: 'Class 10th (Madhyamik)', category: 'Class 10th', link: 'https://chat.whatsapp.com/K9aypBUC29w7duOp9rt6MG?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 520, status: 'active', isTargetGroup: true, description: 'Madhyamik Free ABTA Notes, Model Papers & Mock Tests' },
+      { id: 'wa-6', name: 'Kolkata North Division Volunteer Team', category: 'District & Special', link: 'https://chat.whatsapp.com/GLGkM7OHfK9K6jSBN1upEY?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 145, status: 'active', isTargetGroup: true, description: 'Official regional WhatsApp group for North Kolkata students.' }
     ];
 
     const INITIAL_MEMBERS = [
@@ -369,8 +369,7 @@
       currentView: initialViewParam,
       selectedMemberId: initialMemberIdParam,
       adminTab: 'overview',
-      groupFilter: 'all',
-      selectedAdminGroups: []
+      groupFilter: 'all'
     };
 
     window.getRealGroupCount = function(grp) {
@@ -786,6 +785,7 @@
       if (listEl) listEl.classList.add('hidden');
     };
 
+    // 🔥 OPEN DEDICATED MEMBER DETAILS FULL PAGE
     window.openMemberDetailsPage = function(memberId) {
       window.state.selectedMemberId = memberId;
       window.switchView('member-detail', `id=${memberId}`);
@@ -925,73 +925,1026 @@
       }
     };
 
-    window.openMemberModal = function(memberId) {
-      window.openMemberDetailsPage(memberId);
-    };
+    // ==========================================================
+    // 👤 DEDICATED MEMBER PROFILE / DETAILS FULL PAGE
+    // ==========================================================
+    window.renderMemberDetailPage = function(container) {
+      const memberId = window.state.selectedMemberId;
+      const member = window.state.members.find(m => m.id === memberId || m.memberId === memberId) || window.state.members[0];
 
-    window.toggleAdminGroupSelection = function(groupName) {
-      const idx = window.state.selectedAdminGroups.indexOf(groupName);
-      if (idx > -1) {
-        window.state.selectedAdminGroups.splice(idx, 1);
-      } else {
-        if (window.state.selectedAdminGroups.length >= 2) {
-          alert("You can select a maximum of 2 WhatsApp Groups (1st Choice & 2nd Choice).");
-          return;
-        }
-        window.state.selectedAdminGroups.push(groupName);
-      }
-      window.renderSelectedAdminGroupsUI();
-    };
-
-    window.renderSelectedAdminGroupsUI = function() {
-      const container = document.getElementById('admin-groups-chips-container');
-      if (!container) return;
-
-      const selected = window.state.selectedAdminGroups;
-      const allGroups = window.state.waGroups;
-
-      container.innerHTML = allGroups.map(g => {
-        const isSelected = selected.includes(g.name || g.title);
-        const choiceIndex = selected.indexOf(g.name || g.title);
-        const isMaxReached = selected.length >= 2 && !isSelected;
-
-        let prefixBadge = '';
-        if (choiceIndex === 0) {
-          prefixBadge = `<span class="bg-brand-gold text-slate-950 font-black px-2 py-0.5 rounded text-[9px] uppercase shadow">1st Choice (Lead)</span>`;
-        } else if (choiceIndex === 1) {
-          prefixBadge = `<span class="bg-brand-teal text-slate-950 font-black px-2 py-0.5 rounded text-[9px] uppercase shadow">2nd Choice (Co-Lead)</span>`;
-        } else if (g.isRecommended) {
-          prefixBadge = `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[8px] font-bold">⭐ Recommended</span>`;
-        }
-
-        return `
-          <div onclick="${isMaxReached ? '' : `window.toggleAdminGroupSelection('${g.name || g.title}')`}" 
-               class="p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-2.5 ${isSelected ? 'bg-brand-whatsapp/15 border-brand-whatsapp text-white shadow-lg' : (isMaxReached ? 'opacity-40 bg-slate-900 border-slate-800 cursor-not-allowed' : 'bg-brand-dark/90 border-brand-border text-slate-300 hover:border-brand-teal/50')}">
-            <div class="flex items-center gap-2.5 truncate">
-              <div class="w-4 h-4 rounded border ${isSelected ? 'bg-brand-whatsapp border-brand-whatsapp text-slate-950 flex items-center justify-center text-[10px] font-black' : 'border-slate-600'}">
-                ${isSelected ? '✓' : ''}
-              </div>
-              <div class="truncate">
-                <div class="font-bold text-xs truncate">${g.name || g.title}</div>
-                <div class="text-[9px] text-slate-400 truncate">${g.category || g.tag || 'Community'}</div>
-              </div>
+      if (!member) {
+        container.innerHTML = `
+          <div class="py-20 px-4 max-w-md mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-rose-500/40 shadow-2xl">
+              <h3 class="text-xl font-black text-white mb-2">Member Profile Not Found</h3>
+              <button onclick="window.switchView('home')" class="px-6 py-3 bg-brand-teal text-brand-black font-black text-xs rounded-xl shadow-lg mt-4">Return Home</button>
             </div>
-            <div>${prefixBadge}</div>
           </div>
         `;
-      }).join('');
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="max-w-3xl mx-auto px-4 py-10 animate-slide-up">
+          <div class="glass-box p-6 sm:p-10 rounded-[32px] border border-brand-gold/40 shadow-2xl relative overflow-hidden text-left">
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-brand-gold/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+            <div class="flex items-center justify-between pb-4 mb-6 border-b border-brand-border">
+              <button onclick="window.switchView('home')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-brand-teal transition">
+                ← Back to Leaders Directory
+              </button>
+              <span class="text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-brand-gold/15 text-brand-gold border border-brand-gold/40">
+                ${member.badge || 'VERIFIED LEADER'}
+              </span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-brand-border">
+              <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl overflow-hidden bg-slate-900 border-2 border-brand-gold/60 shadow-2xl flex-shrink-0">
+                ${member.photoUrl ? `<img src="${member.photoUrl}" class="w-full h-full object-cover object-top" />` : window.getDefaultAvatarHtml(member.name, 'Male', 'w-full h-full')}
+              </div>
+              <div class="text-center sm:text-left flex-1">
+                <h1 class="text-2xl sm:text-3xl font-black text-white">${member.name}</h1>
+                <p class="text-brand-teal text-sm font-bold mt-1">${member.role}</p>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-dark rounded-xl border border-brand-border mt-3 text-xs font-mono">
+                  <span class="text-slate-400">OFFICIAL ID:</span>
+                  <strong class="text-brand-gold font-bold">${member.memberId}</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Details Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6 border-b border-brand-border text-xs">
+              <div class="p-4 bg-brand-card/80 rounded-2xl border border-brand-border space-y-1">
+                <span class="text-slate-400 font-semibold block">ASSIGNED DISTRICT:</span>
+                <strong class="text-white text-sm block">📍 ${member.district || 'West Bengal'}</strong>
+              </div>
+              <div class="p-4 bg-brand-card/80 rounded-2xl border border-brand-border space-y-1">
+                <span class="text-slate-400 font-semibold block">ASSOCIATION TENURE:</span>
+                <strong class="text-brand-teal text-sm block">🗓️ ${member.joinedDate || 'Active Volunteer'}</strong>
+              </div>
+              ${member.phone && member.showPhone ? `
+                <div class="p-4 bg-brand-card/80 rounded-2xl border border-brand-border space-y-1">
+                  <span class="text-slate-400 font-semibold block">OFFICIAL HELPLINE:</span>
+                  <strong class="text-brand-whatsapp text-sm block">📱 ${member.phone}</strong>
+                </div>
+              ` : ''}
+              ${member.email ? `
+                <div class="p-4 bg-brand-card/80 rounded-2xl border border-brand-border space-y-1">
+                  <span class="text-slate-400 font-semibold block">OFFICIAL EMAIL:</span>
+                  <strong class="text-slate-200 text-sm block truncate">✉️ ${member.email}</strong>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Dedicated Bio & Contributions Section -->
+            <div class="pt-6 space-y-3">
+              <h3 class="text-xs font-black uppercase tracking-wider text-brand-gold">Official Portfolio & Contributions</h3>
+              <div class="p-5 bg-brand-dark/90 rounded-2xl border border-brand-border/80 text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-line">
+                ${member.bio || 'Dedicated state student volunteer actively leading educational initiatives, doubt solving, and student welfare desks across West Bengal.'}
+              </div>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3">
+              <button onclick="window.switchView('membership')" class="flex-1 py-3.5 bg-gradient-to-r from-brand-gold to-amber-500 hover:from-amber-400 text-brand-black font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                <span>🤝</span> Apply to Join State Team
+              </button>
+              <button onclick="window.switchView('home')" class="px-6 py-3.5 bg-brand-card hover:bg-brand-border text-slate-300 font-bold text-xs rounded-xl border border-brand-border transition">
+                Return to Directory
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    window.setGroupFilter = function(filter) {
+      window.state.groupFilter = filter;
+      const container = document.getElementById('main-content');
+      if (container && window.state.currentView === 'groups') {
+        window.renderAllGroupsPage(container);
+      }
+    };
+
+    window.renderAllGroupsPage = function(container) {
+      const currentFilter = window.state.groupFilter || 'all';
+      const allGroups = window.state.waGroups || [];
+
+      const filtered = allGroups.filter(g => {
+        if (currentFilter === 'all') return true;
+        const cat = (g.category || g.tag || '').toLowerCase();
+        const name = (g.name || g.title || '').toLowerCase();
+
+        if (currentFilter === '10th') return cat.includes('10') || name.includes('10') || cat.includes('madhyamik') || name.includes('madhyamik');
+        if (currentFilter === '11th') return cat.includes('11') || name.includes('11');
+        if (currentFilter === '12th') return cat.includes('12') || name.includes('12') || cat.includes('hs') || name.includes('hs');
+        if (currentFilter === 'college') return cat.includes('college') || name.includes('college') || cat.includes('university') || cat.includes('ba') || name.includes('ba') || cat.includes('b.com') || name.includes('b.com') || cat.includes('bcom') || name.includes('bcom');
+        if (currentFilter === 'special') return cat.includes('special') || cat.includes('district') || cat.includes('division') || cat.includes('volunteer') || cat.includes('hub');
+        return true;
+      });
+
+      container.innerHTML = `
+        <div class="max-w-6xl mx-auto px-4 py-8 animate-slide-up">
+          <div class="text-center max-w-2xl mx-auto mb-8">
+            <div class="inline-flex items-center gap-2 bg-brand-whatsapp/15 border border-brand-whatsapp/30 px-4 py-1.5 rounded-full text-brand-whatsapp text-xs font-black mb-3">
+              <span>💬</span> Official Verified Groups Directory
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-black text-white">Join Your Student Community</h1>
+            <p class="text-slate-300 text-xs sm:text-sm mt-2">Connect with verified students across Bengal by class, stream, university, and district divisions.</p>
+          </div>
+
+          <div class="flex gap-2 pb-4 mb-8 overflow-x-auto no-scrollbar justify-start sm:justify-center">
+            <button onclick="window.setGroupFilter('all')" class="px-4 py-2 rounded-xl text-xs font-black transition ${currentFilter === 'all' ? 'bg-brand-whatsapp text-slate-950 shadow-lg shadow-brand-whatsapp/20' : 'bg-brand-card text-slate-300 border border-brand-border hover:text-white'}">🌟 All Groups (${allGroups.length})</button>
+            <button onclick="window.setGroupFilter('10th')" class="px-4 py-2 rounded-xl text-xs font-black transition ${currentFilter === '10th' ? 'bg-brand-whatsapp text-slate-950 shadow-lg' : 'bg-brand-card text-slate-300 border border-brand-border hover:text-white'}">📘 Class 10th</button>
+            <button onclick="window.setGroupFilter('11th')" class="px-4 py-2 rounded-xl text-xs font-black transition ${currentFilter === '11th' ? 'bg-brand-whatsapp text-slate-950 shadow-lg' : 'bg-brand-card text-slate-300 border border-brand-border hover:text-white'}">📗 Class 11th</button>
+            <button onclick="window.setGroupFilter('12th')" class="px-4 py-2 rounded-xl text-xs font-black transition ${currentFilter === '12th' ? 'bg-brand-whatsapp text-slate-950 shadow-lg' : 'bg-brand-card text-slate-300 border border-brand-border hover:text-white'}">📙 Class 12th</button>
+            <button onclick="window.setGroupFilter('college')" class="px-4 py-2 rounded-xl text-xs font-black transition ${currentFilter === 'college' ? 'bg-brand-whatsapp text-slate-950 shadow-lg' : 'bg-brand-card text-slate-300 border border-brand-border hover:text-white'}">🎓 College & B.COM</button>
+            <button onclick="window.setGroupFilter('special')" class="px-4 py-2 rounded-xl text-xs font-black transition ${currentFilter === 'special' ? 'bg-brand-whatsapp text-slate-950 shadow-lg' : 'bg-brand-card text-slate-300 border border-brand-border hover:text-white'}">🏛️ District & Special</button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            ${filtered.length === 0 ? `
+              <div class="col-span-full glass-box p-12 rounded-3xl text-center text-slate-400 text-xs">
+                No active groups found in this category right now.
+              </div>
+            ` : filtered.map(grp => {
+              const count = window.getRealGroupCount(grp);
+              const limit = grp.memberLimit || 1024;
+              const percent = Math.min(100, Math.round((count / limit) * 100));
+
+              return `
+                <div class="glass-box p-6 rounded-3xl flex flex-col justify-between shadow-2xl relative overflow-hidden group hover:border-brand-whatsapp/60 transition">
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-full bg-brand-whatsapp/15 text-brand-whatsapp border border-brand-whatsapp/30">
+                        ${grp.category || grp.tag || 'COMMUNITY'}
+                      </span>
+                      <span class="text-[10px] text-slate-300 font-mono font-bold flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded-lg border border-slate-800">
+                        👥 ${count} / ${limit}
+                      </span>
+                    </div>
+                    
+                    <h3 class="text-base font-black text-white group-hover:text-brand-whatsapp transition leading-snug">
+                      ${grp.name || grp.title}
+                    </h3>
+                    
+                    <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                      ${grp.description || grp.subtitle || 'Official verified student community group.'}
+                    </p>
+
+                    <div class="space-y-1 pt-1">
+                      <div class="flex justify-between text-[9px] text-slate-400 font-mono">
+                        <span>Batch Capacity:</span>
+                        <span class="text-brand-teal font-bold">${percent}% Joined</span>
+                      </div>
+                      <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 rounded-full" style="width: ${percent}%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a href="${grp.link}" target="_blank" class="mt-5 w-full py-3 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-2 shadow-lg">
+                    <span>📱</span> Join WhatsApp Group
+                  </a>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    };
+
+    window.renderStudyPage = function(container) {
+      container.innerHTML = `
+        <div class="w-full h-[calc(100vh-130px)] flex flex-col animate-slide-up">
+          <div class="bg-brand-dark px-4 py-3 border-b border-brand-border flex justify-between items-center text-xs">
+            <span class="text-brand-gold font-bold">📚 WBSTG Integrated Learning Portal</span>
+            <a href="${LEARNING_PORTAL}" target="_blank" class="text-brand-teal hover:underline flex items-center gap-1">Open in Tab <span class="text-lg">↗</span></a>
+          </div>
+          <iframe src="${LEARNING_PORTAL}" class="w-full flex-1 border-0 bg-brand-black"></iframe>
+        </div>
+      `;
+    };
+
+    window.renderStorePage = function(container) {
+      container.innerHTML = `
+        <div class="py-24 px-4 max-w-md mx-auto text-center animate-slide-up">
+          <div class="glass-box p-10 rounded-3xl border border-brand-gold/40 shadow-2xl space-y-4">
+            <div class="text-5xl">🛍️</div>
+            <h2 class="text-2xl font-black text-white">WBSTG Store</h2>
+            <p class="text-brand-black text-sm font-bold bg-brand-gold py-2.5 px-4 rounded-xl shadow-lg shadow-brand-gold/20">Coming soon we are working on it</p>
+            <p class="text-xs text-slate-400">Get physical notes, sample question papers and merchandise directly delivered.</p>
+            <button onclick="window.switchView('home')" class="mt-4 w-full py-3 bg-brand-card text-brand-teal font-black text-xs rounded-xl border border-brand-teal/30 hover:border-brand-teal transition">Return Home</button>
+          </div>
+        </div>
+      `;
+    };
+
+    window.renderUpdatesPage = function(container) {
+      const user = window.state.currentUser;
+      const myNotifs = window.state.notifications.filter(n => n.target === 'all' || (user && n.target === user.email));
+
+      container.innerHTML = `
+        <div class="max-w-3xl mx-auto px-4 py-8 animate-slide-up">
+          <div class="flex items-center justify-between pb-4 mb-6 border-b border-brand-border">
+            <div>
+              <h2 class="text-2xl font-black text-white">🔔 Notices & Updates</h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">Official broadcasts and admin tasks.</p>
+            </div>
+            <span class="text-[10px] bg-brand-teal/15 text-brand-teal px-3 py-1 rounded-full font-bold">${myNotifs.length} Updates</span>
+          </div>
+
+          <div class="space-y-4">
+            ${myNotifs.length === 0 ? `
+              <div class="glass-box p-8 rounded-2xl text-center text-slate-400 text-xs">No new updates right now.</div>
+            ` : myNotifs.map((n, index) => `
+              <div class="glass-box p-5 rounded-2xl border-l-4 border-l-brand-teal text-left shadow-lg relative overflow-hidden transition hover:-translate-y-1">
+                ${index < 3 ? '<div class="absolute top-0 right-0 bg-rose-500 text-white text-[8px] font-black px-2 py-0.5 rounded-bl-lg tracking-wider animate-pulse">NEW</div>' : ''}
+                
+                <div class="flex justify-between items-center mb-1.5 pr-8">
+                  <h4 class="font-bold text-white text-sm">${n.title}</h4>
+                </div>
+                <div class="text-[9px] text-slate-400 font-mono mb-2">${n.date} • ${n.time || ''}</div>
+                <p class="text-xs text-slate-300 leading-relaxed">${n.message}</p>
+                
+                <div class="flex flex-wrap items-center gap-2 mt-3">
+                  ${n.link ? `<a href="${n.link}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-brand-teal text-brand-black text-[10px] font-black rounded-lg shadow-lg hover:bg-cyan-300 transition">Open Link ↗</a>` : ''}
+                  ${n.target !== 'all' ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 text-[9px] bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-lg font-bold">🔒 Private Task</span>' : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    };
+
+    window.renderForYouPage = function(container) {
+      const u = window.state.currentUser;
+      if (!u) {
+        container.innerHTML = `
+          <div class="py-20 px-4 max-w-md mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-brand-teal/40 shadow-2xl">
+              <div class="text-4xl mb-3">👤</div>
+              <h3 class="text-xl font-black text-white mb-2">Sign In Required</h3>
+              <p class="text-xs text-slate-300 mb-6">Please sign in to view your personalized student dashboard.</p>
+              <button onclick="window.openAuthModal()" class="w-full py-3 bg-brand-teal text-brand-black font-black text-sm rounded-xl shadow-lg">Sign In / Register</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const curEmail = (u.email || '').trim().toLowerCase();
+      const curPhone = (u.phone || '').trim();
+
+      const myApp = window.state.applications.find(a => 
+        (curEmail && a.email && a.email.trim().toLowerCase() === curEmail) ||
+        (curPhone && a.whatsapp && a.whatsapp.trim() === curPhone)
+      );
+
+      const isApproved = myApp && myApp.status === 'approved';
+      const firstLetter = (u.name || 'U').charAt(0).toUpperCase();
+
+      let approvedTasksHtml = '';
+      if (isApproved) {
+        const myTasks = window.state.tasks || [];
+        const subs = window.state.taskSubmissions[myApp.id] || [];
+
+        approvedTasksHtml = `
+          <div class="mt-6 text-left space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">📋</span>
+                <h3 class="text-sm font-black text-white uppercase tracking-wider">My Official Tasks</h3>
+              </div>
+              <span class="text-[10px] bg-brand-gold/15 text-brand-gold border border-brand-gold/30 px-2.5 py-0.5 rounded-full font-bold">
+                ${myTasks.length} Assigned
+              </span>
+            </div>
+
+            ${myTasks.length === 0 ? `
+              <div class="p-4 bg-brand-card rounded-2xl border border-brand-border text-center text-xs text-slate-400">
+                No active tasks assigned by administration right now.
+              </div>
+            ` : myTasks.map(t => {
+              const isDone = subs.includes(t.id);
+              return `
+                <div class="p-4 rounded-2xl bg-brand-card border ${isDone ? 'border-emerald-500/40' : 'border-brand-border'} flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                  <div>
+                    <h4 class="font-bold text-white text-xs ${isDone ? 'line-through text-slate-400' : ''}">${t.title}</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">${t.description || 'Complete official community assignment.'}</p>
+                    <p class="text-[9px] text-brand-gold mt-1">Deadline: ${t.deadline || 'Ongoing'}</p>
+                  </div>
+                  <div>
+                    ${isDone ? `
+                      <span class="px-3 py-1 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded-lg text-[10px] font-bold">Completed ✓</span>
+                    ` : `
+                      <button onclick="window.markTaskDone('${myApp.id}', '${t.id}')" class="px-4 py-2 bg-brand-teal text-brand-black font-black rounded-xl text-[10px] shadow hover:bg-cyan-300 transition">Mark as Done</button>
+                    `}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="max-w-xl mx-auto px-4 py-8 animate-slide-up">
+          <div class="glass-box p-8 rounded-3xl border border-brand-teal/40 shadow-2xl text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-brand-teal/10 to-transparent"></div>
+            
+            <div onclick="document.getElementById('foryou-profile-file-input').click()" class="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-tr from-cyan-500 to-blue-600 text-white font-black text-3xl flex items-center justify-center mx-auto mb-4 shadow-xl ring-4 ring-brand-teal/30 cursor-pointer group" title="Click to Change Photo">
+              ${u.photoUrl ? `<img src="${u.photoUrl}" class="w-full h-full object-cover" />` : firstLetter}
+              <div class="absolute inset-0 bg-black/50 text-[10px] font-bold flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition text-brand-teal">
+                <span>📷</span>
+                <span>Change</span>
+              </div>
+            </div>
+
+            <h2 class="text-2xl font-black text-white">${u.name}</h2>
+            <p class="text-xs text-brand-teal font-mono mb-2">${u.email}</p>
+
+            ${isApproved ? `
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/15 border border-emerald-500/40 rounded-full text-emerald-400 font-mono text-[11px] font-bold mb-6">
+                <span>🎓 Official ID:</span> <strong>${myApp.memberId}</strong>
+              </div>
+            ` : ''}
+
+            <div class="bg-brand-card p-5 rounded-2xl border border-brand-border text-xs text-left space-y-3 mb-6 text-slate-300 relative z-10">
+              <div class="flex justify-between border-b border-brand-border pb-2"><span>District:</span><strong class="text-white">${u.district || 'Kolkata'}</strong></div>
+              <div class="flex justify-between"><span>WhatsApp:</span><strong class="text-white">${u.phone || 'Not Provided'}</strong></div>
+            </div>
+
+            ${approvedTasksHtml}
+
+            <div class="space-y-3 relative z-10 mt-6">
+              <button onclick="document.getElementById('foryou-profile-file-input').click()" class="w-full py-3 bg-brand-teal text-brand-black font-black rounded-xl text-xs shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2">📷 Upload / Crop Profile Photo</button>
+              <button onclick="window.openProfileEditForm()" class="w-full py-3 bg-brand-card hover:bg-brand-border text-slate-200 font-bold rounded-xl text-xs border border-brand-border transition">✎ Edit Personal Info</button>
+              <button onclick="window.handleLogout()" class="w-full py-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold rounded-xl text-xs border border-rose-500/30 transition">🚪 Sign Out</button>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    window.markTaskDone = async function(appId, taskId) {
+      if (!window.state.taskSubmissions[appId]) window.state.taskSubmissions[appId] = [];
+      if (!window.state.taskSubmissions[appId].includes(taskId)) {
+        window.state.taskSubmissions[appId].push(taskId);
+        await window.dbSave('taskSubmissions', appId, { tasks: window.state.taskSubmissions[appId] });
+        alert("Task marked as completed!");
+        window.renderMain();
+      }
+    };
+
+    window.renderHomePage = function(container) {
+      const greeting = window.state.currentUser ? `Hi, ${window.state.currentUser.name}! 👋` : `Hi, Student! 👋`;
+      const duplicatedGroups = [...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups];
+      const duplicatedMembers = [...window.state.members, ...window.state.members, ...window.state.members, ...window.state.members];
+
+      let userAppHtml = '';
+
+      if (window.state.currentUser) {
+        const curEmail = (window.state.currentUser.email || '').trim().toLowerCase();
+        const curPhone = (window.state.currentUser.phone || '').trim();
+
+        const myApp = window.state.applications.find(a => 
+          (curEmail && a.email && a.email.trim().toLowerCase() === curEmail) ||
+          (curPhone && a.whatsapp && a.whatsapp.trim() === curPhone)
+        );
+
+        if (myApp) {
+          const isApproved = myApp.status === 'approved';
+          const isRejected = myApp.status === 'not_selected';
+          
+          const statusColor = isApproved ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' : (isRejected ? 'text-rose-400 bg-rose-500/10 border-rose-500/30' : 'text-brand-gold bg-brand-gold/10 border-brand-gold/30');
+          const statusIcon = isApproved ? '✓ APPROVED' : (isRejected ? '✕ NOT APPROVED BY AUTHORITY' : '⏳ UNDER REVIEW');
+
+          userAppHtml = `
+            <div class="max-w-4xl mx-auto px-4 pt-6 animate-slide-up">
+              <div class="bg-gradient-to-br from-[#12111A] to-[#0A0B14] p-6 sm:p-8 rounded-[32px] border border-slate-800/80 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 ${isApproved ? 'bg-emerald-500/10' : (isRejected ? 'bg-rose-500/10' : 'bg-brand-gold/10')} blur-[60px] pointer-events-none"></div>
+
+                <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl ${isApproved ? 'bg-emerald-500/20 text-emerald-400' : (isRejected ? 'bg-rose-500/20 text-rose-400' : 'bg-brand-gold/20 text-brand-gold')} flex items-center justify-center text-2xl shadow-inner">
+                      ${isApproved ? '🎓' : (isRejected ? '⚠️' : '📋')}
+                    </div>
+                    <div>
+                      <h3 class="text-white font-black text-xl">Application Status</h3>
+                      <p class="text-xs text-slate-400 font-medium">Tracking ID: <span class="text-brand-teal font-mono">${myApp.trackingId}</span></p>
+                    </div>
+                  </div>
+                  
+                  <div class="flex items-center gap-2">
+                    <span class="px-4 py-1.5 rounded-xl text-[10px] font-black border ${statusColor} shadow-sm">${statusIcon}</span>
+                  </div>
+                </div>
+
+                <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#0A0B14] p-5 rounded-[24px] border border-slate-800/60 shadow-inner">
+                  <div class="flex flex-col gap-1">
+                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Official Member ID</span>
+                    <strong class="text-white font-mono text-base">${myApp.memberId || 'Pending Approval'}</strong>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Target Group Admin</span>
+                    <strong class="text-brand-whatsapp text-sm font-bold">${myApp.targetLeadGroup || 'None'}</strong>
+                  </div>
+                </div>
+
+                ${isRejected ? `
+                  <div class="relative z-10 mt-4 p-4 rounded-[20px] bg-rose-500/10 border border-rose-500/20 flex items-start gap-3">
+                    <span class="text-rose-400 text-lg">🏛️</span>
+                    <div>
+                      <strong class="block text-[11px] font-black text-rose-400 uppercase tracking-wider mb-1">Official Authority Remark:</strong>
+                      <p class="text-xs text-rose-200/90 italic leading-relaxed">${myApp.rejectionReason || 'Application review concluded by state administration.'}</p>
+                    </div>
+                  </div>
+                ` : ''}
+
+                <div class="relative z-10 mt-6 flex flex-col sm:flex-row gap-3">
+                  ${isApproved ? `<button onclick="window.downloadIdCardJpg('${myApp.id}')" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-brand-gold to-yellow-500 text-brand-black font-black text-xs rounded-xl shadow-[0_0_15px_rgba(255,184,0,0.3)] hover:scale-105 transition transform flex items-center justify-center gap-2"><span class="text-base">🆔</span> Download ID Card</button>` : ''}
+                  ${isRejected ? `<button onclick="window.reapplyMembership('${myApp.id}')" class="w-full sm:w-auto px-6 py-3 bg-rose-500 text-white font-black text-xs rounded-xl shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:scale-105 transition transform flex items-center justify-center gap-2"><span class="text-base">🔄</span> Re-fill Form</button>` : ''}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      container.innerHTML = `
+        ${userAppHtml}
+
+        <section class="pt-10 md:pt-16 pb-12 px-4 max-w-6xl mx-auto text-center relative">
+          <div class="inline-flex items-center gap-2 bg-brand-teal/10 border border-brand-teal/30 px-4 py-1.5 rounded-full text-brand-teal text-xs font-black mb-4 shadow-lg">
+            <span>✨</span> ${greeting}
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight md:leading-none mb-6">
+            Bengal’s Premier <br />
+            <span class="gold-gradient-text">Student Welfare Force</span>
+          </h1>
+
+          <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed px-2">
+            WB Students Group delivers free syllabus notes, Madhyamik & HS batch guidance, mock tests, and grassroots youth leadership.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto">
+            <button onclick="window.switchView('study')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-gold to-amber-500 hover:from-amber-400 text-brand-black font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 transition">
+              📚 Open Study Portal ❯
+            </button>
+            <button onclick="window.switchView('membership')" class="w-full sm:w-auto px-8 py-4 bg-brand-card hover:bg-brand-border text-brand-teal font-black text-sm rounded-2xl border border-brand-teal/40 transition shadow-lg">
+              👥 Membership Form →
+            </button>
+          </div>
+        </section>
+
+        <!-- GET OUR OFFICIAL APPLICATION / ALL-IN-ONE APP SHOWCASE -->
+        <section id="app-showcase" class="py-16 px-4 max-w-5xl mx-auto relative text-center">
+          <div class="mb-6">
+            <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Everything you need.</h2>
+            <p class="text-brand-teal text-xs font-bold tracking-widest uppercase mt-3">All-in-one app for WB Students 🎓</p>
+          </div>
+
+          <div class="relative my-16 flex items-center justify-center py-10 min-h-[500px]">
+            <div class="solar-system w-full max-w-[500px] h-[500px] flex items-center justify-center absolute">
+              <div class="absolute w-[340px] sm:w-[460px] h-[340px] sm:h-[460px] border border-dashed border-brand-teal/20 rounded-full orbit-path" style="animation: orbitRotate 35s linear infinite;">
+                 <div class="orbit-planet absolute -top-[35px] left-1/2 -translate-x-1/2 w-[70px] h-[70px] rounded-full bg-[#050D1A] border border-[#152945] flex flex-col items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.15)]" style="animation: counterRotate 35s linear infinite;">
+                    <span class="text-lg mb-1">📖</span><span class="text-[7px] text-slate-300 font-bold text-center leading-tight">Study<br/>Materials</span>
+                 </div>
+                 <div class="orbit-planet absolute top-[15%] -right-[20px] sm:-right-[35px] w-[70px] h-[70px] rounded-full bg-[#050D1A] border border-[#152945] flex flex-col items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.15)]" style="animation: counterRotate 35s linear infinite;">
+                    <span class="text-lg mb-1">📋</span><span class="text-[7px] text-slate-300 font-bold text-center leading-tight">Tests &<br/>Practice</span>
+                 </div>
+                 <div class="orbit-planet absolute bottom-[15%] -right-[15px] sm:-right-[20px] w-[70px] h-[70px] rounded-full bg-[#050D1A] border border-[#152945] flex flex-col items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.15)]" style="animation: counterRotate 35s linear infinite;">
+                    <span class="text-lg mb-1">📄</span><span class="text-[7px] text-slate-300 font-bold text-center leading-tight">PDF<br/>Notes</span>
+                 </div>
+                 <div class="orbit-planet absolute bottom-[15%] -left-[15px] sm:-left-[20px] w-[70px] h-[70px] rounded-full bg-[#050D1A] border border-[#152945] flex flex-col items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.15)]" style="animation: counterRotate 35s linear infinite;">
+                    <span class="text-lg mb-1">📊</span><span class="text-[7px] text-slate-300 font-bold text-center leading-tight">Track<br/>Progress</span>
+                 </div>
+                 <div class="orbit-planet absolute top-[15%] -left-[20px] sm:-left-[35px] w-[70px] h-[70px] rounded-full bg-[#050D1A] border border-[#152945] flex flex-col items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.15)]" style="animation: counterRotate 35s linear infinite;">
+                    <span class="text-lg mb-1">🔔</span><span class="text-[7px] text-slate-300 font-bold text-center leading-tight">Notices &<br/>Updates</span>
+                 </div>
+              </div>
+            </div>
+
+            <div class="relative w-[220px] sm:w-[250px] h-[460px] sm:h-[500px] bg-[#050D1A] border-[4px] sm:border-[6px] border-[#152945] rounded-[36px] sm:rounded-[42px] shadow-[0_0_60px_rgba(0,240,255,0.15)] flex flex-col overflow-hidden z-10 bg-gradient-to-b from-[#0A0A10] to-[#02050D]">
+              <div class="absolute top-2 left-1/2 -translate-x-1/2 w-[60px] sm:w-[70px] h-[16px] sm:h-[18px] bg-[#152945] rounded-full z-30"></div>
+              <div class="flex-1 flex flex-col px-4 pt-12 pb-4 relative z-20">
+                <div class="flex justify-center mb-5">
+                   <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,184,0,0.3)] p-1.5"><img src="${LOGO_URL}" class="w-full h-full object-contain" /></div>
+                </div>
+                <h3 class="text-white font-black text-center text-lg tracking-wide mb-1">WB STG APP</h3>
+                <p class="text-brand-teal text-[9px] text-center font-bold tracking-widest uppercase mb-8">Coming Soon</p>
+                <div class="space-y-4 w-full">
+                  <div class="h-14 bg-[#0A0A10] border border-brand-border rounded-2xl flex items-center px-3.5 gap-3 shadow-md">
+                    <div class="w-8 h-8 rounded-full bg-brand-teal/10 flex items-center justify-center text-sm">📚</div>
+                    <div class="flex-1"><div class="h-2 w-3/4 bg-slate-700 rounded-full mb-2"></div><div class="h-1.5 w-1/2 bg-slate-800 rounded-full"></div></div>
+                  </div>
+                  <div class="h-14 bg-[#0A0A10] border border-brand-border rounded-2xl flex items-center px-3.5 gap-3 shadow-md">
+                    <div class="w-8 h-8 rounded-full bg-brand-gold/10 flex items-center justify-center text-sm">⚡</div>
+                    <div class="flex-1"><div class="h-2 w-2/3 bg-slate-700 rounded-full mb-2"></div><div class="h-1.5 w-1/3 bg-slate-800 rounded-full"></div></div>
+                  </div>
+                  <div class="h-14 bg-[#0A0A10] border border-brand-border rounded-2xl flex items-center px-3.5 gap-3 shadow-md">
+                    <div class="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center text-sm">📊</div>
+                    <div class="flex-1"><div class="h-2 w-full bg-slate-700 rounded-full mb-2"></div><div class="h-1.5 w-2/3 bg-slate-800 rounded-full"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="h-6 flex justify-center items-center pb-2 bg-[#02050D]"><div class="w-1/3 h-1 bg-slate-700 rounded-full"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WHATSAPP GROUPS TRACK (FORWARD AUTO-SCROLL + MANUAL DRAG) -->
+        <section id="wa-communities" class="py-12 border-y border-brand-border/60 bg-brand-dark/60 relative overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div>
+              <span class="text-brand-whatsapp text-xs font-black uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5 mb-1">Official Verified WhatsApp Groups</span>
+              <h3 class="text-xl sm:text-2xl font-black text-white">Join Your Class & District Community</h3>
+            </div>
+            <button onclick="window.switchView('groups')" class="px-4 py-2 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center gap-1.5">
+              View All Groups (${window.state.waGroups.length}) ❯
+            </button>
+          </div>
+
+          <div id="home-wa-scroll-track" class="interactive-scroll-container no-scrollbar px-4">
+            ${duplicatedGroups.map(grp => {
+              const count = window.getRealGroupCount(grp);
+              return `
+                <div class="w-[290px] sm:w-[320px] glass-box p-5 rounded-3xl flex flex-col justify-between shadow-xl flex-shrink-0">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-full bg-brand-whatsapp/15 text-brand-whatsapp border border-brand-whatsapp/30">${grp.category || grp.tag || 'COMMUNITY'}</span>
+                      <span class="text-[10px] text-slate-300 font-mono font-bold bg-slate-900 px-2 py-0.5 rounded-lg">👥 ${count}/${grp.memberLimit || 1024}</span>
+                    </div>
+                    <h4 class="text-base font-black text-white truncate">${grp.name || grp.title}</h4>
+                    <p class="text-slate-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">${grp.description || grp.subtitle || 'Official verified group'}</p>
+                  </div>
+                  <a href="${grp.link}" target="_blank" class="mt-4 w-full py-2.5 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-1.5">Join WhatsApp Group</a>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </section>
+
+        <!-- LEADERS DIRECTORY TRACK (OPPOSITE/REVERSE AUTO-SCROLL + MANUAL DRAG + CLICK TO VIEW FULL PROFILE) -->
+        <section class="py-16 relative overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-center sm:text-left">
+            <div>
+              <div class="text-brand-gold text-xs font-black uppercase tracking-widest mb-1">🏆 State Executive Directory</div>
+              <h2 class="text-2xl sm:text-4xl font-black text-white">Verified Team Leaders</h2>
+            </div>
+            <span class="text-xs text-brand-teal bg-brand-teal/10 border border-brand-teal/30 px-3 py-1 rounded-full font-bold self-center sm:self-auto">Drag or Click Card</span>
+          </div>
+
+          <div id="home-leaders-scroll-track" class="interactive-scroll-container no-scrollbar px-4">
+            ${duplicatedMembers.map(m => `
+              <div onclick="window.openMemberDetailsPage('${m.id}')" class="w-[280px] sm:w-[310px] glass-box rounded-3xl overflow-hidden shadow-2xl cursor-pointer flex-shrink-0 group">
+                <div class="relative h-64 w-full bg-slate-900 overflow-hidden">
+                  ${m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-300" />` : window.getDefaultAvatarHtml(m.name, 'Male', 'w-full h-full')}
+                  <div class="absolute top-3 left-3 bg-brand-gold text-brand-black font-black text-[10px] px-3 py-1 rounded-full uppercase shadow-lg">${m.badge || 'CORE TEAM'}</div>
+                </div>
+                <div class="p-4">
+                  <h3 class="text-base font-black text-white group-hover:text-brand-gold transition">${m.name}</h3>
+                  <p class="text-brand-teal text-xs font-semibold mb-2">${m.role}</p>
+                  <p class="text-slate-400 text-xs line-clamp-2 mb-3 leading-relaxed">${m.bio}</p>
+                  <div class="flex items-center justify-between text-xs text-slate-400 pt-2.5 border-t border-brand-border">
+                    <span>📍 ${m.district}</span>
+                    <span class="text-brand-gold font-bold group-hover:underline">See Details →</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="py-12 px-4 max-w-5xl mx-auto">
+          <div class="glass-box p-8 sm:p-12 rounded-3xl border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
+            <div class="absolute -right-10 -bottom-10 text-9xl opacity-5 pointer-events-none select-none">📖</div>
+            <div class="inline-flex items-center gap-2 bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-3.5 py-1 rounded-full text-xs font-bold mb-4">🏛️ Founded on 09-09-2024</div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-4">Our History, Purpose & Core Values</h2>
+            <div class="space-y-4 text-slate-300 text-xs sm:text-sm leading-relaxed">
+              <p>This group was founded on <strong class="text-brand-teal">09-09-2024</strong> specifically for West Bengal students belonging to <strong class="text-white">Hindi, English, and Urdu mediums</strong>. Our primary purpose is to study together, share knowledge, help each other, and maintain a positive, encouraging educational environment.</p>
+              <p>We deeply understand that many students across Bengal cannot afford expensive tuitions or private coaching. Therefore, this platform is built to support, mentor, and guide them completely free of cost.</p>
+              <div class="p-4 bg-brand-card rounded-2xl border border-brand-border flex items-center gap-3">
+                <span class="text-2xl">✨</span>
+                <p class="font-bold text-white text-xs sm:text-sm">We respect every language and subject equally, and here every student is equal.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    };
+
+    window.reapplyMembership = async function(appId) {
+      await window.dbDelete('applications', appId);
+      window.state.applications = window.state.applications.filter(a => a.id !== appId);
+      window.switchView('membership');
+    };
+
+    window.downloadIdCardJpg = function(appId) {
+      const app = window.state.applications.find(a => a.id === appId);
+      if (!app) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1200;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = "#050D1A";
+      ctx.fillRect(0, 0, 800, 1200);
+
+      const grad = ctx.createLinearGradient(0, 0, 800, 240);
+      grad.addColorStop(0, '#081426');
+      grad.addColorStop(1, '#02050D');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 800, 240);
+
+      ctx.strokeStyle = '#FFB800';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(18, 18, 764, 1164);
+
+      const logoImg = new Image();
+      logoImg.crossOrigin = "anonymous";
+      logoImg.onload = function() {
+        ctx.drawImage(logoImg, 60, 50, 85, 85);
+        renderHeaderTextsAndBody();
+      };
+      logoImg.onerror = function() {
+        renderHeaderTextsAndBody();
+      };
+      logoImg.src = LOGO_URL;
+
+      function renderHeaderTextsAndBody() {
+        ctx.fillStyle = '#FFB800';
+        ctx.font = 'bold 30px system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('WB STUDENTS GROUP', 165, 85);
+
+        ctx.fillStyle = '#00F0FF';
+        ctx.font = 'bold 16px system-ui, sans-serif';
+        ctx.fillText('OFFICIAL STATE STUDENT PASS', 165, 115);
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '13px system-ui, sans-serif';
+        ctx.fillText('Student Welfare, Digital Learning & Volunteer Network', 165, 140);
+
+        if (app.photoUrl) {
+          const userImg = new Image();
+          userImg.crossOrigin = "anonymous";
+          userImg.onload = function() {
+            ctx.drawImage(userImg, 300, 260, 200, 220);
+            ctx.strokeStyle = '#00F0FF';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(300, 260, 200, 220);
+            renderCardDetails();
+          };
+          userImg.onerror = function() {
+            drawFallbackAvatar();
+            renderCardDetails();
+          };
+          userImg.src = app.photoUrl;
+        } else {
+          drawFallbackAvatar();
+          renderCardDetails();
+        }
+      }
+
+      function drawFallbackAvatar() {
+        ctx.fillStyle = '#081426';
+        ctx.fillRect(300, 260, 200, 220);
+        ctx.strokeStyle = '#00F0FF';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(300, 260, 200, 220);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 80px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText((app.fullName || 'U').charAt(0).toUpperCase(), 400, 400);
+      }
+
+      function renderCardDetails() {
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 34px system-ui, sans-serif';
+        ctx.fillText(app.fullName || 'Student Member', 400, 530);
+
+        ctx.fillStyle = '#FFB800';
+        ctx.font = 'bold 24px monospace';
+        ctx.fillText('ID: ' + (app.memberId || 'VERIFIED MEMBER'), 400, 575);
+
+        ctx.textAlign = 'left';
+        ctx.font = '18px system-ui, sans-serif';
+
+        const startY = 645;
+        const rowGap = 44;
+
+        const fields = [
+          ['TRACKING ID', app.trackingId || 'N/A'],
+          ['DISTRICT', app.district || 'West Bengal'],
+          ['EDUCATION', app.education || 'Student'],
+          ['PHONE / WA', app.whatsapp || 'Verified'],
+          ['ISSUED DATE', new Date().toISOString().split('T')[0]]
+        ];
+
+        fields.forEach((f, idx) => {
+          ctx.fillStyle = '#64748B';
+          ctx.fillText(f[0], 110, startY + (idx * rowGap));
+          ctx.fillStyle = '#F8FAFC';
+          ctx.font = 'bold 18px system-ui, sans-serif';
+          ctx.fillText(f[1], 330, startY + (idx * rowGap));
+          ctx.font = '18px system-ui, sans-serif';
+        });
+
+        const typeNumber = 4;
+        const errorCorrectionLevel = 'L';
+        const qr = qrcode(typeNumber, errorCorrectionLevel);
+        qr.addData(`WBSTG:${app.memberId}|${app.fullName}|${app.trackingId}`);
+        qr.make();
+        
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(320, 885, 160, 160);
+        ctx.strokeStyle = '#FFB800';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(320, 885, 160, 160);
+
+        const qrImg = new Image();
+        qrImg.src = qr.createDataURL(4, 6);
+        qrImg.onload = function() {
+          ctx.drawImage(qrImg, 325, 890, 150, 150);
+
+          ctx.fillStyle = '#00F0FF';
+          ctx.font = 'bold 14px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('SCAN TO VERIFY OFFICIAL STATE IDENTITY', 400, 1080);
+
+          ctx.fillStyle = '#64748B';
+          ctx.font = '12px system-ui, sans-serif';
+          ctx.fillText('Authorized by State Convener Yusuf Khan • WB Students Group', 400, 1120);
+
+          const link = document.createElement('a');
+          link.download = `WBSTG_ID_${app.trackingId}.jpg`;
+          link.href = canvas.toDataURL('image/jpeg', 0.95);
+          link.click();
+        };
+      }
+    };
+
+    // 🔥 MEMBERSHIP FORM
+    window.renderMembershipPage = function(container) {
+      if (!window.state.currentUser) {
+        container.innerHTML = `
+          <div class="py-16 px-4 max-w-xl mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-brand-gold/40 shadow-2xl">
+              <div class="w-16 h-16 bg-brand-gold/10 text-brand-gold rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">🛡️</div>
+              <h2 class="text-2xl font-black text-white mb-2">Student Authentication Required</h2>
+              <p class="text-slate-300 text-sm mb-6 leading-relaxed">Log in or register with your student phone number to submit authentic membership form.</p>
+              <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <button onclick="window.openAuthModal()" class="px-7 py-3.5 bg-brand-gold hover:bg-brand-goldLight text-brand-black font-black rounded-xl text-sm transition shadow-lg">Sign In or Instant Register</button>
+                <button onclick="window.switchView('home')" class="px-5 py-3.5 bg-brand-card hover:bg-brand-border text-slate-300 rounded-xl text-sm font-bold border border-brand-border transition">← Back to Home</button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const curEmail = (window.state.currentUser.email || '').trim().toLowerCase();
+      const curPhone = (window.state.currentUser.phone || '').trim();
+
+      const existingApp = window.state.applications.find(a => 
+        (curEmail && a.email && a.email.trim().toLowerCase() === curEmail) ||
+        (curPhone && a.whatsapp && a.whatsapp.trim() === curPhone)
+      );
+
+      if (existingApp) {
+        container.innerHTML = `
+          <div class="py-16 px-4 max-w-xl mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-brand-teal/40 shadow-2xl text-left">
+              <div class="flex items-center gap-3 pb-4 mb-4 border-b border-brand-border">
+                <span class="text-3xl">📋</span>
+                <div>
+                  <h3 class="text-xl font-black text-white">Application Already Submitted</h3>
+                  <p class="text-sm text-brand-teal">You have registered for membership.</p>
+                </div>
+              </div>
+
+              <div class="space-y-3 text-sm text-slate-300 mb-6 bg-brand-card p-5 rounded-2xl border border-brand-border">
+                <div class="flex justify-between"><span class="text-slate-400">Applicant Name:</span><strong class="text-white">${existingApp.fullName}</strong></div>
+                <div class="flex justify-between"><span class="text-slate-400">Tracking ID:</span><strong class="text-brand-teal font-mono">${existingApp.trackingId}</strong></div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Application Status:</span>
+                  <span class="px-3 py-1 rounded-full text-xs font-black ${existingApp.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : (existingApp.status === 'not_selected' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-amber-500/20 text-brand-gold border border-brand-gold/30')}">${existingApp.status === 'approved' ? 'APPROVED' : (existingApp.status === 'under_review' ? 'UNDER REVIEW' : 'NOT APPROVED BY AUTHORITY')}</span>
+                </div>
+                ${existingApp.status === 'not_selected' ? `
+                  <div class="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 mt-2">
+                    <strong class="block text-xs mb-1 font-bold text-rose-400">Official Authority Remark:</strong>
+                    <p class="italic text-sm">${existingApp.rejectionReason || 'Application review concluded by state administration.'}</p>
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="window.switchView('home')" class="flex-1 py-3.5 bg-brand-teal text-brand-black font-black rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">🏠 Return to Home Status</button>
+                ${existingApp.status === 'not_selected' ? `
+                  <button onclick="window.reapplyMembership('${existingApp.id}')" class="flex-1 py-3.5 bg-rose-500 text-white font-black rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">🔄 Re-fill Form</button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const s = window.state.formSettings || DEFAULT_FORM_SETTINGS;
+      const showPhoto = s.reqPhoto !== false;
+      const showIdCard = s.reqIdCard === true;
+      const showTargetLead = s.reqTargetLead !== false;
+      const showMotivation = s.reqMotivation !== false;
+      const customFields = Array.isArray(s.customFields) ? s.customFields : [];
+
+      container.innerHTML = `
+        <div class="py-10 px-4 max-w-3xl mx-auto animate-slide-up">
+          <div class="glass-box p-6 sm:p-10 rounded-3xl shadow-2xl">
+            
+            <div class="flex items-center justify-between pb-4 mb-6 border-b border-brand-border">
+              <div>
+                <button onclick="window.switchView('home')" class="inline-flex items-center gap-1 text-sm font-bold text-slate-400 hover:text-brand-teal mb-2 transition">← Back to Home Directory</button>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">Membership Form</h2>
+                <p class="text-slate-400 text-sm mt-0.5">Join Bengal's largest student welfare and grassroots educational network.</p>
+              </div>
+              <img src="${LOGO_URL}" class="w-12 h-12 object-contain hidden sm:block" />
+            </div>
+
+            <form id="membership-form" onsubmit="window.handleMembershipSubmit(event)" class="space-y-6 text-left">
+              
+              <!-- Passport Photo Upload with Auto Cropper -->
+              ${showPhoto ? `
+                <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-border text-center sm:text-left">
+                  <div id="photo-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-teal/50 flex items-center justify-center flex-shrink-0 text-slate-500 text-2xl shadow-inner">📷</div>
+                  <div>
+                    <label class="text-sm font-bold text-white block mb-1">Passport Size Profile Photo <span class="text-slate-400 font-normal">(Optional)</span></label>
+                    <p class="text-xs text-slate-400 mb-2">Upload and crop photo for your official downloadable ID Card.</p>
+                    <label class="inline-block px-4 py-2 bg-brand-card hover:bg-brand-border text-brand-teal text-sm font-bold rounded-lg border border-brand-border cursor-pointer transition">
+                      Choose Photo & Crop
+                      <input type="file" accept="image/*" onchange="window.initImageCrop(event, 'membership')" class="hidden" />
+                    </label>
+                  </div>
+                </div>
+              ` : ''}
+
+              <!-- ID Card Upload with Requested Exact Heading -->
+              ${showIdCard ? `
+                <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-gold/40 text-center sm:text-left">
+                  <div id="idcard-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-gold/50 flex items-center justify-center flex-shrink-0 text-brand-gold text-2xl shadow-inner">🪪</div>
+                  <div class="flex-1">
+                    <label class="text-sm font-bold text-white block mb-1 uppercase tracking-wide">YOUR IDENTITY PROOF * <span class="text-brand-gold font-semibold text-xs">(LIKE YOUR SCHOOL ID, AADHAAR, PAN ANY ONE)</span></label>
+                    <p class="text-[11px] text-slate-300 mb-2 leading-relaxed">WE GET YOUR IDENTITY CARD ONLY FOR YOUR NAME VERIFICATION NOTHING ELSE.</p>
+                    <label class="inline-block px-4 py-2 bg-brand-gold/15 hover:bg-brand-gold/25 text-brand-gold text-sm font-bold rounded-lg border border-brand-gold/40 cursor-pointer transition">
+                      Upload ID Proof File
+                      <input type="file" id="app-idcard-input" accept="image/*" onchange="window.handleIdCardUpload(event)" class="hidden" />
+                    </label>
+                  </div>
+                </div>
+              ` : ''}
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">1. Personal & Contact Information</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">FULL NAME *</label><input type="text" id="app-name" required value="${window.state.currentUser.name || ''}" placeholder="Enter your full name" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" /></div>
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">GENDER *</label><select id="app-gender" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal"><option value="" disabled selected>Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">AGE *</label><input type="number" id="app-age" min="14" max="40" required placeholder="Your age" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" /></div>
+                  
+                  <div class="relative">
+                    <label class="text-xs font-bold text-slate-300 block mb-1">DISTRICT / REGION *</label>
+                    <input type="text" id="app-district" required autocomplete="off" oninput="window.handleDistrictTyping(this, 'app-district-dropdown')" placeholder="Type letter (e.g. K for Kolkata, H for Howrah...)" value="${window.state.currentUser.district || ''}" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" />
+                    <div id="app-district-dropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-[#081426] border border-brand-teal/50 rounded-xl shadow-2xl max-h-48 overflow-y-auto z-50"></div>
+                  </div>
+
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">WHATSAPP NUMBER *</label><input type="tel" id="app-whatsapp" required value="${window.state.currentUser.phone || ''}" placeholder="10-digit number" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" /></div>
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">EMAIL ADDRESS *</label><input type="email" id="app-email" required value="${window.state.currentUser.email || ''}" placeholder="name@email.com" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" /></div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">2. Academic, Motivation & Skills</h4>
+                <div class="space-y-4 text-sm">
+                  <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1">CURRENT EDUCATION CLASS STREAM / COURSE *</label>
+                    <input type="text" id="app-education" required placeholder="Type your class, stream or course (e.g. Class 12 Arts, Madhyamik, B.COM, BA 2nd Sem, B.Sc...)" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" />
+                  </div>
+
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">WHAT SKILLS DO YOU HAVE? <span class="text-brand-teal font-normal">(Optional)</span></label><input type="text" id="app-skills" placeholder="e.g. Teaching, Video Editing, Content Writing..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" /></div>
+                  
+                  ${showMotivation ? `
+                    <div><label class="text-xs font-bold text-slate-300 block mb-1">WHY DO YOU WANT TO JOIN WB STUDENTS GROUP? *</label><textarea id="app-why-join" rows="3" required placeholder="Explain your interest in joining..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-teal"></textarea></div>
+                    <div><label class="text-xs font-bold text-slate-300 block mb-1">HOW CAN YOU HELP NEEDY STUDENTS IN OUR COMMUNITY? *</label><textarea id="app-how-help" rows="3" required placeholder="Share how you can contribute..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-teal"></textarea></div>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- DYNAMIC CUSTOM QUESTIONS -->
+              <div id="dynamicCustomQuestionsContainer" class="${customFields.length > 0 ? 'space-y-4' : 'hidden'}">
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">⭐ Additional Information</h4>
+                <div class="space-y-4 text-sm bg-brand-card/50 p-5 rounded-2xl border border-brand-border">
+                  ${customFields.map(f => {
+                    const reqAttr = f.required ? 'required' : '';
+                    const reqStar = f.required ? ' *' : ' <span class="text-slate-400 font-normal">(Optional)</span>';
+                    const ph = f.placeholder || 'Enter your response';
+
+                    let inputHtml = '';
+                    if (f.type === 'textarea') {
+                      inputHtml = `<textarea name="${f.id}" data-label="${encodeURIComponent(f.label)}" rows="3" ${reqAttr} placeholder="${ph}" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-teal"></textarea>`;
+                    } else if (f.type === 'number') {
+                      inputHtml = `<input type="number" name="${f.id}" data-label="${encodeURIComponent(f.label)}" ${reqAttr} placeholder="${ph}" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" />`;
+                    } else if (f.type === 'select') {
+                      const opts = Array.isArray(f.options) ? f.options : [];
+                      inputHtml = `
+                        <select name="${f.id}" data-label="${encodeURIComponent(f.label)}" ${reqAttr} class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal">
+                          <option value="" disabled selected>Select an option</option>
+                          ${opts.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                        </select>
+                      `;
+                    } else {
+                      inputHtml = `<input type="text" name="${f.id}" data-label="${encodeURIComponent(f.label)}" ${reqAttr} placeholder="${ph}" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none focus:border-brand-teal" />`;
+                    }
+
+                    return `
+                      <div>
+                        <label class="text-xs font-bold text-slate-300 block mb-1 uppercase">${f.label}${reqStar}</label>
+                        ${inputHtml}
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+
+              <!-- Group Admin Option at Top of Contribution Area with custom mobile-friendly selector -->
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">3. Areas of Contribution & Group Leadership</h4>
+                <p class="text-xs text-slate-400 mb-3">Select your desired contributions below. You must choose at least one or check the Group Admin option.</p>
+                <div class="space-y-3 text-sm">
+                  
+                  ${showTargetLead ? `
+                    <div class="p-4 rounded-2xl bg-brand-card border border-brand-whatsapp/50 space-y-3 mb-3">
+                      <label class="flex items-center gap-3 cursor-pointer text-sm font-bold text-brand-whatsapp">
+                        <input type="checkbox" id="lead-group-checkbox" onchange="window.toggleLeadGroupDropdown(this.checked)" class="rounded text-brand-whatsapp w-5 h-5 focus:ring-brand-whatsapp" />
+                        <span>👑 Become Group Admin (Lead a WhatsApp Group)</span>
+                      </label>
+                      
+                      <div id="lead-group-container" class="hidden pt-3 border-t border-brand-border/60 space-y-2">
+                        <label class="text-xs font-bold text-slate-300 block">WHATSAPP GROUP YOU WOULD LIKE TO LEAD:</label>
+                        <select id="targetLeadGroup" class="w-full bg-[#050D1A] border-2 border-brand-whatsapp/60 rounded-xl px-4 py-3.5 text-sm text-white font-bold outline-none focus:border-brand-whatsapp">
+                          <option value="">-- Choose WhatsApp Group to Admin --</option>
+                          ${window.state.waGroups.map(g => `<option value="${g.name || g.title}">${g.name || g.title} (${g.category || g.tag || 'General'})</option>`).join('')}
+                        </select>
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  <div class="grid grid-cols-1 gap-2.5">
+                    ${CONTRIBUTION_AREAS.filter(a => !a.includes('Become Group Admin')).map(a => `<label class="flex items-center gap-3 p-3.5 rounded-xl bg-brand-card border border-brand-border cursor-pointer text-slate-200 hover:border-brand-teal/50 transition text-sm"><input type="checkbox" name="contrib" value="${a}" class="rounded text-brand-teal w-5 h-5" /><span class="font-semibold">${a}</span></label>`).join('')}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">4. Communication Preferences</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">TEAM WORK *</label><select id="app-work-pref" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none"><option value="Frontend Team (Ground / Student Desk)">Frontend Team</option><option value="Backend Team (Notes & Tech)">Backend Team</option><option value="Both Frontend & Backend">Both</option></select></div>
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">ALLOW STUDENT DMS? *</label><select id="app-allow-dm" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none"><option value="Yes (Allowed)">Yes</option><option value="No (Group Only)">No</option></select></div>
+                  <div><label class="text-xs font-bold text-slate-300 block mb-1">ALLOW PHONE CALLS? *</label><select id="app-allow-calls" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white outline-none"><option value="Yes (Allowed)">Yes</option><option value="No (Messages Only)">No</option></select></div>
+                </div>
+              </div>
+
+              <div class="p-5 bg-brand-card/90 rounded-2xl border border-brand-border space-y-3 text-sm">
+                <h4 class="font-black uppercase tracking-wider text-brand-teal flex items-center gap-1.5 text-xs"><span>📜</span> Terms & Privacy Policy</h4>
+                <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                  <li><strong>Non-Profit Mission:</strong> WB Students Group is a non-profit platform dedicated purely to helping needy students.</li>
+                  <li><strong>Voluntary Contribution:</strong> Currently, all roles are voluntary (unpaid).</li>
+                  <li><strong>Leadership:</strong> All members must adhere to directives from Founder & State Convener <strong>Yusuf Khan</strong>.</li>
+                  <li><strong>Privacy & Safety:</strong> Personal credentials are used strictly for verification and never shared with commercial entities.</li>
+                </ul>
+                <div class="pt-2 border-t border-brand-border/60">
+                  <label class="flex items-start gap-3 cursor-pointer text-sm text-white font-semibold"><input type="checkbox" id="app-agree-rules" required class="mt-1 rounded text-brand-teal w-5 h-5 focus:ring-brand-teal" /><span>I have read and agree to all rules and <a href="javascript:void(0)" onclick="window.openPrivacyPolicyModal()" class="text-brand-teal underline">Privacy Policy</a>.</span></label>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button type="submit" id="submit-btn-elem" class="flex-1 py-4 bg-gradient-to-r from-brand-teal to-cyan-400 hover:from-cyan-300 text-brand-black font-black rounded-xl text-base transition shadow-xl">Submit Membership Form</button>
+                <button type="button" onclick="window.switchView('home')" class="py-4 px-6 bg-brand-card hover:bg-brand-border text-slate-300 font-bold rounded-xl text-sm border border-brand-border transition">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
     };
 
     window.toggleLeadGroupDropdown = function(isChecked) {
       const box = document.getElementById('lead-group-container');
       if (box) {
-        if (isChecked) {
-          box.classList.remove('hidden');
-          window.renderSelectedAdminGroupsUI();
-        } else {
-          box.classList.add('hidden');
-          window.state.selectedAdminGroups = [];
-        }
+        if (isChecked) box.classList.remove('hidden');
+        else box.classList.add('hidden');
       }
     };
 
@@ -1050,15 +2003,8 @@
       const checkedContribs = Array.from(document.querySelectorAll('input[name="contrib"]:checked')).map(c => c.value);
       const leadCheckbox = document.getElementById('lead-group-checkbox');
       const wantToLeadGroup = leadCheckbox ? leadCheckbox.checked : false;
-
-      const selectedGroups = window.state.selectedAdminGroups || [];
-      if (wantToLeadGroup && selectedGroups.length === 0) {
-        alert("Please select at least 1 (or up to 2) WhatsApp Groups you want to lead.");
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerText = "Submit Membership Form"; }
-        return;
-      }
-
-      const targetLeadGroup = selectedGroups.length > 0 ? selectedGroups.join(' & ') : 'None';
+      const targetLeadSelect = document.getElementById('targetLeadGroup');
+      const targetLeadGroup = (wantToLeadGroup && targetLeadSelect) ? targetLeadSelect.value : 'None';
 
       if (checkedContribs.length === 0 && !wantToLeadGroup) {
         alert("Please select at least one area of contribution or select group leadership.");
@@ -1115,7 +2061,6 @@
         howHelp: howHelp,
         wantToLeadGroup: wantToLeadGroup,
         targetLeadGroup: targetLeadGroup,
-        targetLeadGroupsList: selectedGroups,
         workPreference: workPref,
         allowDm: allowDm,
         allowCalls: allowCalls,

@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="google-site-verification" content="QdWp6KclUO3WdEfBuTkQhXAhnqjiTWrIhc3XT16dT9E" />
-  <title>WB Students Group | Official State Portal & Learning Network</title>
+  <meta name="description" content="WB Students Group founded by Yusuf Khan on 09-09-2024. Official State Student Welfare Portal for Hindi, English & Urdu medium students across West Bengal." />
+  <meta name="keywords" content="WB Students Group, Yusuf Khan, Yusuf Khan Founder, West Bengal Student Welfare, WB Board Hindi Medium, WB HS Notes, Madhyamik Notes" />
+  <meta name="author" content="Yusuf Khan" />
+  <title>WB Students Group | Official State Portal & Learning Network (Founded by Yusuf Khan)</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -64,9 +67,9 @@
         #02050D;
     }
     .glass-box {
-      background: linear-gradient(135deg, rgba(8, 20, 38, 0.92) 0%, rgba(4, 11, 23, 0.98) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(8, 20, 38, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid rgba(21, 41, 69, 0.85);
       transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
       will-change: transform;
@@ -87,7 +90,7 @@
     }
 
     @keyframes slideUpFade {
-      0% { opacity: 0; transform: translateY(16px); }
+      0% { opacity: 0; transform: translateY(12px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     .animate-slide-up { 
@@ -141,12 +144,26 @@
 </head>
 <body class="neon-mesh-bg relative">
 
-  <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none -z-10"></div>
-  <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+  <!-- 🚀 MAIN APP SPLASH SCREEN -->
+  <div id="app-splash-screen" class="fixed inset-0 z-[100] bg-[#02050D] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+    <div class="relative flex flex-col items-center animate-pulse">
+      <div class="w-20 h-20 rounded-full bg-white flex items-center justify-center p-2 shadow-[0_0_35px_rgba(0,240,255,0.4)] mb-4">
+        <img src="https://i.ibb.co/67KV7VvY/wblogo.png" alt="WB Logo" class="w-full h-full object-contain" />
+      </div>
+      <h2 class="text-white font-black text-lg tracking-wider">WB STUDENTS GROUP</h2>
+      <p class="text-brand-teal text-[11px] font-bold mt-1">Founded by Yusuf Khan • Live State Network</p>
+      <div class="w-36 h-1.5 bg-slate-800 rounded-full overflow-hidden mt-5">
+        <div class="h-full bg-gradient-to-r from-brand-teal to-brand-gold w-full animate-[tickerScroll_1.2s_infinite]"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed top-0 left-1/4 w-72 h-72 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-1/4 w-72 h-72 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none -z-10"></div>
 
   <input type="file" id="foryou-profile-file-input" accept="image/*" onchange="window.initImageCrop(event, 'profile')" class="hidden" />
 
-  <!-- TOP ADV / TICKER BANNER -->
+  <!-- TOP TICKER BANNER -->
   <div id="top-help-banner" class="w-full bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-slate-950 py-2 shadow-lg border-b border-amber-400/40 relative z-50 overflow-hidden">
     <div class="flex items-center justify-between px-3">
       <div class="overflow-hidden flex-1 relative mr-2">
@@ -172,7 +189,7 @@
     </div>
   </div>
 
-  <header class="sticky top-0 z-40 bg-[#050D1A]/95 backdrop-blur-xl border-b border-[#152945] shadow-2xl">
+  <header class="sticky top-0 z-40 bg-[#050D1A]/95 backdrop-blur-md border-b border-[#152945] shadow-2xl">
     <div class="max-w-7xl mx-auto px-4 h-16 sm:h-20 flex items-center justify-between">
       
       <div onclick="switchView('home')" class="flex items-center gap-3 cursor-pointer select-none">
@@ -208,7 +225,7 @@
   <main id="main-content" class="flex-1 w-full"></main>
 
   <!-- Mobile Bottom Nav -->
-  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#050D1A]/95 backdrop-blur-xl border-t border-[#152945] px-2 h-[65px] flex lg:hidden items-center justify-around shadow-2xl">
+  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#050D1A]/95 backdrop-blur-md border-t border-[#152945] px-2 h-[65px] flex lg:hidden items-center justify-around shadow-2xl">
     <button onclick="switchView('home')" id="bottom-home" class="flex flex-col items-center gap-1 text-brand-teal text-[10px] font-bold">
       <span class="text-xl">🏠</span> Home
     </button>
@@ -235,7 +252,7 @@
         <img src="https://i.ibb.co/67KV7VvY/wblogo.png" alt="Logo" class="w-10 h-10 object-contain" />
         <div>
           <div class="text-white font-black text-sm">WB STUDENTS GROUP</div>
-          <p class="text-[11px] text-slate-500">Autonomous Student Welfare, Digital Education & Volunteer Force</p>
+          <p class="text-[11px] text-slate-500">Founded by Yusuf Khan • Autonomous Student Welfare & Digital Learning</p>
         </div>
       </div>
       
@@ -264,6 +281,13 @@
     try {
       firebase.initializeApp(firebaseConfig);
       db = firebase.firestore();
+      db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+        if (err.code === 'failed-precondition') {
+          console.warn("Firestore Persistence: Multiple tabs open, using fallback cache");
+        } else if (err.code === 'unimplemented') {
+          console.warn("Firestore Persistence: Browser unsupported");
+        }
+      });
       console.log("Firebase Live Connected! 🚀");
     } catch (error) {
       console.error("Firebase Init Error:", error);
@@ -286,7 +310,7 @@
     ];
 
     const INITIAL_MEMBERS = [
-      { id: 'mem-001', memberId: 'IYR Y73', name: 'Yusuf Khan', role: 'Founder & State Convener', badge: 'FOUNDER', district: 'Kolkata', phone: OFFICIAL_WHATSAPP, showPhone: true, bio: 'Dedicated to student empowerment, educational material accessibility, and student welfare across West Bengal.', joinedDate: 'January 2023', photoUrl: FOUNDER_IMAGE, order: 1, email: 'wbstudentsgroup@gmail.com' },
+      { id: 'mem-001', memberId: 'IYR Y73', name: 'Yusuf Khan', role: 'Founder & State Convener', badge: 'FOUNDER', district: 'Kolkata', phone: OFFICIAL_WHATSAPP, showPhone: true, bio: 'Founder of WB Students Group on 09-09-2024. Dedicated to student empowerment, educational material accessibility, and student welfare across West Bengal.', joinedDate: 'September 2024', photoUrl: FOUNDER_IMAGE, order: 1, email: 'wbstudentsgroup@gmail.com' },
       { id: 'mem-002', memberId: 'IYR B45', name: 'Basharat Mustafa', role: 'DOUBT SOLVER', badge: 'CORE TEAM', district: 'Kolkata', phone: '', showPhone: false, bio: 'Dedicated student volunteer.', joinedDate: 'August 2026', photoUrl: '', order: 2 },
       { id: 'mem-003', memberId: 'IYR S22', name: 'Sariq Sadab', role: 'DOUBT SOLVER', badge: 'CORE TEAM', district: 'Kolkata', phone: '', showPhone: false, bio: 'Dedicated student volunteer.', joinedDate: 'August 2026', photoUrl: '', order: 3 },
       { id: 'mem-004', memberId: 'IYR S88', name: 'Samaya Wahid', role: 'BA GROUP ADMIN', badge: 'CORE TEAM', district: 'Hooghly', phone: '', showPhone: false, bio: 'Dedicated student volunteer.', joinedDate: 'August 2026', photoUrl: '', order: 4 },
@@ -352,16 +376,16 @@
     const initialMemberIdParam = urlParams.get('id') || '';
 
     window.state = {
-      users: [], 
-      members: INITIAL_MEMBERS,
-      applications: [],
-      waGroups: INITIAL_WA_GROUPS,
+      users: getStored('wbstg_cache_users', []), 
+      members: getStored('wbstg_cache_members', INITIAL_MEMBERS),
+      applications: getStored('wbstg_cache_applications', []),
+      waGroups: getStored('wbstg_cache_wagroups', INITIAL_WA_GROUPS),
       tasks: [],
       taskSubmissions: {},
       socials: INITIAL_SOCIALS,
-      notifications: [
+      notifications: getStored('wbstg_cache_notifications', [
         { id: 'notif-1', target: 'all', title: 'Welcome to WBSTG Portal', message: 'Explore free study materials and connect with district leads.', date: '2026-08-29', time: '10:00 AM', link: LEARNING_PORTAL }
-      ],
+      ]),
       seenNotifIds: getStored('wbstg_seen_notifs', []),
       formSettings: DEFAULT_FORM_SETTINGS,
       showHelpBanner: getStored('wbstg_show_banner', true),
@@ -369,7 +393,14 @@
       currentView: initialViewParam,
       selectedMemberId: initialMemberIdParam,
       adminTab: 'overview',
-      groupFilter: 'all'
+      groupFilter: 'all',
+      selectedLeadGroups: [],
+      siteStats: getStored('wbstg_cache_stats', {
+        studentNetwork: '3500+',
+        studentsHelped: '6000+',
+        studyMaterials: '1200+'
+      }),
+      playStoreUrl: getStored('wbstg_cache_playstore_url', '')
     };
 
     window.getRealGroupCount = function(grp) {
@@ -408,11 +439,20 @@
       }
     };
 
+    let renderTimeout = null;
+    window.scheduleRender = function() {
+      if (renderTimeout) clearTimeout(renderTimeout);
+      renderTimeout = setTimeout(() => {
+        window.renderNav();
+        window.renderMain();
+      }, 50);
+    };
+
     window.initFirebaseSync = function() {
       if (!db) return;
 
-      const syncCollection = (colName, stateKey, sortKey) => {
-        db.collection(colName).onSnapshot(snap => {
+      const syncCollection = (colName, stateKey, sortKey, cacheKey) => {
+        db.collection(colName).onSnapshot({ includeMetadataChanges: false }, snap => {
           const items = [];
           snap.forEach(doc => {
             const data = doc.data();
@@ -421,15 +461,15 @@
           });
           if (sortKey) items.sort((a,b) => (b[sortKey] || 0) - (a[sortKey] || 0));
           window.state[stateKey] = items;
-          window.renderNav();
-          window.renderMain();
+          if (cacheKey) setStored(cacheKey, items);
+          window.scheduleRender();
         }, err => console.error(`Sync error on ${colName}:`, err));
       };
 
-      syncCollection("users", "users", "createdAt");
-      syncCollection("applications", "applications", "submittedAt");
-      syncCollection("notifications", "notifications", "timestamp");
-      syncCollection("members", "members", "order");
+      syncCollection("users", "users", "createdAt", "wbstg_cache_users");
+      syncCollection("applications", "applications", "submittedAt", "wbstg_cache_applications");
+      syncCollection("notifications", "notifications", "timestamp", "wbstg_cache_notifications");
+      syncCollection("members", "members", "order", "wbstg_cache_members");
 
       db.collection('settings').doc('siteConfig').onSnapshot(doc => {
         if (doc.exists) {
@@ -445,6 +485,15 @@
             if (t1) t1.innerText = cfg.bannerText;
             if (t2) t2.innerText = cfg.bannerText;
           }
+          if (cfg.siteStats) {
+            window.state.siteStats = Object.assign(window.state.siteStats, cfg.siteStats);
+            setStored('wbstg_cache_stats', window.state.siteStats);
+          }
+          if (cfg.playStoreUrl) {
+            window.state.playStoreUrl = cfg.playStoreUrl;
+            setStored('wbstg_cache_playstore_url', cfg.playStoreUrl);
+          }
+          window.scheduleRender();
         }
       });
 
@@ -465,7 +514,8 @@
           });
           if (grps.length > 0) {
             window.state.waGroups = grps;
-            window.renderMain();
+            setStored('wbstg_cache_wagroups', grps);
+            window.scheduleRender();
           }
         }
       }, err => console.error("Sync error on wa_groups:", err));
@@ -475,7 +525,7 @@
           window.state.formSettings = Object.assign({}, DEFAULT_FORM_SETTINGS, doc.data());
         }
         if (window.state.currentView === 'membership') {
-          window.renderMain();
+          window.scheduleRender();
         }
       }, err => console.error("Sync error on settings/membershipForm:", err));
 
@@ -484,7 +534,7 @@
         snap.forEach(doc => { subs[doc.id] = doc.data().tasks || []; });
         window.state.taskSubmissions = subs;
         if (window.state.currentView === 'foryou' || window.state.currentView === 'home') {
-          window.renderMain();
+          window.scheduleRender();
         }
       });
     };
@@ -551,7 +601,7 @@
       let scrollLeft = 0;
 
       function step() {
-        if (!isHeld && !isDown) {
+        if (!isHeld && !isDown && slider.offsetParent !== null) {
           slider.scrollLeft += speed * direction;
           const halfWidth = slider.scrollWidth / 2;
 
@@ -785,6 +835,118 @@
       if (listEl) listEl.classList.add('hidden');
     };
 
+    // 🔥 MULTI-SELECT GROUP ADMIN LOGIC WITH PREFIX SEARCH, TAGS, DONE BUTTON & CLICK-OUTSIDE
+    window.handleLeadGroupTyping = function(inputEl) {
+      const query = (inputEl.value || '').trim().toLowerCase();
+      const listEl = document.getElementById('lead-groups-search-results');
+      if (!listEl) return;
+
+      const groups = window.state.waGroups || [];
+      const matches = groups.filter(g => {
+        const name = (g.name || g.title || '').toLowerCase();
+        const cat = (g.category || g.tag || '').toLowerCase();
+        return query === '' || name.includes(query) || cat.includes(query);
+      });
+
+      let resultsHtml = '';
+      if (matches.length > 0) {
+        resultsHtml = matches.map(g => {
+          const groupName = g.name || g.title;
+          const isSelected = window.state.selectedLeadGroups.includes(groupName);
+          return `
+            <div onclick="window.toggleLeadGroupSelection('${groupName.replace(/'/g, "\\'")}')" class="px-3.5 py-2.5 flex items-center justify-between hover:bg-brand-card cursor-pointer font-semibold text-xs border-b border-brand-border/40 last:border-0 transition ${isSelected ? 'bg-brand-whatsapp/15 text-brand-whatsapp' : 'text-slate-200'}">
+              <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded border ${isSelected ? 'bg-brand-whatsapp border-brand-whatsapp text-black' : 'border-slate-600'} flex items-center justify-center text-[10px] font-black">${isSelected ? '✓' : ''}</span>
+                <span>${groupName}</span>
+              </div>
+              <span class="text-[9px] uppercase px-2 py-0.5 rounded bg-brand-dark border border-brand-border text-slate-400 font-mono">${g.category || g.tag || 'General'}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        resultsHtml = `<div class="p-3 text-xs text-slate-400 text-center">No groups matching "${query}"</div>`;
+      }
+
+      listEl.innerHTML = `
+        <div class="max-h-52 overflow-y-auto">
+          ${resultsHtml}
+        </div>
+        <div class="p-2 border-t border-brand-border/60 bg-brand-dark flex justify-between items-center">
+          <span class="text-[10px] text-brand-teal font-mono">${window.state.selectedLeadGroups.length} group(s) selected</span>
+          <button type="button" onclick="window.closeLeadGroupDropdown()" class="px-4 py-1.5 bg-brand-whatsapp text-slate-950 font-black text-xs rounded-lg shadow hover:brightness-110 transition">Done ✓</button>
+        </div>
+      `;
+      listEl.classList.remove('hidden');
+    };
+
+    window.closeLeadGroupDropdown = function() {
+      const listEl = document.getElementById('lead-groups-search-results');
+      if (listEl) listEl.classList.add('hidden');
+    };
+
+    window.toggleLeadGroupSelection = function(groupName) {
+      if (window.state.selectedLeadGroups.includes(groupName)) {
+        window.state.selectedLeadGroups = window.state.selectedLeadGroups.filter(g => g !== groupName);
+      } else {
+        window.state.selectedLeadGroups.push(groupName);
+      }
+      window.renderSelectedLeadGroupChips();
+      const input = document.getElementById('lead-group-search-input');
+      if (input) window.handleLeadGroupTyping(input);
+    };
+
+    window.removeLeadGroup = function(groupName) {
+      window.state.selectedLeadGroups = window.state.selectedLeadGroups.filter(g => g !== groupName);
+      window.renderSelectedLeadGroupChips();
+      const input = document.getElementById('lead-group-search-input');
+      if (input && document.getElementById('lead-groups-search-results') && !document.getElementById('lead-groups-search-results').classList.contains('hidden')) {
+        window.handleLeadGroupTyping(input);
+      }
+    };
+
+    window.renderSelectedLeadGroupChips = function() {
+      const container = document.getElementById('selected-lead-groups-chips');
+      if (!container) return;
+
+      if (window.state.selectedLeadGroups.length === 0) {
+        container.innerHTML = `<p class="text-[11px] text-slate-400 italic">No groups selected yet. Search or click below to select multiple groups.</p>`;
+        return;
+      }
+
+      container.innerHTML = window.state.selectedLeadGroups.map(name => `
+        <span class="inline-flex items-center gap-1.5 bg-brand-whatsapp/20 text-brand-whatsapp border border-brand-whatsapp/40 px-3 py-1 rounded-xl text-xs font-bold shadow-sm">
+          <span>👥 ${name}</span>
+          <button type="button" onclick="window.removeLeadGroup('${name.replace(/'/g, "\\'")}')" class="text-brand-whatsapp hover:text-white font-black ml-1 text-sm">✕</button>
+        </span>
+      `).join('');
+    };
+
+    document.addEventListener('click', function(e) {
+      const leadDropdown = document.getElementById('lead-groups-search-results');
+      const leadInput = document.getElementById('lead-group-search-input');
+      if (leadDropdown && !leadDropdown.classList.contains('hidden')) {
+        if (!leadDropdown.contains(e.target) && e.target !== leadInput) {
+          leadDropdown.classList.add('hidden');
+        }
+      }
+
+      const distDropdown = document.getElementById('app-district-dropdown');
+      const distInput = document.getElementById('app-district');
+      if (distDropdown && !distDropdown.classList.contains('hidden')) {
+        if (!distDropdown.contains(e.target) && e.target !== distInput) {
+          distDropdown.classList.add('hidden');
+        }
+      }
+
+      const authDistDropdown = document.getElementById('auth-district-dropdown');
+      const authDistInput = document.getElementById('auth-district');
+      if (authDistDropdown && !authDistDropdown.classList.contains('hidden')) {
+        if (!authDistDropdown.contains(e.target) && e.target !== authDistInput) {
+          authDistDropdown.classList.add('hidden');
+        }
+      }
+    });
+
     // 🔥 OPEN DEDICATED MEMBER DETAILS FULL PAGE
     window.openMemberDetailsPage = function(memberId) {
       window.state.selectedMemberId = memberId;
@@ -920,6 +1082,7 @@
       else if (v === 'foryou') window.renderForYouPage(container);
       else {
         window.renderHomePage(container);
+        window.initInteractiveAutoScroll('home-stats-scroll-track', 0.4, 1);
         window.initInteractiveAutoScroll('home-wa-scroll-track', 0.45, 1);
         window.initInteractiveAutoScroll('home-leaders-scroll-track', 0.45, -1);
       }
@@ -1113,27 +1276,93 @@
       `;
     };
 
+    // 1. STUDY PORTAL WITH IN-PAGE SPLASH / AUTO-TIMEOUT LOADER
     window.renderStudyPage = function(container) {
       container.innerHTML = `
-        <div class="w-full h-[calc(100vh-130px)] flex flex-col animate-slide-up">
-          <div class="bg-brand-dark px-4 py-3 border-b border-brand-border flex justify-between items-center text-xs">
-            <span class="text-brand-gold font-bold">📚 WBSTG Integrated Learning Portal</span>
-            <a href="${LEARNING_PORTAL}" target="_blank" class="text-brand-teal hover:underline flex items-center gap-1">Open in Tab <span class="text-lg">↗</span></a>
+        <div class="w-full h-[calc(100vh-130px)] flex flex-col relative animate-slide-up bg-brand-black">
+          <div class="bg-brand-dark px-4 py-3 border-b border-brand-border flex justify-between items-center text-xs z-10">
+            <span class="text-brand-gold font-bold flex items-center gap-1.5"><span>📚</span> WBSTG Integrated Learning Portal</span>
+            <div class="flex items-center gap-3">
+              <button onclick="window.hideStudyLoader()" class="text-slate-400 hover:text-white transition">Dismiss Loader ✕</button>
+              <a href="${LEARNING_PORTAL}" target="_blank" class="text-brand-teal hover:underline flex items-center gap-1 font-bold">Open in Tab ↗</a>
+            </div>
           </div>
-          <iframe src="${LEARNING_PORTAL}" class="w-full flex-1 border-0 bg-brand-black"></iframe>
+
+          <div id="study-loader" class="absolute inset-0 top-[45px] bg-[#02050D] flex flex-col items-center justify-center z-20 transition-opacity duration-300">
+            <div class="w-12 h-12 rounded-full border-4 border-brand-teal/20 border-t-brand-teal animate-spin mb-3"></div>
+            <p class="text-white font-black text-sm">Opening Study Portal...</p>
+            <p class="text-xs text-slate-400 mt-1 mb-4">Free notes, papers & class guides</p>
+            <button onclick="window.hideStudyLoader()" class="px-4 py-2 bg-brand-card hover:bg-brand-border text-brand-teal text-xs font-bold rounded-xl border border-brand-border transition">
+              Click to view now ➔
+            </button>
+          </div>
+
+          <iframe id="study-portal-iframe" src="${LEARNING_PORTAL}" onload="window.hideStudyLoader()" class="w-full flex-1 border-0 bg-brand-black"></iframe>
         </div>
       `;
+
+      // Auto-hide loader fallback after 1.2s if iframe doesn't trigger onload event
+      setTimeout(() => {
+        window.hideStudyLoader();
+      }, 1200);
     };
 
+    window.hideStudyLoader = function() {
+      const loader = document.getElementById('study-loader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          if (loader) loader.style.display = 'none';
+        }, 300);
+      }
+    };
+
+    // 2. ENHANCED STORE COMING SOON UI
     window.renderStorePage = function(container) {
       container.innerHTML = `
-        <div class="py-24 px-4 max-w-md mx-auto text-center animate-slide-up">
-          <div class="glass-box p-10 rounded-3xl border border-brand-gold/40 shadow-2xl space-y-4">
-            <div class="text-5xl">🛍️</div>
-            <h2 class="text-2xl font-black text-white">WBSTG Store</h2>
-            <p class="text-brand-black text-sm font-bold bg-brand-gold py-2.5 px-4 rounded-xl shadow-lg shadow-brand-gold/20">Coming soon we are working on it</p>
-            <p class="text-xs text-slate-400">Get physical notes, sample question papers and merchandise directly delivered.</p>
-            <button onclick="window.switchView('home')" class="mt-4 w-full py-3 bg-brand-card text-brand-teal font-black text-xs rounded-xl border border-brand-teal/30 hover:border-brand-teal transition">Return Home</button>
+        <div class="py-12 px-4 max-w-2xl mx-auto text-center animate-slide-up">
+          <div class="glass-box p-8 sm:p-12 rounded-[36px] border border-brand-gold/40 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-16 -right-16 w-48 h-48 bg-brand-gold/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+            <div class="w-20 h-20 bg-brand-gold/10 border-2 border-brand-gold/40 text-brand-gold rounded-3xl flex items-center justify-center mx-auto mb-5 text-4xl shadow-inner animate-bounce">
+              🛍️
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-gold/15 text-brand-gold border border-brand-gold/40 text-xs font-black uppercase tracking-wider mb-3">
+              <span>🚀</span> Work In Progress
+            </div>
+
+            <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">WBSTG Official Store</h2>
+            <p class="text-sm text-slate-300 mt-3 max-w-md mx-auto leading-relaxed">
+              We are building a dedicated student logistics desk to deliver physical study resources directly to your doorstep.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-8 text-left">
+              <div class="p-4 bg-brand-dark/80 rounded-2xl border border-brand-border">
+                <span class="text-xl block mb-1">📖</span>
+                <strong class="text-white text-xs block font-bold">Printed Notes</strong>
+                <p class="text-[10px] text-slate-400 mt-0.5">High-quality spiral printed notes for HS & Madhyamik.</p>
+              </div>
+              <div class="p-4 bg-brand-dark/80 rounded-2xl border border-brand-border">
+                <span class="text-xl block mb-1">📝</span>
+                <strong class="text-brand-teal text-xs block font-bold">Mock Test Papers</strong>
+                <p class="text-[10px] text-slate-400 mt-0.5">ABTA/WBTA chapter-wise verified sample tests.</p>
+              </div>
+              <div class="p-4 bg-brand-dark/80 rounded-2xl border border-brand-border">
+                <span class="text-xl block mb-1">🎓</span>
+                <strong class="text-brand-gold text-xs block font-bold">Community Kits</strong>
+                <p class="text-[10px] text-slate-400 mt-0.5">Official volunteer merchandise & student stationery.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <button onclick="alert('You are subscribed! We will broadcast an update when the Store goes live 🚀')" class="px-6 py-3.5 bg-gradient-to-r from-brand-gold to-yellow-500 hover:from-yellow-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                <span>🔔</span> Notify Me When Live
+              </button>
+              <button onclick="window.switchView('home')" class="px-6 py-3.5 bg-brand-card hover:bg-brand-border text-slate-300 font-bold text-xs rounded-xl border border-brand-border transition">
+                Return to Directory
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -1297,10 +1526,19 @@
       }
     };
 
+    window.handlePlayStoreClick = function() {
+      if (window.state.playStoreUrl) {
+        window.open(window.state.playStoreUrl, '_blank');
+      } else {
+        alert("📱 WB Students Group Android App is currently in final verification on Google Play Console. It will be live soon for free download!");
+      }
+    };
+
     window.renderHomePage = function(container) {
       const greeting = window.state.currentUser ? `Hi, ${window.state.currentUser.name}! 👋` : `Hi, Student! 👋`;
       const duplicatedGroups = [...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups, ...window.state.waGroups];
       const duplicatedMembers = [...window.state.members, ...window.state.members, ...window.state.members, ...window.state.members];
+      const stats = window.state.siteStats || { studentNetwork: '3500+', studentsHelped: '6000+', studyMaterials: '1200+' };
 
       let userAppHtml = '';
 
@@ -1348,7 +1586,7 @@
                   </div>
                   <div class="flex flex-col gap-1">
                     <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Target Group Admin</span>
-                    <strong class="text-brand-whatsapp text-sm font-bold">${myApp.targetLeadGroup || 'None'}</strong>
+                    <strong class="text-brand-whatsapp text-sm font-bold">${Array.isArray(myApp.targetLeadGroups) ? myApp.targetLeadGroups.join(', ') : (myApp.targetLeadGroup || 'None')}</strong>
                   </div>
                 </div>
 
@@ -1375,7 +1613,7 @@
       container.innerHTML = `
         ${userAppHtml}
 
-        <section class="pt-10 md:pt-16 pb-12 px-4 max-w-6xl mx-auto text-center relative">
+        <section class="pt-10 md:pt-16 pb-8 px-4 max-w-6xl mx-auto text-center relative">
           <div class="inline-flex items-center gap-2 bg-brand-teal/10 border border-brand-teal/30 px-4 py-1.5 rounded-full text-brand-teal text-xs font-black mb-4 shadow-lg">
             <span>✨</span> ${greeting}
           </div>
@@ -1386,10 +1624,10 @@
           </h1>
 
           <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed px-2">
-            WB Students Group delivers free syllabus notes, Madhyamik & HS batch guidance, mock tests, and grassroots youth leadership.
+            Founded by <strong class="text-white font-bold">Yusuf Khan</strong> on <strong class="text-brand-teal font-bold">09-09-2024</strong>. Delivering free syllabus notes, batch mentorship, mock tests, and grassroots student leadership across West Bengal.
           </p>
 
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto mb-10">
             <button onclick="window.switchView('study')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-gold to-amber-500 hover:from-amber-400 text-brand-black font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 transition">
               📚 Open Study Portal ❯
             </button>
@@ -1397,13 +1635,53 @@
               👥 Membership Form →
             </button>
           </div>
+
+          <!-- 3. LIVE IMPACT STATS METRICS (HORIZONTAL DRAGGABLE & SCROLLABLE TRACK) -->
+          <div class="max-w-4xl mx-auto overflow-hidden">
+            <div id="home-stats-scroll-track" class="interactive-scroll-container no-scrollbar px-2 py-3">
+              
+              <div class="min-w-[260px] sm:min-w-[280px] flex-1 glass-box p-6 rounded-3xl border border-brand-teal/30 text-center relative overflow-hidden group hover:border-brand-teal transition shadow-lg flex-shrink-0">
+                <span class="text-3xl sm:text-4xl font-black text-brand-teal block font-mono mb-1 group-hover:scale-105 transition transform">${stats.studentNetwork}</span>
+                <strong class="text-white text-xs uppercase tracking-wider block">Total Students Network</strong>
+                <p class="text-[10px] text-slate-400 mt-1">Across 23 Bengal Districts</p>
+              </div>
+
+              <div class="min-w-[260px] sm:min-w-[280px] flex-1 glass-box p-6 rounded-3xl border border-brand-gold/30 text-center relative overflow-hidden group hover:border-brand-gold transition shadow-lg flex-shrink-0">
+                <span class="text-3xl sm:text-4xl font-black text-brand-gold block font-mono mb-1 group-hover:scale-105 transition transform">${stats.studentsHelped}</span>
+                <strong class="text-white text-xs uppercase tracking-wider block">Total Helped Students</strong>
+                <p class="text-[10px] text-slate-400 mt-1">Doubt Solving & Free Mentorship</p>
+              </div>
+
+              <div class="min-w-[260px] sm:min-w-[280px] flex-1 glass-box p-6 rounded-3xl border border-brand-whatsapp/30 text-center relative overflow-hidden group hover:border-brand-whatsapp transition shadow-lg flex-shrink-0">
+                <span class="text-3xl sm:text-4xl font-black text-brand-whatsapp block font-mono mb-1 group-hover:scale-105 transition transform">${stats.studyMaterials}</span>
+                <strong class="text-white text-xs uppercase tracking-wider block">PDFs & Study Materials</strong>
+                <p class="text-[10px] text-slate-400 mt-1">Notes, ABTA Papers & Suggestions</p>
+              </div>
+
+            </div>
+          </div>
         </section>
 
-        <!-- GET OUR OFFICIAL APPLICATION / ALL-IN-ONE APP SHOWCASE -->
+        <!-- ALL-IN-ONE APP SHOWCASE WITH PLAY STORE BUTTON -->
         <section id="app-showcase" class="py-16 px-4 max-w-5xl mx-auto relative text-center">
-          <div class="mb-6">
+          <div class="mb-4">
             <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Everything you need.</h2>
             <p class="text-brand-teal text-xs font-bold tracking-widest uppercase mt-3">All-in-one app for WB Students 🎓</p>
+          </div>
+
+          <div class="mt-6 flex justify-center">
+            <button onclick="window.handlePlayStoreClick()" class="inline-flex items-center gap-3 bg-[#0A0B14] hover:bg-[#12111A] border-2 border-brand-teal/50 hover:border-brand-teal px-6 py-3.5 rounded-2xl shadow-[0_0_25px_rgba(0,240,255,0.2)] hover:shadow-[0_0_35px_rgba(0,240,255,0.4)] transition transform hover:scale-105 text-left">
+              <svg class="w-8 h-8 flex-shrink-0" viewBox="0 0 512 512">
+                <path fill="#4285F4" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 59.8z"/>
+                <path fill="#34A853" d="M47 31.8C38.3 40.5 32 54 32 70.3v371.4c0 16.3 6.3 29.8 15 38.5L270 257 47 31.8z"/>
+                <path fill="#FBBC04" d="M385.4 337.8L104.6 499l220.7-221.3 60.1 60.1z"/>
+                <path fill="#EA4335" d="M480 256c0 11.5-6.3 22-16.3 27.8l-78.3 45L325.3 268 385.4 207l78.3 45c10 5.8 16.3 16.3 16.3 27.8z"/>
+              </svg>
+              <div>
+                <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">GET IT ON GOOGLE PLAY</span>
+                <span class="block text-sm sm:text-base font-black text-white leading-none">Download App Free</span>
+              </div>
+            </button>
           </div>
 
           <div class="relative my-16 flex items-center justify-center py-10 min-h-[500px]">
@@ -1434,7 +1712,7 @@
                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,184,0,0.3)] p-1.5"><img src="${LOGO_URL}" class="w-full h-full object-contain" /></div>
                 </div>
                 <h3 class="text-white font-black text-center text-lg tracking-wide mb-1">WB STG APP</h3>
-                <p class="text-brand-teal text-[9px] text-center font-bold tracking-widest uppercase mb-8">Coming Soon</p>
+                <p class="text-brand-teal text-[9px] text-center font-bold tracking-widest uppercase mb-8">Official Mobile Edition</p>
                 <div class="space-y-4 w-full">
                   <div class="h-14 bg-[#0A0A10] border border-brand-border rounded-2xl flex items-center px-3.5 gap-3 shadow-md">
                     <div class="w-8 h-8 rounded-full bg-brand-teal/10 flex items-center justify-center text-sm">📚</div>
@@ -1455,7 +1733,7 @@
           </div>
         </section>
 
-        <!-- WHATSAPP GROUPS TRACK (FORWARD AUTO-SCROLL + MANUAL DRAG) -->
+        <!-- WHATSAPP GROUPS TRACK -->
         <section id="wa-communities" class="py-12 border-y border-brand-border/60 bg-brand-dark/60 relative overflow-hidden">
           <div class="max-w-7xl mx-auto px-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div>
@@ -1487,7 +1765,7 @@
           </div>
         </section>
 
-        <!-- LEADERS DIRECTORY TRACK (OPPOSITE/REVERSE AUTO-SCROLL + MANUAL DRAG + CLICK TO VIEW FULL PROFILE) -->
+        <!-- LEADERS DIRECTORY TRACK -->
         <section class="py-16 relative overflow-hidden">
           <div class="max-w-7xl mx-auto px-4 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-center sm:text-left">
             <div>
@@ -1518,18 +1796,58 @@
           </div>
         </section>
 
-        <!-- Values Section -->
-        <section class="py-12 px-4 max-w-5xl mx-auto">
-          <div class="glass-box p-8 sm:p-12 rounded-3xl border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
-            <div class="absolute -right-10 -bottom-10 text-9xl opacity-5 pointer-events-none select-none">📖</div>
-            <div class="inline-flex items-center gap-2 bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-3.5 py-1 rounded-full text-xs font-bold mb-4">🏛️ Founded on 09-09-2024</div>
-            <h2 class="text-2xl sm:text-3xl font-black text-white mb-4">Our History, Purpose & Core Values</h2>
+        <!-- 2. FOUNDER YUSUF KHAN & CORE PURPOSE, VALUES & FOUNDATION SECTION (OPTIMIZED FOR SEARCH/SEO) -->
+        <section class="py-16 px-4 max-w-5xl mx-auto">
+          <div class="glass-box p-8 sm:p-14 rounded-[36px] border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
+            <div class="absolute -right-12 -bottom-12 text-9xl opacity-5 pointer-events-none select-none">📖</div>
+            
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div class="inline-flex items-center gap-2 bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-4 py-1.5 rounded-full text-xs font-bold">
+                🏛️ Established Foundation • 09-09-2024
+              </div>
+              <span class="text-[10px] font-mono uppercase bg-brand-dark px-3 py-1 rounded-full text-brand-teal border border-brand-border font-bold">
+                Founder & Convener: Yusuf Khan
+              </span>
+            </div>
+
+            <h2 class="text-2xl sm:text-4xl font-black text-white mb-5 tracking-tight">
+              Our Vision: <span class="gold-gradient-text">Democratizing Quality Education Across Bengal</span>
+            </h2>
+
             <div class="space-y-4 text-slate-300 text-xs sm:text-sm leading-relaxed">
-              <p>This group was founded on <strong class="text-brand-teal">09-09-2024</strong> specifically for West Bengal students belonging to <strong class="text-white">Hindi, English, and Urdu mediums</strong>. Our primary purpose is to study together, share knowledge, help each other, and maintain a positive, encouraging educational environment.</p>
-              <p>We deeply understand that many students across Bengal cannot afford expensive tuitions or private coaching. Therefore, this platform is built to support, mentor, and guide them completely free of cost.</p>
-              <div class="p-4 bg-brand-card rounded-2xl border border-brand-border flex items-center gap-3">
-                <span class="text-2xl">✨</span>
-                <p class="font-bold text-white text-xs sm:text-sm">We respect every language and subject equally, and here every student is equal.</p>
+              <p>
+                <strong>WB Students Group (WBSTG)</strong> was founded on <strong class="text-brand-teal">September 9, 2024</strong> by student activist and state convener <strong class="text-white font-bold">Yusuf Khan</strong>. The movement was built with a singular mission: to eliminate educational inequality and empower every student across West Bengal, specifically catering to <strong class="text-white">Hindi, Urdu, and English medium</strong> curriculums.
+              </p>
+              <p>
+                Under the leadership of <strong class="text-brand-gold">Yusuf Khan</strong>, the organization operates autonomously to ensure no student is deprived of quality syllabus notes, board exam suggestions, or doubt-solving mentorship due to financial constraints.
+              </p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+                <div class="p-4 bg-brand-dark/90 rounded-2xl border border-brand-border/80">
+                  <span class="text-xl mb-1 block">🌐</span>
+                  <strong class="text-white text-xs block mb-1">Trilingual Inclusion</strong>
+                  <p class="text-[11px] text-slate-400">Equal guidance, syllabus materials, and notes for Hindi, Urdu & English medium students.</p>
+                </div>
+                <div class="p-4 bg-brand-dark/90 rounded-2xl border border-brand-border/80">
+                  <span class="text-xl mb-1 block">💡</span>
+                  <strong class="text-brand-teal text-xs block mb-1">Zero Cost Commitment</strong>
+                  <p class="text-[11px] text-slate-400">All chapter-wise notes, mock papers, and doubt assistance are 100% free forever.</p>
+                </div>
+                <div class="p-4 bg-brand-dark/90 rounded-2xl border border-brand-border/80">
+                  <span class="text-xl mb-1 block">🤝</span>
+                  <strong class="text-brand-gold text-xs block mb-1">Peer Mentorship Force</strong>
+                  <p class="text-[11px] text-slate-400">Dedicated student volunteers, district leads, and doubt solvers working collectively.</p>
+                </div>
+              </div>
+
+              <div class="p-5 bg-gradient-to-r from-brand-card to-[#061120] rounded-2xl border border-brand-teal/40 flex items-center gap-4">
+                <span class="text-3xl">✨</span>
+                <div>
+                  <p class="font-bold text-white text-xs sm:text-sm leading-snug">
+                    "Every language is respected, every student is empowered, and no learner in West Bengal is left behind."
+                  </p>
+                  <span class="text-[10px] text-brand-teal block mt-1">— Yusuf Khan (Founder, WB Students Group)</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1798,7 +2116,7 @@
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-gold/40 text-center sm:text-left">
                   <div id="idcard-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-gold/50 flex items-center justify-center flex-shrink-0 text-brand-gold text-2xl shadow-inner">🪪</div>
                   <div class="flex-1">
-                    <label class="text-sm font-bold text-white block mb-1 uppercase tracking-wide">YOUR IDENTITY PROOF * <span class="text-brand-gold font-semibold text-xs">(LIKE YOUR SCHOOL ID, AADHAAR, PAN ANY ONE)</span></label>
+                    <label class="text-sm font-bold text-white block mb-1 uppercase tracking-wide">YOUR IDENTITY PROOF * <span class="text-brand-gold font-semibold text-xs">(LIKE YOUR SCHOOL ID, PAN ANY ONE)</span></label>
                     <p class="text-[11px] text-slate-300 mb-2 leading-relaxed">WE GET YOUR IDENTITY CARD ONLY FOR YOUR NAME VERIFICATION NOTHING ELSE.</p>
                     <label class="inline-block px-4 py-2 bg-brand-gold/15 hover:bg-brand-gold/25 text-brand-gold text-sm font-bold rounded-lg border border-brand-gold/40 cursor-pointer transition">
                       Upload ID Proof File
@@ -1879,7 +2197,7 @@
                 </div>
               </div>
 
-              <!-- Group Admin Option at Top of Contribution Area with custom mobile-friendly selector -->
+              <!-- Group Admin Option at Top of Contribution Area with Type Search & Multi-Select -->
               <div>
                 <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">3. Areas of Contribution & Group Leadership</h4>
                 <p class="text-xs text-slate-400 mb-3">Select your desired contributions below. You must choose at least one or check the Group Admin option.</p>
@@ -1892,12 +2210,18 @@
                         <span>👑 Become Group Admin (Lead a WhatsApp Group)</span>
                       </label>
                       
-                      <div id="lead-group-container" class="hidden pt-3 border-t border-brand-border/60 space-y-2">
-                        <label class="text-xs font-bold text-slate-300 block">WHATSAPP GROUP YOU WOULD LIKE TO LEAD:</label>
-                        <select id="targetLeadGroup" class="w-full bg-[#050D1A] border-2 border-brand-whatsapp/60 rounded-xl px-4 py-3.5 text-sm text-white font-bold outline-none focus:border-brand-whatsapp">
-                          <option value="">-- Choose WhatsApp Group to Admin --</option>
-                          ${window.state.waGroups.map(g => `<option value="${g.name || g.title}">${g.name || g.title} (${g.category || g.tag || 'General'})</option>`).join('')}
-                        </select>
+                      <div id="lead-group-container" class="hidden pt-3 border-t border-brand-border/60 space-y-3">
+                        <div>
+                          <label class="text-xs font-bold text-slate-300 block mb-1.5">WHATSAPP GROUPS YOU WOULD LIKE TO LEAD (SELECT ONE OR MULTIPLE):</label>
+                          <div id="selected-lead-groups-chips" class="flex flex-wrap gap-2 mb-2.5">
+                            <p class="text-[11px] text-slate-400 italic">No groups selected yet. Search or click below to select multiple groups.</p>
+                          </div>
+                          
+                          <div class="relative">
+                            <input type="text" id="lead-group-search-input" autocomplete="off" oninput="window.handleLeadGroupTyping(this)" onfocus="window.handleLeadGroupTyping(this)" placeholder="🔍 Type group name or category (e.g. 12, BA, Madhyamik, College)..." class="w-full bg-[#050D1A] border-2 border-brand-whatsapp/60 rounded-xl px-4 py-3 text-sm text-white font-semibold outline-none focus:border-brand-whatsapp" />
+                            <div id="lead-groups-search-results" class="hidden absolute left-0 right-0 top-full mt-1 bg-[#081426] border border-brand-whatsapp/50 rounded-xl shadow-2xl z-50 overflow-hidden"></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ` : ''}
@@ -2003,11 +2327,18 @@
       const checkedContribs = Array.from(document.querySelectorAll('input[name="contrib"]:checked')).map(c => c.value);
       const leadCheckbox = document.getElementById('lead-group-checkbox');
       const wantToLeadGroup = leadCheckbox ? leadCheckbox.checked : false;
-      const targetLeadSelect = document.getElementById('targetLeadGroup');
-      const targetLeadGroup = (wantToLeadGroup && targetLeadSelect) ? targetLeadSelect.value : 'None';
+      
+      const targetLeadGroups = (wantToLeadGroup && window.state.selectedLeadGroups.length > 0) ? window.state.selectedLeadGroups : [];
+      const targetLeadGroupStr = targetLeadGroups.length > 0 ? targetLeadGroups.join(', ') : 'None';
 
       if (checkedContribs.length === 0 && !wantToLeadGroup) {
         alert("Please select at least one area of contribution or select group leadership.");
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerText = "Submit Membership Form"; }
+        return;
+      }
+
+      if (wantToLeadGroup && targetLeadGroups.length === 0) {
+        alert("Please search and select at least one WhatsApp group you would like to lead.");
         if (submitBtn) { submitBtn.disabled = false; submitBtn.innerText = "Submit Membership Form"; }
         return;
       }
@@ -2060,7 +2391,8 @@
         whyJoin: whyJoin,
         howHelp: howHelp,
         wantToLeadGroup: wantToLeadGroup,
-        targetLeadGroup: targetLeadGroup,
+        targetLeadGroup: targetLeadGroupStr,
+        targetLeadGroups: targetLeadGroups,
         workPreference: workPref,
         allowDm: allowDm,
         allowCalls: allowCalls,
@@ -2076,6 +2408,7 @@
       try {
         await window.dbSave('applications', appId, app);
         alert(`🎉 Application Submitted Successfully to State Authority!\n\nTracking ID: ${trackingId}`);
+        window.state.selectedLeadGroups = [];
         window.switchView('home');
       } catch (err) {
         alert("Submission Failed: " + err.message);
@@ -2297,6 +2630,7 @@
 
       const modal = document.getElementById('modal-container');
       const customKeys = app.customResponses ? Object.keys(app.customResponses) : [];
+      const leadGroupsDisplay = Array.isArray(app.targetLeadGroups) && app.targetLeadGroups.length > 0 ? app.targetLeadGroups.join(', ') : (app.targetLeadGroup || 'None');
 
       modal.innerHTML = `
         <div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 overflow-y-auto">
@@ -2324,7 +2658,7 @@
                     <p><strong class="text-brand-teal block mb-0.5">Education:</strong> <span class="text-white break-words">${app.education || 'N/A'}</span></p>
                     <p><strong class="text-brand-teal block mb-0.5">Skills:</strong> <span class="text-white break-words">${app.skills || 'None'}</span></p>
                     <p><strong class="text-brand-teal block mb-0.5">Work Preference:</strong> <span class="text-white">${app.workPreference || 'N/A'}</span></p>
-                    <p><strong class="text-brand-teal block mb-0.5">Target Lead Group:</strong> <span class="text-white">${app.targetLeadGroup || 'None'}</span></p>
+                    <p><strong class="text-brand-teal block mb-0.5">Target Lead Groups:</strong> <span class="text-white font-bold text-brand-whatsapp">${leadGroupsDisplay}</span></p>
                 </div>
             </div>
 
@@ -2586,10 +2920,20 @@
       }
     };
 
-    window.updateTopBannerVisibility();
-    window.renderNav();
-    window.renderMain();
-    window.renderFooterSocials();
+    window.addEventListener('DOMContentLoaded', () => {
+      window.updateTopBannerVisibility();
+      window.renderNav();
+      window.renderMain();
+      window.renderFooterSocials();
+
+      setTimeout(() => {
+        const splash = document.getElementById('app-splash-screen');
+        if (splash) {
+          splash.style.opacity = '0';
+          setTimeout(() => { splash.style.display = 'none'; }, 500);
+        }
+      }, 400);
+    });
   </script>
 </body>
 </html>

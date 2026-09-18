@@ -568,9 +568,10 @@
       }
     };
 
+    // 🔥 FIXED: Standard Firebase Web SDK method `.set()` used instead of `.create()`
     window.dbCreate = async function(collection, id, data) {
       if (!db) throw new Error('Firebase is unavailable.');
-      await db.collection(collection).doc(id).create(data);
+      await db.collection(collection).doc(id).set(data);
     };
 
     window.dbDelete = async function(collection, id) {
@@ -2271,7 +2272,7 @@
       testParticipationTimer = setInterval(update, 1000);
     };
 
-    // 🔥 FIXED: Smooth Success view & Instant Countdown Start
+    // 🔥 FIXED: Smooth Success Screen & Instant Countdown Init
     window.renderTestParticipationSuccess = function(container, participant) {
       if (testParticipationTimer) clearInterval(testParticipationTimer);
       if (testStartTimer) clearInterval(testStartTimer);
@@ -2336,6 +2337,7 @@
       testStartTimer = setInterval(update, 1000);
     };
 
+    // 🔥 FIXED: Standard Firestore save execution without deprecated .create()
     window.handleTestParticipationSubmit = async function(event) {
       event.preventDefault();
       const button = document.getElementById('test-participation-submit');
@@ -2365,14 +2367,10 @@
         await window.dbCreate('test_participations', id, participant);
         window.renderTestParticipationSuccess(document.getElementById('main-content'), participant);
       } catch (error) {
-        if (error.code === 'already-exists') {
-          const existing = await db.collection('test_participations').doc(id).get();
-          window.renderTestParticipationSuccess(document.getElementById('main-content'), existing.exists ? existing.data() : participant);
-        } else {
-          alert('Submission failed: ' + error.message);
-          button.disabled = false;
-          button.innerText = 'Submit Participation';
-        }
+        console.error("Firestore Save Error:", error);
+        alert('Submission failed: ' + error.message);
+        button.disabled = false;
+        button.innerText = 'Submit Participation';
       }
     };
 

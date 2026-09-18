@@ -271,7 +271,6 @@
   <div id="crop-modal-container" class="relative z-[60]"></div>
 
   <script>
-    // 🔗 LIVE APPS SCRIPT WEB APP INTEGRATION FOR GOOGLE DRIVE
     const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwOI5jQAh5Rm9yGA2IxvJNxAqRBiUTMsnjjAV8ovLA9pWrOF6m-MOzS-7fSVrGKJ_-NyQ/exec";
 
     const firebaseConfig = {
@@ -858,7 +857,7 @@
       if (listEl) listEl.classList.add('hidden');
     };
 
-    // 🔥 MULTI-SELECT GROUP ADMIN LOGIC WITH PREFIX SEARCH, TAGS, DONE BUTTON & CLICK-OUTSIDE
+    // MULTI-SELECT GROUP ADMIN LOGIC
     window.handleLeadGroupTyping = function(inputEl) {
       const query = (inputEl.value || '').trim().toLowerCase();
       const listEl = document.getElementById('lead-groups-search-results');
@@ -944,7 +943,7 @@
       `).join('');
     };
 
-    // 📤 1-CLICK DIRECT GOOGLE DRIVE UPLOAD MODAL
+    // 📤 DIRECT DRIVE UPLOAD MODAL
     window.openDonateNotesModal = function() {
       const modal = document.getElementById('modal-container');
       const user = window.state.currentUser;
@@ -1123,7 +1122,6 @@
       }
     });
 
-    // 🔥 OPEN DEDICATED MEMBER DETAILS FULL PAGE
     window.openMemberDetailsPage = function(memberId) {
       window.state.selectedMemberId = memberId;
       window.switchView('member-detail', `id=${memberId}`);
@@ -1265,9 +1263,7 @@
       }
     };
 
-    // ==========================================================
-    // 👤 DEDICATED MEMBER PROFILE / DETAILS FULL PAGE
-    // ==========================================================
+    // 👤 MEMBER DETAILS PAGE
     window.renderMemberDetailPage = function(container) {
       const memberId = window.state.selectedMemberId;
       const member = window.state.members.find(m => m.id === memberId || m.memberId === memberId) || window.state.members[0];
@@ -1451,7 +1447,6 @@
       `;
     };
 
-    // 1. STUDY PORTAL WITH IN-PAGE SPLASH / AUTO-TIMEOUT LOADER
     window.renderStudyPage = function(container) {
       container.innerHTML = `
         <div class="w-full h-[calc(100vh-130px)] flex flex-col relative animate-slide-up bg-brand-black">
@@ -1491,7 +1486,6 @@
       }
     };
 
-    // 2. ENHANCED STORE COMING SOON UI
     window.renderStorePage = function(container) {
       container.innerHTML = `
         <div class="py-12 px-4 max-w-2xl mx-auto text-center animate-slide-up">
@@ -1815,7 +1809,6 @@
             ` : ''}
           </div>
 
-          <!-- 3. LIVE IMPACT STATS METRICS (HORIZONTAL DRAGGABLE & SCROLLABLE TRACK) -->
           <div class="max-w-4xl mx-auto overflow-hidden">
             <div id="home-stats-scroll-track" class="interactive-scroll-container no-scrollbar px-2 py-3">
               
@@ -1841,7 +1834,7 @@
           </div>
         </section>
 
-        <!-- ALL-IN-ONE APP SHOWCASE WITH PLAY STORE BUTTON -->
+        <!-- APP SHOWCASE -->
         <section id="app-showcase" class="py-16 px-4 max-w-5xl mx-auto relative text-center">
           <div class="mb-4">
             <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Everything you need.</h2>
@@ -1975,7 +1968,7 @@
           </div>
         </section>
 
-        <!-- FOUNDER YUSUF KHAN & CORE PURPOSE, VALUES & FOUNDATION SECTION -->
+        <!-- FOUNDER SECTION -->
         <section class="py-16 px-4 max-w-5xl mx-auto">
           <div class="glass-box p-8 sm:p-14 rounded-[36px] border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
             <div class="absolute -right-12 -bottom-12 text-9xl opacity-5 pointer-events-none select-none">📖</div>
@@ -2278,6 +2271,7 @@
       testParticipationTimer = setInterval(update, 1000);
     };
 
+    // 🔥 FIXED: Smooth Success view & Instant Countdown Start
     window.renderTestParticipationSuccess = function(container, participant) {
       if (testParticipationTimer) clearInterval(testParticipationTimer);
       if (testStartTimer) clearInterval(testStartTimer);
@@ -2289,13 +2283,57 @@
             <div class="w-16 h-16 mx-auto mb-5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl">✓</div>
             <h2 class="text-2xl sm:text-3xl font-black text-white mb-3">${participant.name || 'Student'}, Thanks for participating!</h2>
             <p class="text-brand-gold font-black text-base sm:text-lg">Be ready on 7:00 PM, 19/09/2026.</p>
-            <div id="test-start-countdown" class="mt-4 rounded-2xl border border-brand-teal/30 bg-brand-teal/10 px-4 py-3 text-brand-teal font-black text-sm">Live test starts in: calculating...</div>
+            <div id="test-start-countdown" class="mt-4 rounded-2xl border border-brand-teal/30 bg-brand-teal/10 px-4 py-3 text-brand-teal font-black text-sm">Live test starts in: ...</div>
             <p class="text-slate-300 text-sm mt-4 leading-relaxed">We will send the test link to your registered phone number.</p>
             <p class="inline-block mt-3 px-4 py-2 rounded-xl bg-brand-card border border-brand-border text-brand-teal font-mono text-sm">${maskedPhone}</p>
-            <button onclick="window.switchView('home')" class="mt-7 px-6 py-3 bg-brand-teal text-brand-black font-black rounded-xl shadow-lg transition hover:brightness-110">🏠 Back to Home</button>
+            <div class="mt-7">
+              <button onclick="window.switchView('home')" class="px-6 py-3 bg-brand-teal text-brand-black font-black rounded-xl shadow-lg transition hover:brightness-110">🏠 Back to Home</button>
+            </div>
           </div>
         </div>
       `;
+      window.startTestStartCountdown();
+    };
+
+    // 🔥 FIXED: Accurate second-by-second countdown calculations
+    window.startTestStartCountdown = function() {
+      if (testStartTimer) clearInterval(testStartTimer);
+
+      const update = () => {
+        const label = document.getElementById('test-start-countdown');
+        if (!label) {
+          if (testStartTimer) clearInterval(testStartTimer);
+          return;
+        }
+
+        const now = Date.now();
+        const remaining = TEST_START_TIME - now;
+
+        if (remaining <= 0) {
+          label.innerText = '🔴 Live test has started! Check your registered WhatsApp/SMS for the link.';
+          label.className = 'mt-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/20 px-4 py-3 text-emerald-300 font-black text-sm';
+          if (testStartTimer) clearInterval(testStartTimer);
+          return;
+        }
+
+        const totalSeconds = Math.floor(remaining / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        let timeString = '';
+        if (days > 0) {
+          timeString = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+        } else {
+          timeString = `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+        }
+
+        label.innerText = `⏳ Live test starts in: ${timeString}`;
+      };
+
+      update();
+      testStartTimer = setInterval(update, 1000);
     };
 
     window.handleTestParticipationSubmit = async function(event) {
@@ -2525,7 +2563,7 @@
                 </div>
               </div>
 
-              <!-- Group Admin Option at Top of Contribution Area with Type Search & Multi-Select -->
+              <!-- Group Admin Option at Top -->
               <div>
                 <h4 class="text-xs font-black uppercase tracking-wider text-brand-gold mb-3">3. Areas of Contribution & Group Leadership</h4>
                 <p class="text-xs text-slate-400 mb-3">Select your desired contributions below. You must choose at least one or check the Group Admin option.</p>
@@ -2912,8 +2950,7 @@
                 </div>
                 
                 <div class="lg:col-span-7 space-y-2">
-                  <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Sent Notices (${window.state.notifications.length})</h4>
-                  ${window.state.notifications.map(n => `
+                  <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Sent Notices (${window.state.notifications.length})</h4>${window.state.notifications.map(n => `
                     <div class="glass-box p-3.5 rounded-xl flex justify-between items-center text-xs">
                       <div class="truncate pr-2 text-left">
                         <div class="font-bold text-white truncate">${n.title}</div>
@@ -3085,32 +3122,6 @@
           </div>
         </div>
       `;
-      window.startTestStartCountdown();
-    };
-
-    window.startTestStartCountdown = function() {
-      const update = () => {
-        const label = document.getElementById('test-start-countdown');
-        if (!label) {
-          if (testStartTimer) clearInterval(testStartTimer);
-          return;
-        }
-        const remaining = Math.max(0, TEST_START_TIME - Date.now());
-        if (remaining === 0) {
-          label.innerText = 'Test has started.';
-          label.className = 'mt-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-emerald-300 font-black text-sm';
-          if (testStartTimer) clearInterval(testStartTimer);
-          return;
-        }
-        const totalSeconds = Math.floor(remaining / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        label.innerText = `Live test starts in: ${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
-      };
-      update();
-      testStartTimer = setInterval(update, 1000);
     };
 
     window.openPrivacyPolicyModal = function() {

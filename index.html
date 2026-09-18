@@ -309,6 +309,8 @@
     const TEST_PARTICIPATION_DURATION_MS = 22 * 60 * 60 * 1000;
     let testParticipationDeadline = null;
     let testParticipationTimer = null;
+    let testStartTimer = null;
+    const TEST_START_TIME = new Date('2026-09-19T19:00:00+05:30').getTime();
 
     const INITIAL_WA_GROUPS = [
       { id: 'wa-1', name: 'College Students Batch', category: 'College', link: 'https://chat.whatsapp.com/JXtP8NGF6QvGOPRMZ6tqEp?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 450, status: 'active', isTargetGroup: true, description: 'General College Community & Exam Routine Guidance' },
@@ -411,7 +413,8 @@
         studentsHelped: '6000+',
         studyMaterials: '1200+'
       }),
-      playStoreUrl: getStored('wbstg_cache_playstore_url', '')
+      playStoreUrl: getStored('wbstg_cache_playstore_url', ''),
+      showTestParticipationButton: true
     };
 
     window.getRealGroupCount = function(grp) {
@@ -505,6 +508,9 @@
             window.state.playStoreUrl = cfg.playStoreUrl;
             setStored('wbstg_cache_playstore_url', cfg.playStoreUrl);
           }
+          if (typeof cfg.showTestParticipationButton === 'boolean') {
+            window.state.showTestParticipationButton = cfg.showTestParticipationButton;
+          }
           window.scheduleRender();
         }
       });
@@ -561,6 +567,11 @@
         console.error(`Error saving to ${collection}:`, e);
         throw e;
       }
+    };
+
+    window.dbCreate = async function(collection, id, data) {
+      if (!db) throw new Error('Firebase is unavailable.');
+      await db.collection(collection).doc(id).create(data);
     };
 
     window.dbDelete = async function(collection, id) {
@@ -1797,9 +1808,11 @@
             <button onclick="window.switchView('membership')" class="w-full sm:w-auto px-8 py-4 bg-brand-card hover:bg-brand-border text-brand-teal font-black text-sm rounded-2xl border border-brand-teal/40 transition shadow-lg">
               👥 Membership Form →
             </button>
-            <button onclick="window.switchView('test-participation')" class="w-full sm:w-auto px-8 py-4 bg-brand-dark hover:bg-brand-border text-brand-gold font-black text-sm rounded-2xl border border-brand-gold/40 transition shadow-lg">
-              📝 Participate in Test →
-            </button>
+            ${window.state.showTestParticipationButton !== false ? `
+              <button onclick="window.switchView('test-participation')" class="w-full sm:w-auto px-8 py-4 bg-brand-dark hover:bg-brand-border text-brand-gold font-black text-sm rounded-2xl border border-brand-gold/40 transition shadow-lg">
+                📝 Participate in Test →
+              </button>
+            ` : ''}
           </div>
 
           <!-- 3. LIVE IMPACT STATS METRICS (HORIZONTAL DRAGGABLE & SCROLLABLE TRACK) -->
@@ -2175,6 +2188,19 @@
     };
 
     window.renderTestParticipationPage = function(container) {
+      if (!window.state.currentUser) {
+        container.innerHTML = `
+          <div class="py-16 px-4 max-w-xl mx-auto text-center animate-slide-up">
+            <div class="glass-box p-8 rounded-3xl border border-brand-gold/40 shadow-2xl">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-brand-gold/10 text-brand-gold flex items-center justify-center text-3xl">🔐</div>
+              <h2 class="text-2xl font-black text-white mb-2">Login Required</h2>
+              <p class="text-slate-300 text-sm mb-6">Please login before participating in this test.</p>
+              <button onclick="window.openAuthModal()" class="px-7 py-3.5 bg-brand-gold text-brand-black font-black rounded-xl shadow-lg">Login / Register</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
       testParticipationDeadline = Date.now() + TEST_PARTICIPATION_DURATION_MS;
       container.innerHTML = `
         <div class="py-12 px-4 max-w-xl mx-auto animate-slide-up">
@@ -2196,6 +2222,21 @@
           </div>
         </div>
       `;
+      const participantId = window.getTestParticipantId();
+      if (db) {
+        db.collection('test_participations').doc(participantId).get().then(doc => {
+          if (doc.exists) {
+            window.renderTestParticipationSuccess(container, doc.data());
+            return null;
+          }
+          const email = (window.state.currentUser.email || '').trim().toLowerCase();
+          return db.collection('test_participations').where('email', '==', email).limit(1).get();
+        }).then(snapshot => {
+          if (snapshot && !snapshot.empty) {
+            window.renderTestParticipationSuccess(container, snapshot.docs[0].data());
+          }
+        }).catch(error => console.warn('Existing participation check failed:', error));
+      }
       window.startTestParticipationCountdown();
       if (db) {
         db.collection('settings').doc('testParticipation').get().then(doc => {
@@ -2206,6 +2247,11 @@
           }
         }).catch(error => console.warn('Test deadline could not be loaded:', error));
       }
+    };
+
+    window.getTestParticipantId = function() {
+      const email = (window.state.currentUser && window.state.currentUser.email || '').trim().toLowerCase();
+      return `test-participant-${email.replace(/[^a-z0-9]+/g, '-')}`;
     };
 
     window.startTestParticipationCountdown = function() {
@@ -2232,6 +2278,26 @@
       testParticipationTimer = setInterval(update, 1000);
     };
 
+    window.renderTestParticipationSuccess = function(container, participant) {
+      if (testParticipationTimer) clearInterval(testParticipationTimer);
+      if (testStartTimer) clearInterval(testStartTimer);
+      const phone = participant.number || '';
+      const maskedPhone = phone.length > 4 ? `${'*'.repeat(Math.max(0, phone.length - 4))}${phone.slice(-4)}` : phone;
+      container.innerHTML = `
+        <div class="py-16 px-4 max-w-xl mx-auto animate-slide-up">
+          <div class="glass-box p-8 sm:p-10 rounded-3xl shadow-2xl border border-emerald-500/40 text-center">
+            <div class="w-16 h-16 mx-auto mb-5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl">✓</div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-3">${participant.name || 'Student'}, Thanks for participating!</h2>
+            <p class="text-brand-gold font-black text-base sm:text-lg">Be ready on 7:00 PM, 19/09/2026.</p>
+            <div id="test-start-countdown" class="mt-4 rounded-2xl border border-brand-teal/30 bg-brand-teal/10 px-4 py-3 text-brand-teal font-black text-sm">Live test starts in: calculating...</div>
+            <p class="text-slate-300 text-sm mt-4 leading-relaxed">We will send the test link to your registered phone number.</p>
+            <p class="inline-block mt-3 px-4 py-2 rounded-xl bg-brand-card border border-brand-border text-brand-teal font-mono text-sm">${maskedPhone}</p>
+            <button onclick="window.switchView('home')" class="mt-7 px-6 py-3 bg-brand-teal text-brand-black font-black rounded-xl shadow-lg transition hover:brightness-110">🏠 Back to Home</button>
+          </div>
+        </div>
+      `;
+    };
+
     window.handleTestParticipationSubmit = async function(event) {
       event.preventDefault();
       const button = document.getElementById('test-participation-submit');
@@ -2246,7 +2312,7 @@
       }
       button.disabled = true;
       button.innerText = 'Submitting...';
-      const id = 'test-participant-' + Date.now();
+      const id = window.getTestParticipantId();
       const participant = {
         id,
         name: document.getElementById('test-participant-name').value.trim(),
@@ -2258,13 +2324,17 @@
         submittedAt: Date.now()
       };
       try {
-        await window.dbSave('test_participations', id, participant);
-        alert('Participation form submitted successfully.');
-        window.switchView('home');
+        await window.dbCreate('test_participations', id, participant);
+        window.renderTestParticipationSuccess(document.getElementById('main-content'), participant);
       } catch (error) {
-        alert('Submission failed: ' + error.message);
-        button.disabled = false;
-        button.innerText = 'Submit Participation';
+        if (error.code === 'already-exists') {
+          const existing = await db.collection('test_participations').doc(id).get();
+          window.renderTestParticipationSuccess(document.getElementById('main-content'), existing.exists ? existing.data() : participant);
+        } else {
+          alert('Submission failed: ' + error.message);
+          button.disabled = false;
+          button.innerText = 'Submit Participation';
+        }
       }
     };
 
@@ -2718,6 +2788,10 @@
                 <div class="glass-box p-5 rounded-2xl"><span class="text-xs text-slate-400">Notifications</span><strong class="text-2xl text-brand-gold block mt-1">${window.state.notifications.length}</strong></div>
                 <div class="glass-box p-5 rounded-2xl"><span class="text-xs text-slate-400">Directory</span><strong class="text-2xl text-emerald-400 block mt-1">${window.state.members.length}</strong></div>
               </div>
+              <div class="glass-box p-5 rounded-2xl mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-brand-gold/30">
+                <div><span class="text-xs text-slate-400 block">Public Test Participation</span><strong class="text-white text-sm block mt-1">${window.state.showTestParticipationButton === false ? 'Button hidden' : 'Button visible'}</strong></div>
+                <button onclick="window.adminToggleTestParticipationButton()" class="px-4 py-2 rounded-xl text-xs font-black ${window.state.showTestParticipationButton === false ? 'bg-brand-teal text-brand-black' : 'bg-brand-gold text-brand-black'}">${window.state.showTestParticipationButton === false ? 'Show Participate Button' : 'Hide Participate Button'}</button>
+              </div>
             ` : tab === 'users' ? `
               <div class="space-y-3">
                 ${window.state.users.length === 0 ? '<div class="glass-box p-6 text-center text-xs text-slate-400">No registered users found.</div>' : window.state.users.map(u => `
@@ -2761,7 +2835,11 @@
                   <div class="glass-box p-4 rounded-2xl text-xs border border-brand-gold/20">
                     <div class="flex flex-col sm:flex-row justify-between gap-3">
                       <div><div class="font-bold text-white text-sm">${participant.name || 'Unnamed'} <span class="text-brand-gold">• ${participant.gender || '-'}</span></div><p class="text-slate-400 mt-1">${participant.number || '-'} • ${participant.email || '-'}</p><p class="text-slate-300 mt-1">School: <strong>${participant.schoolName || '-'}</strong></p></div>
-                      <span class="self-start px-2 py-1 rounded bg-brand-gold/15 text-brand-gold font-bold">${(participant.status || 'new').toUpperCase()}</span>
+                      <div class="flex items-center gap-2 self-start">
+                        <span class="px-2 py-1 rounded bg-brand-gold/15 text-brand-gold font-bold">${(participant.status || 'new').toUpperCase()}</span>
+                        <button onclick="window.adminEditTestParticipant('${participant.id}')" class="px-2.5 py-1.5 rounded-lg bg-brand-teal/15 text-brand-teal border border-brand-teal/30 font-bold">Edit</button>
+                        <button onclick="window.adminDeleteTestParticipant('${participant.id}')" class="px-2.5 py-1.5 rounded-lg bg-rose-500/15 text-rose-400 border border-rose-500/30 font-bold">Delete</button>
+                      </div>
                     </div>
                   </div>
                 `).join('')}
@@ -2854,6 +2932,44 @@
 
     window.setAdminTab = function(t) {
       window.state.adminTab = t;
+      window.renderMain();
+    };
+
+    window.adminToggleTestParticipationButton = async function() {
+      const nextValue = window.state.showTestParticipationButton === false;
+      await window.dbSave('settings', 'siteConfig', {
+        showTestParticipationButton: nextValue,
+        updatedAt: Date.now()
+      });
+      window.state.showTestParticipationButton = nextValue;
+      window.renderMain();
+    };
+
+    window.adminEditTestParticipant = async function(id) {
+      const participant = window.state.testParticipations.find(item => item.id === id);
+      if (!participant) return;
+      const name = prompt('Participant name:', participant.name || '');
+      if (name === null) return;
+      const number = prompt('Phone number:', participant.number || '');
+      if (number === null) return;
+      const schoolName = prompt('School name:', participant.schoolName || '');
+      if (schoolName === null) return;
+      const status = prompt('Status (new/confirmed/attended):', participant.status || 'new');
+      if (status === null) return;
+      await window.dbSave('test_participations', id, {
+        name: name.trim(),
+        number: number.trim(),
+        schoolName: schoolName.trim(),
+        status: status.trim() || 'new',
+        updatedAt: Date.now()
+      });
+      alert('Participant details updated.');
+    };
+
+    window.adminDeleteTestParticipant = async function(id) {
+      if (!confirm('Delete this test participation permanently?')) return;
+      await window.dbDelete('test_participations', id);
+      window.state.testParticipations = window.state.testParticipations.filter(item => item.id !== id);
       window.renderMain();
     };
 
@@ -2969,6 +3085,32 @@
           </div>
         </div>
       `;
+      window.startTestStartCountdown();
+    };
+
+    window.startTestStartCountdown = function() {
+      const update = () => {
+        const label = document.getElementById('test-start-countdown');
+        if (!label) {
+          if (testStartTimer) clearInterval(testStartTimer);
+          return;
+        }
+        const remaining = Math.max(0, TEST_START_TIME - Date.now());
+        if (remaining === 0) {
+          label.innerText = 'Test has started.';
+          label.className = 'mt-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-emerald-300 font-black text-sm';
+          if (testStartTimer) clearInterval(testStartTimer);
+          return;
+        }
+        const totalSeconds = Math.floor(remaining / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        label.innerText = `Live test starts in: ${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+      };
+      update();
+      testStartTimer = setInterval(update, 1000);
     };
 
     window.openPrivacyPolicyModal = function() {

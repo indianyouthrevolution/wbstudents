@@ -207,6 +207,7 @@
         <button onclick="switchView('home')" id="nav-home-btn" class="text-brand-teal font-extrabold transition">Home Directory</button>
         <button onclick="switchView('groups')" id="nav-groups-btn" class="text-slate-300 hover:text-brand-whatsapp transition">💬 WhatsApp Hub</button>
         <button onclick="switchView('study')" id="nav-study-btn" class="text-brand-gold hover:text-brand-goldLight transition">📚 Study Portal</button>
+        <button onclick="window.openDonateNotesModal()" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1">📤 Donate Notes</button>
         <button onclick="switchView('store')" id="nav-store-btn" class="text-slate-300 hover:text-brand-teal transition">🛍️ Store</button>
         
         <button onclick="switchView('updates')" id="nav-updates-btn" class="text-slate-300 hover:text-brand-teal transition relative flex items-center gap-1.5">
@@ -232,9 +233,11 @@
     <button onclick="switchView('study')" id="bottom-study" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brand-teal text-[10px] font-semibold transition">
       <span class="text-xl">📖</span> Study
     </button>
-    <button onclick="switchView('store')" id="bottom-store" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brand-teal text-[10px] font-semibold transition relative">
-      <span class="text-xl">🛍️</span>
-      <span class="flex items-center gap-0.5">Store <span class="text-[8px] text-brand-gold font-bold">(Soon)</span></span>
+    <button onclick="switchView('store')" id="bottom-store" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brand-gold text-[10px] font-semibold transition">
+      <span class="text-xl">🛍️</span> Shop
+    </button>
+    <button onclick="window.openDonateNotesModal()" id="bottom-donate" class="flex flex-col items-center gap-1 text-emerald-400 hover:text-emerald-300 text-[10px] font-bold transition">
+      <span class="text-xl">📤</span> Donate
     </button>
     <button onclick="switchView('updates')" id="bottom-updates" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brand-teal text-[10px] font-semibold transition relative">
       <span class="text-xl">🔔</span>
@@ -258,6 +261,7 @@
       
       <div class="flex flex-wrap items-center justify-center gap-5">
         <div id="footer-social-links" class="flex flex-wrap items-center justify-center gap-4"></div>
+        <button onclick="window.switchView('store')" class="flex-shrink-0 px-4 py-2 rounded-xl bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-brand-black border border-brand-gold/40 text-xs font-black transition">🛍️ Official Shop</button>
         <button onclick="window.openPrivacyPolicyModal()" class="text-xs text-slate-400 hover:text-brand-teal font-semibold underline transition">Privacy Policy</button>
       </div>
     </div>
@@ -267,6 +271,9 @@
   <div id="crop-modal-container" class="relative z-[60]"></div>
 
   <script>
+    // 🔗 LIVE APPS SCRIPT WEB APP INTEGRATION FOR GOOGLE DRIVE
+    const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwOI5jQAh5Rm9yGA2IxvJNxAqRBiUTMsnjjAV8ovLA9pWrOF6m-MOzS-7fSVrGKJ_-NyQ/exec";
+
     const firebaseConfig = {
       apiKey: "AIzaSyA0ATw5yADdJbluhBV7fuEYx3i-Ye1biMU",
       authDomain: "wbstudenntsgroup.firebaseapp.com",
@@ -299,6 +306,9 @@
     const FOUNDER_IMAGE = "https://i.ibb.co/ybmSjDL/yusuf-website.png";
     const LEARNING_PORTAL = "https://wbstudentsgroup.github.io/Learning/";
     const OFFICIAL_WHATSAPP = "+919297660041";
+    const TEST_PARTICIPATION_DURATION_MS = 22 * 60 * 60 * 1000;
+    let testParticipationDeadline = null;
+    let testParticipationTimer = null;
 
     const INITIAL_WA_GROUPS = [
       { id: 'wa-1', name: 'College Students Batch', category: 'College', link: 'https://chat.whatsapp.com/JXtP8NGF6QvGOPRMZ6tqEp?s=cl&p=a&mlu=3', memberLimit: 1024, currentCount: 450, status: 'active', isTargetGroup: true, description: 'General College Community & Exam Routine Guidance' },
@@ -379,6 +389,7 @@
       users: getStored('wbstg_cache_users', []), 
       members: getStored('wbstg_cache_members', INITIAL_MEMBERS),
       applications: getStored('wbstg_cache_applications', []),
+      testParticipations: [],
       waGroups: getStored('wbstg_cache_wagroups', INITIAL_WA_GROUPS),
       tasks: [],
       taskSubmissions: {},
@@ -468,6 +479,7 @@
 
       syncCollection("users", "users", "createdAt", "wbstg_cache_users");
       syncCollection("applications", "applications", "submittedAt", "wbstg_cache_applications");
+      syncCollection("test_participations", "testParticipations", "submittedAt", null);
       syncCollection("notifications", "notifications", "timestamp", "wbstg_cache_notifications");
       syncCollection("members", "members", "order", "wbstg_cache_members");
 
@@ -921,6 +933,159 @@
       `).join('');
     };
 
+    // 📤 1-CLICK DIRECT GOOGLE DRIVE UPLOAD MODAL
+    window.openDonateNotesModal = function() {
+      const modal = document.getElementById('modal-container');
+      const user = window.state.currentUser;
+      const prefilledName = user ? (user.name || '') : '';
+
+      modal.innerHTML = `
+        <div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="relative w-full max-w-lg bg-[#081426] border border-brand-teal/50 p-6 sm:p-8 rounded-3xl shadow-2xl animate-slide-up text-left">
+            <button onclick="window.closeModal()" class="absolute top-4 right-4 p-2 bg-brand-card rounded-full text-slate-400 hover:text-white transition">✕</button>
+            
+            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-brand-border">
+              <span class="text-3xl">📤</span>
+              <div>
+                <h3 class="text-xl font-black text-white">Donate Study Material</h3>
+                <p class="text-[11px] text-brand-teal">Directly upload your PDF to our verified Drive library</p>
+              </div>
+            </div>
+
+            <form onsubmit="window.handleDirectDriveUpload(event)" class="space-y-3.5 text-xs">
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">YOUR NAME *</label>
+                <input type="text" id="donate-name" required value="${prefilledName}" placeholder="Enter your full name" class="w-full bg-[#050D1A] border border-brand-border rounded-xl px-3.5 py-3 text-white text-xs outline-none focus:border-brand-teal transition" />
+              </div>
+
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">NOTE / PDF TITLE *</label>
+                <input type="text" id="donate-title" required placeholder="e.g. Class 12 History Chapter 3 Notes / ABTA Test Paper" class="w-full bg-[#050D1A] border border-brand-border rounded-xl px-3.5 py-3 text-white text-xs outline-none focus:border-brand-teal transition" />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-slate-300 font-bold block mb-1">CLASS / CATEGORY *</label>
+                  <select id="donate-category" required class="w-full bg-[#050D1A] border border-brand-border rounded-xl px-3.5 py-3 text-white text-xs outline-none focus:border-brand-teal transition">
+                    <option value="Class 10th">Class 10th (Madhyamik)</option>
+                    <option value="Class 11th">Class 11th</option>
+                    <option value="Class 12th">Class 12th (HS)</option>
+                    <option value="College">College & Graduation</option>
+                    <option value="General Guidance">General & Competitive</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-slate-300 font-bold block mb-1">MEDIUM *</label>
+                  <select id="donate-medium" required class="w-full bg-[#050D1A] border border-brand-border rounded-xl px-3.5 py-3 text-white text-xs outline-none focus:border-brand-teal transition">
+                    <option value="Hindi">Hindi Medium</option>
+                    <option value="English">English Medium</option>
+                    <option value="Urdu">Urdu Medium</option>
+                    <option value="All / Common">All Mediums</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">CHOOSE PDF FILE * (Max 25MB)</label>
+                <input type="file" id="donate-pdf-file" accept="application/pdf" required class="w-full bg-[#050D1A] border border-brand-teal/40 rounded-xl px-3.5 py-2.5 text-white text-xs outline-none focus:border-brand-teal file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-teal file:text-brand-black cursor-pointer" />
+              </div>
+
+              <div>
+                <label class="text-slate-300 font-bold block mb-1">SHORT DESCRIPTION <span class="text-slate-500 font-normal">(Optional)</span></label>
+                <textarea id="donate-desc" rows="2" placeholder="Briefly describe what chapters/topics are covered..." class="w-full bg-[#050D1A] border border-brand-border rounded-xl px-3.5 py-2.5 text-white text-xs outline-none focus:border-brand-teal transition"></textarea>
+              </div>
+
+              <div class="pt-2">
+                <button type="submit" id="donate-submit-btn" class="w-full py-3.5 bg-gradient-to-r from-brand-teal to-cyan-400 hover:from-cyan-300 text-brand-black font-black text-xs rounded-xl shadow-lg transition">
+                  🚀 Upload PDF Directly to Google Drive
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    };
+
+    window.handleDirectDriveUpload = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('donate-submit-btn');
+      btn.disabled = true;
+      btn.innerText = "Uploading directly to Google Drive... Please wait ⏳";
+
+      const fileInput = document.getElementById('donate-pdf-file');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please select a PDF file!");
+        btn.disabled = false;
+        btn.innerText = "🚀 Upload PDF Directly to Google Drive";
+        return;
+      }
+
+      if (file.size > 25 * 1024 * 1024) {
+        alert("File size exceeds 25MB limit!");
+        btn.disabled = false;
+        btn.innerText = "🚀 Upload PDF Directly to Google Drive";
+        return;
+      }
+
+      const name = document.getElementById('donate-name').value.trim();
+      const title = document.getElementById('donate-title').value.trim();
+      const category = document.getElementById('donate-category').value;
+      const medium = document.getElementById('donate-medium').value;
+      const desc = document.getElementById('donate-desc').value.trim() || 'No description provided';
+      const user = window.state.currentUser;
+
+      const reader = new FileReader();
+      reader.onload = async function() {
+        const base64Data = reader.result.split(',')[1];
+        
+        const payload = {
+          fileName: file.name,
+          contentType: file.type || "application/pdf",
+          base64Data: base64Data
+        };
+
+        try {
+          const response = await fetch(GOOGLE_SCRIPT_WEBAPP_URL, {
+            method: "POST",
+            body: JSON.stringify(payload)
+          });
+          
+          const resData = await response.json();
+
+          if (resData.status === "success") {
+            const donationId = 'mat-' + Date.now();
+            await window.dbSave('study_contributions', donationId, {
+              id: donationId,
+              contributorName: name,
+              contributorEmail: user ? (user.email || 'guest') : 'guest',
+              title: title,
+              category: category,
+              medium: medium,
+              driveLink: resData.fileUrl,
+              driveFileId: resData.fileId,
+              description: desc,
+              status: 'pending_review',
+              submittedAt: Date.now()
+            });
+
+            alert("🎉 PDF File successfully uploaded to our Google Drive! The state team will verify and publish it.");
+            window.closeModal();
+          } else {
+            throw new Error(resData.message || "Drive upload failed");
+          }
+        } catch (err) {
+          alert("Upload Failed: " + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerText = "🚀 Upload PDF Directly to Google Drive";
+        }
+      };
+
+      reader.readAsDataURL(file);
+    };
+
     document.addEventListener('click', function(e) {
       const leadDropdown = document.getElementById('lead-groups-search-results');
       const leadInput = document.getElementById('lead-group-search-input');
@@ -1075,6 +1240,7 @@
       if (v === 'admin') window.renderAdminPage(container);
       else if (v === 'groups') window.renderAllGroupsPage(container);
       else if (v === 'member-detail') window.renderMemberDetailPage(container);
+      else if (v === 'test-participation') window.renderTestParticipationPage(container);
       else if (v === 'membership') window.renderMembershipPage(container);
       else if (v === 'study') window.renderStudyPage(container);
       else if (v === 'store') window.renderStorePage(container);
@@ -1135,7 +1301,6 @@
               </div>
             </div>
 
-            <!-- Profile Details Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6 border-b border-brand-border text-xs">
               <div class="p-4 bg-brand-card/80 rounded-2xl border border-brand-border space-y-1">
                 <span class="text-slate-400 font-semibold block">ASSIGNED DISTRICT:</span>
@@ -1159,7 +1324,6 @@
               ` : ''}
             </div>
 
-            <!-- Dedicated Bio & Contributions Section -->
             <div class="pt-6 space-y-3">
               <h3 class="text-xs font-black uppercase tracking-wider text-brand-gold">Official Portfolio & Contributions</h3>
               <div class="p-5 bg-brand-dark/90 rounded-2xl border border-brand-border/80 text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-line">
@@ -1301,7 +1465,6 @@
         </div>
       `;
 
-      // Auto-hide loader fallback after 1.2s if iframe doesn't trigger onload event
       setTimeout(() => {
         window.hideStudyLoader();
       }, 1200);
@@ -1634,6 +1797,9 @@
             <button onclick="window.switchView('membership')" class="w-full sm:w-auto px-8 py-4 bg-brand-card hover:bg-brand-border text-brand-teal font-black text-sm rounded-2xl border border-brand-teal/40 transition shadow-lg">
               👥 Membership Form →
             </button>
+            <button onclick="window.switchView('test-participation')" class="w-full sm:w-auto px-8 py-4 bg-brand-dark hover:bg-brand-border text-brand-gold font-black text-sm rounded-2xl border border-brand-gold/40 transition shadow-lg">
+              📝 Participate in Test →
+            </button>
           </div>
 
           <!-- 3. LIVE IMPACT STATS METRICS (HORIZONTAL DRAGGABLE & SCROLLABLE TRACK) -->
@@ -1796,7 +1962,7 @@
           </div>
         </section>
 
-        <!-- 2. FOUNDER YUSUF KHAN & CORE PURPOSE, VALUES & FOUNDATION SECTION (OPTIMIZED FOR SEARCH/SEO) -->
+        <!-- FOUNDER YUSUF KHAN & CORE PURPOSE, VALUES & FOUNDATION SECTION -->
         <section class="py-16 px-4 max-w-5xl mx-auto">
           <div class="glass-box p-8 sm:p-14 rounded-[36px] border border-brand-teal/30 shadow-2xl relative overflow-hidden text-left">
             <div class="absolute -right-12 -bottom-12 text-9xl opacity-5 pointer-events-none select-none">📖</div>
@@ -2008,6 +2174,100 @@
       }
     };
 
+    window.renderTestParticipationPage = function(container) {
+      testParticipationDeadline = Date.now() + TEST_PARTICIPATION_DURATION_MS;
+      container.innerHTML = `
+        <div class="py-12 px-4 max-w-xl mx-auto animate-slide-up">
+          <div class="glass-box p-6 sm:p-9 rounded-3xl shadow-2xl border border-brand-gold/30">
+            <button onclick="window.switchView('home')" class="inline-flex items-center gap-1 text-sm font-bold text-slate-400 hover:text-brand-teal mb-5 transition">← Back to Home</button>
+            <div class="flex items-center gap-3 pb-5 mb-6 border-b border-brand-border">
+              <div class="w-12 h-12 rounded-2xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-2xl">📝</div>
+              <div><h2 class="text-2xl font-black text-white">Participate in Test</h2><p class="text-slate-400 text-xs mt-1">Submit your details to join the upcoming test.</p></div>
+            </div>
+            <div id="test-participation-countdown" class="mb-5 rounded-2xl border border-brand-gold/30 bg-brand-gold/10 px-4 py-3 text-center text-brand-gold text-sm font-black">Time remaining: calculating...</div>
+            <form id="test-participation-form" onsubmit="window.handleTestParticipationSubmit(event)" class="space-y-4 text-left">
+              <div><label class="text-xs font-bold text-slate-300 block mb-1">FULL NAME *</label><input id="test-participant-name" required maxlength="100" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-gold" placeholder="Enter your full name" /></div>
+              <div><label class="text-xs font-bold text-slate-300 block mb-1">GENDER *</label><select id="test-participant-gender" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-gold"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select></div>
+              <div><label class="text-xs font-bold text-slate-300 block mb-1">PHONE NUMBER *</label><input id="test-participant-number" required maxlength="20" type="tel" pattern="[0-9+() -]{7,20}" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-gold" placeholder="Enter phone number" /></div>
+              <div><label class="text-xs font-bold text-slate-300 block mb-1">EMAIL *</label><input id="test-participant-email" required maxlength="150" type="email" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-gold" placeholder="you@example.com" /></div>
+              <div><label class="text-xs font-bold text-slate-300 block mb-1">SCHOOL NAME *</label><input id="test-participant-school" required maxlength="180" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-gold" placeholder="Enter school name" /></div>
+              <button type="submit" id="test-participation-submit" class="w-full py-3.5 bg-gradient-to-r from-brand-gold to-amber-500 hover:from-amber-400 text-brand-black font-black rounded-xl text-sm transition shadow-xl">Submit Participation</button>
+            </form>
+          </div>
+        </div>
+      `;
+      window.startTestParticipationCountdown();
+      if (db) {
+        db.collection('settings').doc('testParticipation').get().then(doc => {
+          const configuredDeadline = doc.exists ? Number(doc.data().submissionDeadline || 0) : 0;
+          if (configuredDeadline > Date.now()) {
+            testParticipationDeadline = configuredDeadline;
+            window.startTestParticipationCountdown();
+          }
+        }).catch(error => console.warn('Test deadline could not be loaded:', error));
+      }
+    };
+
+    window.startTestParticipationCountdown = function() {
+      if (testParticipationTimer) clearInterval(testParticipationTimer);
+      const update = () => {
+        const label = document.getElementById('test-participation-countdown');
+        const form = document.getElementById('test-participation-form');
+        const remaining = Math.max(0, testParticipationDeadline - Date.now());
+        if (!label || !form) return;
+        if (remaining === 0) {
+          label.innerText = 'Submission closed: 22-hour time limit ended.';
+          label.className = 'mb-5 rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-center text-rose-300 text-sm font-black';
+          Array.from(form.elements).forEach(element => { element.disabled = true; });
+          clearInterval(testParticipationTimer);
+          return;
+        }
+        const totalSeconds = Math.floor(remaining / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        label.innerText = `Time remaining: ${hours}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+      };
+      update();
+      testParticipationTimer = setInterval(update, 1000);
+    };
+
+    window.handleTestParticipationSubmit = async function(event) {
+      event.preventDefault();
+      const button = document.getElementById('test-participation-submit');
+      if (!db) {
+        alert('Firebase is unavailable. Your form was not saved. Please try again when the connection is restored.');
+        return;
+      }
+      if (!testParticipationDeadline || Date.now() >= testParticipationDeadline) {
+        window.startTestParticipationCountdown();
+        alert('This participation form is closed because the 22-hour submission window has ended.');
+        return;
+      }
+      button.disabled = true;
+      button.innerText = 'Submitting...';
+      const id = 'test-participant-' + Date.now();
+      const participant = {
+        id,
+        name: document.getElementById('test-participant-name').value.trim(),
+        gender: document.getElementById('test-participant-gender').value,
+        number: document.getElementById('test-participant-number').value.trim(),
+        email: document.getElementById('test-participant-email').value.trim().toLowerCase(),
+        schoolName: document.getElementById('test-participant-school').value.trim(),
+        status: 'new',
+        submittedAt: Date.now()
+      };
+      try {
+        await window.dbSave('test_participations', id, participant);
+        alert('Participation form submitted successfully.');
+        window.switchView('home');
+      } catch (error) {
+        alert('Submission failed: ' + error.message);
+        button.disabled = false;
+        button.innerText = 'Submit Participation';
+      }
+    };
+
     // 🔥 MEMBERSHIP FORM
     window.renderMembershipPage = function(container) {
       if (!window.state.currentUser) {
@@ -2096,7 +2356,6 @@
 
             <form id="membership-form" onsubmit="window.handleMembershipSubmit(event)" class="space-y-6 text-left">
               
-              <!-- Passport Photo Upload with Auto Cropper -->
               ${showPhoto ? `
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-border text-center sm:text-left">
                   <div id="photo-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-teal/50 flex items-center justify-center flex-shrink-0 text-slate-500 text-2xl shadow-inner">📷</div>
@@ -2111,7 +2370,6 @@
                 </div>
               ` : ''}
 
-              <!-- ID Card Upload with Requested Exact Heading -->
               ${showIdCard ? `
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 bg-brand-card/80 rounded-2xl border border-brand-gold/40 text-center sm:text-left">
                   <div id="idcard-preview-box" class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border-2 border-brand-gold/50 flex items-center justify-center flex-shrink-0 text-brand-gold text-2xl shadow-inner">🪪</div>
@@ -2447,6 +2705,7 @@
             <button onclick="window.setAdminTab('overview')" class="px-4 py-2 rounded-xl text-xs font-black ${tab === 'overview' ? 'bg-brand-teal text-brand-black' : 'bg-brand-card text-slate-400 hover:text-white'}">Overview</button>
             <button onclick="window.setAdminTab('users')" class="px-4 py-2 rounded-xl text-xs font-black ${tab === 'users' ? 'bg-brand-teal text-brand-black' : 'bg-brand-card text-slate-400 hover:text-white'}">👤 Users (${window.state.users.length})</button>
             <button onclick="window.setAdminTab('apps')" class="px-4 py-2 rounded-xl text-xs font-black ${tab === 'apps' ? 'bg-brand-teal text-brand-black' : 'bg-brand-card text-slate-400 hover:text-white'}">📝 Apps (${window.state.applications.length})</button>
+            <button onclick="window.setAdminTab('test-participants')" class="px-4 py-2 rounded-xl text-xs font-black ${tab === 'test-participants' ? 'bg-brand-gold text-brand-black' : 'bg-brand-card text-slate-400 hover:text-white'}">🧪 Test Participants (${window.state.testParticipations.length})</button>
             <button onclick="window.setAdminTab('directory')" class="px-4 py-2 rounded-xl text-xs font-black ${tab === 'directory' ? 'bg-brand-teal text-brand-black' : 'bg-brand-card text-slate-400 hover:text-white'}">👥 Directory</button>
             <button onclick="window.setAdminTab('notifs')" class="px-4 py-2 rounded-xl text-xs font-black ${tab === 'notifs' ? 'bg-brand-gold text-brand-black' : 'bg-brand-card text-slate-400 hover:text-white'}">🔔 Notifications (${window.state.notifications.length})</button>
           </div>
@@ -2491,6 +2750,18 @@
                       ${app.status !== 'approved' ? `<button onclick="window.adminApproveApp('${app.id}')" class="px-3 py-1.5 bg-emerald-500 text-brand-black font-bold rounded-lg">Approve</button>` : ''}
                       ${app.status !== 'not_selected' ? `<button onclick="window.adminPromptReject('${app.id}')" class="px-3 py-1.5 bg-rose-500 text-white font-bold rounded-lg">Reject</button>` : ''}
                       <button onclick="window.adminDeleteApp('${app.id}')" class="px-3 py-1.5 bg-slate-800 text-rose-400 border border-rose-500/30 font-bold rounded-lg hover:bg-rose-500 hover:text-white transition">🗑️ Delete</button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : tab === 'test-participants' ? `
+              <div class="space-y-3">
+                <div class="flex items-center justify-between"><h3 class="text-lg font-black text-white">Test Participation Forms</h3><span class="text-xs text-slate-400">Live from Firestore</span></div>
+                ${window.state.testParticipations.length === 0 ? '<div class="glass-box p-6 text-center text-xs text-slate-400">No test participation forms found yet.</div>' : window.state.testParticipations.map(participant => `
+                  <div class="glass-box p-4 rounded-2xl text-xs border border-brand-gold/20">
+                    <div class="flex flex-col sm:flex-row justify-between gap-3">
+                      <div><div class="font-bold text-white text-sm">${participant.name || 'Unnamed'} <span class="text-brand-gold">• ${participant.gender || '-'}</span></div><p class="text-slate-400 mt-1">${participant.number || '-'} • ${participant.email || '-'}</p><p class="text-slate-300 mt-1">School: <strong>${participant.schoolName || '-'}</strong></p></div>
+                      <span class="self-start px-2 py-1 rounded bg-brand-gold/15 text-brand-gold font-bold">${(participant.status || 'new').toUpperCase()}</span>
                     </div>
                   </div>
                 `).join('')}

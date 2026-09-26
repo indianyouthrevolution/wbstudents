@@ -9,6 +9,19 @@
   <meta name="keywords" content="WB Students Group, Yusuf Khan, Yusuf Khan Founder, West Bengal Student Welfare, WB Board Hindi Medium, WB HS Notes, Madhyamik Notes" />
   <meta name="author" content="Yusuf Khan" />
   <title>WB Students Group | Official State Portal & Learning Network (Founded by Yusuf Khan)</title>
+  <script>
+    (function(){
+      try {
+        const p = new URLSearchParams(location.search);
+        const slug = p.get('slug') || p.get('update');
+        if (slug) {
+          const provisional = decodeURIComponent(slug).replace(/-/g, ' ').replace(/\s+/g, ' ').trim();
+          if (provisional) document.title = provisional.replace(/\b\w/g, c => c.toUpperCase()) + ' | WB Students Group';
+        }
+      } catch(e) {}
+    })();
+  </script>
+  <link rel="canonical" href="https://wbstudentsgroup.github.io/" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -474,7 +487,8 @@
     };
 
     const urlParams = new URLSearchParams(window.location.search);
-    const initialViewParam = urlParams.get('view') || 'home';
+    const initialSlugParam = urlParams.get('slug') || urlParams.get('update') || '';
+    const initialViewParam = initialSlugParam ? 'update-detail' : (urlParams.get('view') || 'home');
     const initialMemberIdParam = urlParams.get('id') || '';
     const initialUpdateIdParam = urlParams.get('updateId') || (initialViewParam === 'update-detail' ? urlParams.get('id') : '') || '';
 
@@ -498,6 +512,7 @@
       currentView: initialViewParam,
       selectedMemberId: initialMemberIdParam,
       selectedUpdateId: initialUpdateIdParam,
+      selectedUpdateSlug: initialSlugParam,
       adminTab: 'overview',
       groupFilter: 'all',
       selectedLeadGroups: [],
@@ -572,6 +587,7 @@
           if (sortKey) items.sort((a,b) => (b[sortKey] || 0) - (a[sortKey] || 0));
           window.state[stateKey] = items;
           if (cacheKey) setStored(cacheKey, items);
+          if (colName === 'vlogs') window.resolveUpdateSeoRoute();
           window.scheduleRender();
         }, err => console.error(`Sync error on ${colName}:`, err));
       };
@@ -776,15 +792,100 @@
       return out.join('');
     };
 
+    // 🔎 SEO UPDATE ROUTING: create a stable, heading-based slug without requiring Admin Panel changes.
+    window.slugifyUpdateTitle = function(value) {
+      return String(value || '')
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .replace(/-+/g, '-')
+        .slice(0, 120);
+    };
+
+    window.getVlogSlug = function(vlog) {
+      if (!vlog) return '';
+      return window.slugifyUpdateTitle(vlog.seoSlug || vlog.slug || vlog.urlSlug || vlog.title || vlog.id);
+    };
+
+    window.findVlogBySlug = function(slug) {
+      const clean = window.slugifyUpdateTitle(slug);
+      if (!clean) return null;
+      return (window.state.vlogs || []).find(v => window.getVlogSlug(v) === clean) || null;
+    };
+
+    window.updateSeoMetaForVlog = function(vlog) {
+      const baseTitle = vlog?.title ? `${vlog.title} | WB Students Group` : 'WB Students Group | Official State Portal & Learning Network';
+      const description = String(vlog?.seoDescription || vlog?.summary || vlog?.content || 'WB Students Group latest student education update.').replace(/\s+/g, ' ').trim().slice(0, 160);
+      document.title = baseTitle;
+
+      const setMeta = (selector, attr, value) => {
+        let el = document.head.querySelector(selector);
+        if (!el) { el = document.createElement('meta'); el.setAttribute(attr === 'property' ? 'property' : 'name', selector.includes('property=') ? selector.match(/property="([^"]+)"/)?.[1] || '' : selector.match(/name="([^"]+)"/)?.[1] || ''); document.head.appendChild(el); }
+        el.setAttribute('content', value);
+      };
+      setMeta('meta[name="description"]', 'name', description);
+      setMeta('meta[property="og:title"]', 'property', baseTitle);
+      setMeta('meta[property="og:description"]', 'property', description);
+      setMeta('meta[property="og:type"]', 'property', 'article');
+      setMeta('meta[property="og:url"]', 'property', window.location.href);
+      setMeta('meta[property="og:image"]', 'property', window.getVlogThumbnail(vlog));
+      setMeta('meta[name="twitter:card"]', 'name', 'summary_large_image');
+      setMeta('meta[name="twitter:title"]', 'name', baseTitle);
+      setMeta('meta[name="twitter:description"]', 'name', description);
+      setMeta('meta[name="twitter:image"]', 'name', window.getVlogThumbnail(vlog));
+
+      let canonical = document.head.querySelector('link[rel="canonical"]');
+      if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+      canonical.href = window.location.href;
+
+      let ld = document.getElementById('dynamic-update-schema');
+      if (!ld) { ld = document.createElement('script'); ld.id = 'dynamic-update-schema'; ld.type = 'application/ld+json'; document.head.appendChild(ld); }
+      ld.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: vlog?.title || '',
+        description,
+        image: [window.getVlogThumbnail(vlog)],
+        datePublished: vlog?.publishedAt || vlog?.publishedDate || vlog?.createdAt || undefined,
+        dateModified: vlog?.updatedAt || vlog?.publishedAt || vlog?.createdAt || undefined,
+        author: { '@type': 'Person', name: vlog?.author || 'Yusuf Khan' },
+        publisher: { '@type': 'Organization', name: 'WB Students Group', logo: { '@type': 'ImageObject', url: LOGO_URL } },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': window.location.href }
+      });
+    };
+
+    window.resolveUpdateSeoRoute = function() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug') || params.get('update');
+      if (!slug) return;
+      const found = window.findVlogBySlug(slug);
+      if (found) {
+        window.state.selectedUpdateId = found.id;
+        window.state.currentView = 'update-detail';
+        window.updateSeoMetaForVlog(found);
+      }
+    };
+
     window.openVlogDetail = function(vlogId) {
+      const vlog = (window.state.vlogs || []).find(v => v.id === vlogId);
       window.state.selectedUpdateId = vlogId;
-      window.switchView('update-detail', `id=${encodeURIComponent(vlogId)}`);
+      const slug = window.getVlogSlug(vlog) || vlogId;
+      window.switchView('update-detail', `slug=${encodeURIComponent(slug)}`);
     };
 
     // 🚀 FIXED RENDER FUNCTION: Image ke theek neeche professional highlighted Headings & Subheadings ke saath
     window.renderUpdateDetailPage = function(container) {
-      const updateId = window.state.selectedUpdateId;
-      const vlog = (window.state.vlogs || []).find(v => v.id === updateId);
+      const params = new URLSearchParams(window.location.search);
+      const routeSlug = params.get('slug') || params.get('update') || window.state.selectedUpdateSlug || '';
+      const vlog = routeSlug ? window.findVlogBySlug(routeSlug) : (window.state.vlogs || []).find(v => v.id === window.state.selectedUpdateId);
+      if (vlog) {
+        window.state.selectedUpdateId = vlog.id;
+        window.state.selectedUpdateSlug = window.getVlogSlug(vlog);
+        window.updateSeoMetaForVlog(vlog);
+      }
 
       if (!vlog) {
         container.innerHTML = `
@@ -1343,6 +1444,14 @@
         let newUrl = view === 'home' ? window.location.pathname : `?view=${view}`;
         if (extraQuery) newUrl += `&${extraQuery}`;
         window.history.pushState({ view: view, extraQuery: extraQuery }, '', newUrl);
+        if (view === 'update-detail') {
+          const params = new URLSearchParams(extraQuery);
+          const slug = params.get('slug');
+          const vlog = slug ? window.findVlogBySlug(slug) : (window.state.vlogs || []).find(v => v.id === window.state.selectedUpdateId);
+          if (vlog) window.updateSeoMetaForVlog(vlog);
+        } else {
+          document.title = 'WB Students Group | Official State Portal & Learning Network (Founded by Yusuf Khan)';
+        }
       } catch (e) {
         window.location.hash = view; 
       }
@@ -1358,6 +1467,8 @@
       window.state.currentView = v;
       window.state.selectedMemberId = params.get('id') || '';
       window.state.selectedUpdateId = params.get('id') || params.get('updateId') || '';
+      window.state.selectedUpdateSlug = params.get('slug') || params.get('update') || '';
+      if (window.state.selectedUpdateSlug) window.resolveUpdateSeoRoute();
       window.renderNav();
       window.renderMain();
       window.updateBottomNavUI();
@@ -1823,7 +1934,7 @@
               ${vlogs.length === 0 ? `
                 <div class="rounded-2xl border border-brand-border p-8 text-center text-xs text-slate-400">No updates found for this filter.</div>
               ` : vlogs.map(vlog => `
-                <article onclick="window.openVlogDetail('${vlog.id}')" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group">
+                <a href="?view=update-detail&slug=${encodeURIComponent(window.getVlogSlug(vlog))}" onclick="event.preventDefault(); window.openVlogDetail('${vlog.id}')" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group block">
                   <div class="w-[86px] h-[68px] sm:w-[116px] sm:h-[82px] md:w-[140px] md:h-[92px] rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 updates-thumb">
                     <img src="${window.getVlogThumbnail(vlog)}" alt="${vlog.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80';" />
                   </div>
@@ -1832,7 +1943,7 @@
                     <p class="text-[10px] sm:text-xs text-blue-400 font-bold mt-1.5 flex items-center gap-1.5"><span>▣</span>${vlog.publishedDate || 'Recently Updated'}</p>
                   </div>
                   <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-cyan-500/25 bg-cyan-500/5 flex items-center justify-center text-cyan-300 text-lg flex-shrink-0 group-hover:border-cyan-400/60 group-hover:shadow-[0_0_16px_rgba(0,240,255,.18)] transition">›</div>
-                </article>
+                </a>
               `).join('')}
             </div>
 
@@ -2221,7 +2332,7 @@
                 const hf = window.state.homeUpdateFilter || 'all';
                 const hv = [...vlogs].sort((a,b)=>window.getItemTime(b)-window.getItemTime(a)).filter(v=>hf==='all'||window.getUpdateCategory(v)===hf).slice(0,3);
                 return hv.length ? hv.map(vlog => `
-                  <div onclick="window.openVlogDetail('${vlog.id}')" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group">
+                  <a href="?view=update-detail&slug=${encodeURIComponent(window.getVlogSlug(vlog))}" onclick="event.preventDefault(); window.openVlogDetail('${vlog.id}')" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group block">
                     <div class="w-[86px] h-[68px] sm:w-[116px] sm:h-[82px] md:w-[140px] md:h-[92px] rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 updates-thumb">
                       <img src="${window.getVlogThumbnail(vlog)}" alt="${vlog.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80';" />
                     </div>

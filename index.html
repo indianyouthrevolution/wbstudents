@@ -5,23 +5,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="google-site-verification" content="QdWp6KclUO3WdEfBuTkQhXAhnqjiTWrIhc3XT16dT9E" />
-  <meta name="description" content="WB Students Group founded by Yusuf Khan on 09-09-2024. Official State Student Welfare Portal for Hindi, English & Urdu medium students across West Bengal." />
+  <meta id="page-description" name="description" content="WB Students Group founded by Yusuf Khan on 09-09-2024. Official State Student Welfare Portal for Hindi, English & Urdu medium students across West Bengal." />
   <meta name="keywords" content="WB Students Group, Yusuf Khan, Yusuf Khan Founder, West Bengal Student Welfare, WB Board Hindi Medium, WB HS Notes, Madhyamik Notes" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta id="page-og-title" property="og:title" content="WB Students Group | Official State Portal & Learning Network" />
+  <meta id="page-og-description" property="og:description" content="Official State Student Welfare Portal for students across West Bengal." />
+  <meta id="page-og-url" property="og:url" content="" />
+  <meta id="page-og-type" property="og:type" content="website" />
+  <link id="page-canonical" rel="canonical" href="" />
+  <script id="page-structured-data" type="application/ld+json"></script>
   <meta name="author" content="Yusuf Khan" />
   <title>WB Students Group | Official State Portal & Learning Network (Founded by Yusuf Khan)</title>
-  <script>
-    (function(){
-      try {
-        const p = new URLSearchParams(location.search);
-        const slug = p.get('slug') || p.get('update');
-        if (slug) {
-          const provisional = decodeURIComponent(slug).replace(/-/g, ' ').replace(/\s+/g, ' ').trim();
-          if (provisional) document.title = provisional.replace(/\b\w/g, c => c.toUpperCase()) + ' | WB Students Group';
-        }
-      } catch(e) {}
-    })();
-  </script>
-  <link rel="canonical" href="https://wbstudentsgroup.github.io/" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -158,10 +152,6 @@
     .notice-tab.active { background:#00F0FF; color:#02050D; box-shadow:0 5px 18px rgba(0,240,255,.18); }
 
     .update-filter-select { appearance:none; background:#081426; border:1px solid rgba(0,240,255,.35); color:#E2E8F0; border-radius:12px; padding:.55rem 2.1rem .55rem .8rem; font-size:.72rem; font-weight:900; outline:none; }
-    .latest-live-dot { position:relative; width:12px; height:12px; border-radius:9999px; background:#ef4444; box-shadow:0 0 12px rgba(239,68,68,.85); flex-shrink:0; }
-    .latest-live-dot::after { content:""; position:absolute; inset:-5px; border-radius:9999px; border:2px solid rgba(239,68,68,.72); animation:latestDotPulse 1.25s ease-out infinite; }
-    @keyframes latestDotPulse { 0% { transform:scale(.55); opacity:.9; } 70% { transform:scale(1.35); opacity:0; } 100% { transform:scale(1.35); opacity:0; } }
-    @media (prefers-reduced-motion: reduce) { .latest-live-dot::after { animation:none; } }
     .updates-neon-panel {
       background: radial-gradient(circle at 50% 0%, rgba(0,240,255,.055), transparent 42%), #071224;
       border: 1px solid rgba(0,240,255,.22);
@@ -420,7 +410,7 @@
     const ADMIN_PASS = "@Yusufkhan7310";
     const LOGO_URL = "https://i.ibb.co/67KV7VvY/wblogo.png";
     const FOUNDER_IMAGE = "https://i.ibb.co/ybmSjDL/yusuf-website.png";
-    const LEARNING_PORTAL = "https://wbstudentsgroup.github.io/Learning/";
+    const LEARNING_PORTAL = "https://wbstudentsgroup.github.io/";
     const OFFICIAL_WHATSAPP = "+919297660041";
     const TEST_PARTICIPATION_DURATION_MS = 22 * 60 * 60 * 1000;
     let testParticipationDeadline = null;
@@ -487,10 +477,10 @@
     };
 
     const urlParams = new URLSearchParams(window.location.search);
-    const initialSlugParam = urlParams.get('slug') || urlParams.get('update') || '';
-    const initialViewParam = initialSlugParam ? 'update-detail' : (urlParams.get('view') || 'home');
+    const initialViewParam = urlParams.get('view') || 'home';
     const initialMemberIdParam = urlParams.get('id') || '';
     const initialUpdateIdParam = urlParams.get('updateId') || (initialViewParam === 'update-detail' ? urlParams.get('id') : '') || '';
+    const initialGroupIdParam = initialViewParam === 'group-detail' ? urlParams.get('id') || '' : '';
 
     window.state = {
       users: getStored('wbstg_cache_users', []), 
@@ -508,11 +498,12 @@
       seenNotifIds: getStored('wbstg_seen_notifs', []),
       formSettings: DEFAULT_FORM_SETTINGS,
       showHelpBanner: getStored('wbstg_show_banner', true),
+      studyUrl: getStored('wbstg_cache_study_url', LEARNING_PORTAL),
       currentUser: getStored('wbstg_user', null),
       currentView: initialViewParam,
       selectedMemberId: initialMemberIdParam,
       selectedUpdateId: initialUpdateIdParam,
-      selectedUpdateSlug: initialSlugParam,
+      selectedGroupId: initialGroupIdParam,
       adminTab: 'overview',
       groupFilter: 'all',
       selectedLeadGroups: [],
@@ -525,6 +516,7 @@
         studyMaterials: '1200+'
       }),
       playStoreUrl: getStored('wbstg_cache_playstore_url', ''),
+      storeUrl: getStored('wbstg_cache_store_url', ''),
       showTestParticipationButton: true
     };
 
@@ -587,7 +579,6 @@
           if (sortKey) items.sort((a,b) => (b[sortKey] || 0) - (a[sortKey] || 0));
           window.state[stateKey] = items;
           if (cacheKey) setStored(cacheKey, items);
-          if (colName === 'vlogs') window.resolveUpdateSeoRoute();
           window.scheduleRender();
         }, err => console.error(`Sync error on ${colName}:`, err));
       };
@@ -617,7 +608,15 @@
             window.state.siteStats = Object.assign(window.state.siteStats, cfg.siteStats);
             setStored('wbstg_cache_stats', window.state.siteStats);
           }
-          if (cfg.playStoreUrl) {
+          if (typeof cfg.studyUrl === 'string') {
+            window.state.studyUrl = cfg.studyUrl;
+            setStored('wbstg_cache_study_url', cfg.studyUrl);
+          }
+          if (typeof cfg.storeUrl === 'string') {
+            window.state.storeUrl = cfg.storeUrl;
+            setStored('wbstg_cache_store_url', cfg.storeUrl);
+          }
+          if (typeof cfg.playStoreUrl === 'string') {
             window.state.playStoreUrl = cfg.playStoreUrl;
             setStored('wbstg_cache_playstore_url', cfg.playStoreUrl);
           }
@@ -792,100 +791,25 @@
       return out.join('');
     };
 
-    // 🔎 SEO UPDATE ROUTING: create a stable, heading-based slug without requiring Admin Panel changes.
-    window.slugifyUpdateTitle = function(value) {
-      return String(value || '')
-        .normalize('NFKD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .replace(/&/g, ' and ')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .replace(/-+/g, '-')
-        .slice(0, 120);
-    };
-
-    window.getVlogSlug = function(vlog) {
-      if (!vlog) return '';
-      return window.slugifyUpdateTitle(vlog.seoSlug || vlog.slug || vlog.urlSlug || vlog.title || vlog.id);
-    };
-
-    window.findVlogBySlug = function(slug) {
-      const clean = window.slugifyUpdateTitle(slug);
-      if (!clean) return null;
-      return (window.state.vlogs || []).find(v => window.getVlogSlug(v) === clean) || null;
-    };
-
-    window.updateSeoMetaForVlog = function(vlog) {
-      const baseTitle = vlog?.title ? `${vlog.title} | WB Students Group` : 'WB Students Group | Official State Portal & Learning Network';
-      const description = String(vlog?.seoDescription || vlog?.summary || vlog?.content || 'WB Students Group latest student education update.').replace(/\s+/g, ' ').trim().slice(0, 160);
-      document.title = baseTitle;
-
-      const setMeta = (selector, attr, value) => {
-        let el = document.head.querySelector(selector);
-        if (!el) { el = document.createElement('meta'); el.setAttribute(attr === 'property' ? 'property' : 'name', selector.includes('property=') ? selector.match(/property="([^"]+)"/)?.[1] || '' : selector.match(/name="([^"]+)"/)?.[1] || ''); document.head.appendChild(el); }
-        el.setAttribute('content', value);
-      };
-      setMeta('meta[name="description"]', 'name', description);
-      setMeta('meta[property="og:title"]', 'property', baseTitle);
-      setMeta('meta[property="og:description"]', 'property', description);
-      setMeta('meta[property="og:type"]', 'property', 'article');
-      setMeta('meta[property="og:url"]', 'property', window.location.href);
-      setMeta('meta[property="og:image"]', 'property', window.getVlogThumbnail(vlog));
-      setMeta('meta[name="twitter:card"]', 'name', 'summary_large_image');
-      setMeta('meta[name="twitter:title"]', 'name', baseTitle);
-      setMeta('meta[name="twitter:description"]', 'name', description);
-      setMeta('meta[name="twitter:image"]', 'name', window.getVlogThumbnail(vlog));
-
-      let canonical = document.head.querySelector('link[rel="canonical"]');
-      if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
-      canonical.href = window.location.href;
-
-      let ld = document.getElementById('dynamic-update-schema');
-      if (!ld) { ld = document.createElement('script'); ld.id = 'dynamic-update-schema'; ld.type = 'application/ld+json'; document.head.appendChild(ld); }
-      ld.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: vlog?.title || '',
-        description,
-        image: [window.getVlogThumbnail(vlog)],
-        datePublished: vlog?.publishedAt || vlog?.publishedDate || vlog?.createdAt || undefined,
-        dateModified: vlog?.updatedAt || vlog?.publishedAt || vlog?.createdAt || undefined,
-        author: { '@type': 'Person', name: vlog?.author || 'Yusuf Khan' },
-        publisher: { '@type': 'Organization', name: 'WB Students Group', logo: { '@type': 'ImageObject', url: LOGO_URL } },
-        mainEntityOfPage: { '@type': 'WebPage', '@id': window.location.href }
-      });
-    };
-
-    window.resolveUpdateSeoRoute = function() {
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get('slug') || params.get('update');
-      if (!slug) return;
-      const found = window.findVlogBySlug(slug);
-      if (found) {
-        window.state.selectedUpdateId = found.id;
-        window.state.currentView = 'update-detail';
-        window.updateSeoMetaForVlog(found);
-      }
+    window.getPublicDetailUrl = function(view, id) {
+      const params = new URLSearchParams({ view, id: String(id || '') });
+      return `${window.location.pathname}?${params.toString()}`;
     };
 
     window.openVlogDetail = function(vlogId) {
-      const vlog = (window.state.vlogs || []).find(v => v.id === vlogId);
       window.state.selectedUpdateId = vlogId;
-      const slug = window.getVlogSlug(vlog) || vlogId;
-      window.switchView('update-detail', `slug=${encodeURIComponent(slug)}`);
+      window.switchView('update-detail', `id=${encodeURIComponent(vlogId)}`);
+    };
+
+    window.openGroupDetailsPage = function(groupId) {
+      window.state.selectedGroupId = groupId;
+      window.switchView('group-detail', `id=${encodeURIComponent(groupId)}`);
     };
 
     // 🚀 FIXED RENDER FUNCTION: Image ke theek neeche professional highlighted Headings & Subheadings ke saath
     window.renderUpdateDetailPage = function(container) {
-      const params = new URLSearchParams(window.location.search);
-      const routeSlug = params.get('slug') || params.get('update') || window.state.selectedUpdateSlug || '';
-      const vlog = routeSlug ? window.findVlogBySlug(routeSlug) : (window.state.vlogs || []).find(v => v.id === window.state.selectedUpdateId);
-      if (vlog) {
-        window.state.selectedUpdateId = vlog.id;
-        window.state.selectedUpdateSlug = window.getVlogSlug(vlog);
-        window.updateSeoMetaForVlog(vlog);
-      }
+      const updateId = window.state.selectedUpdateId;
+      const vlog = (window.state.vlogs || []).find(v => v.id === updateId);
 
       if (!vlog) {
         container.innerHTML = `
@@ -1332,13 +1256,6 @@
         return;
       }
 
-      if (file.size > 25 * 1024 * 1024) {
-        alert("File size exceeds 25MB limit!");
-        btn.disabled = false;
-        btn.innerText = "🚀 Upload PDF Directly to Google Drive";
-        return;
-      }
-
       const name = document.getElementById('donate-name').value.trim();
       const title = document.getElementById('donate-title').value.trim();
       const category = document.getElementById('donate-category').value;
@@ -1444,14 +1361,6 @@
         let newUrl = view === 'home' ? window.location.pathname : `?view=${view}`;
         if (extraQuery) newUrl += `&${extraQuery}`;
         window.history.pushState({ view: view, extraQuery: extraQuery }, '', newUrl);
-        if (view === 'update-detail') {
-          const params = new URLSearchParams(extraQuery);
-          const slug = params.get('slug');
-          const vlog = slug ? window.findVlogBySlug(slug) : (window.state.vlogs || []).find(v => v.id === window.state.selectedUpdateId);
-          if (vlog) window.updateSeoMetaForVlog(vlog);
-        } else {
-          document.title = 'WB Students Group | Official State Portal & Learning Network (Founded by Yusuf Khan)';
-        }
       } catch (e) {
         window.location.hash = view; 
       }
@@ -1467,8 +1376,7 @@
       window.state.currentView = v;
       window.state.selectedMemberId = params.get('id') || '';
       window.state.selectedUpdateId = params.get('id') || params.get('updateId') || '';
-      window.state.selectedUpdateSlug = params.get('slug') || params.get('update') || '';
-      if (window.state.selectedUpdateSlug) window.resolveUpdateSeoRoute();
+      window.state.selectedGroupId = v === 'group-detail' ? params.get('id') || '' : '';
       window.renderNav();
       window.renderMain();
       window.updateBottomNavUI();
@@ -1569,6 +1477,105 @@
       window.updateBottomNavUI();
     };
 
+    window.updatePageSEO = function() {
+      const view = window.state.currentView;
+      const canonicalUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+      let title = 'WB Students Group | Official Student Welfare Portal';
+      let description = 'Official student welfare, study resources, WhatsApp communities and verified student leaders across West Bengal.';
+      let schema = {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'WB Students Group',
+        url: `${window.location.origin}${window.location.pathname}`,
+        description
+      };
+      let ogType = 'website';
+
+      if (view === 'update-detail') {
+        const update = (window.state.vlogs || []).find(item => item.id === window.state.selectedUpdateId);
+        if (update) {
+          title = `${update.title} | WB Students Group Updates`;
+          description = String(update.summary || update.content || update.title).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160);
+          schema = {
+            '@context': 'https://schema.org',
+            '@type': 'NewsArticle',
+            headline: update.title,
+            description,
+            image: window.getVlogThumbnail(update),
+            mainEntityOfPage: canonicalUrl,
+            publisher: { '@type': 'Organization', name: 'WB Students Group' }
+          };
+          ogType = 'article';
+        }
+      } else if (view === 'member-detail') {
+        const member = (window.state.members || []).find(item => item.id === window.state.selectedMemberId || item.memberId === window.state.selectedMemberId);
+        if (member) {
+          title = `${member.name} | ${member.role || 'Student Leader'} | WB Students Group`;
+          description = `${member.name}, ${member.role || 'verified student leader'} from ${member.district || 'West Bengal'}. ${member.bio || ''}`.replace(/\s+/g, ' ').trim().slice(0, 160);
+          schema = {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: member.name,
+            jobTitle: member.role,
+            description,
+            image: member.photoUrl || undefined,
+            url: canonicalUrl,
+            worksFor: { '@type': 'Organization', name: 'WB Students Group' }
+          };
+        }
+      } else if (view === 'group-detail') {
+        const group = (window.state.waGroups || []).find(item => item.id === window.state.selectedGroupId);
+        if (group) {
+          title = `${group.name || group.title} | WhatsApp Group | WB Students Group`;
+          description = `${group.description || group.subtitle || 'Official student WhatsApp community'} Join the ${group.category || group.tag || 'student'} WhatsApp group.`.replace(/\s+/g, ' ').trim().slice(0, 160);
+          schema = {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: group.name || group.title,
+            description,
+            url: canonicalUrl,
+            sameAs: group.link ? [group.link] : undefined,
+            parentOrganization: { '@type': 'Organization', name: 'WB Students Group' }
+          };
+        }
+      } else if (view === 'updates') {
+        title = 'Latest Student Updates, Jobs & Notices | WB Students Group';
+        schema = {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: title,
+          itemListElement: (window.state.vlogs || []).map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.title,
+            url: `${window.location.origin}${window.getPublicDetailUrl('update-detail', item.id)}`
+          }))
+        };
+      } else if (view === 'groups') {
+        title = 'Official WhatsApp Student Groups in West Bengal | WB Students Group';
+        schema = {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: title,
+          itemListElement: (window.state.waGroups || []).map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.name || item.title,
+            url: `${window.location.origin}${window.getPublicDetailUrl('group-detail', item.id)}`
+          }))
+        };
+      }
+
+      document.title = title;
+      document.getElementById('page-description').content = description;
+      document.getElementById('page-og-title').content = title;
+      document.getElementById('page-og-description').content = description;
+      document.getElementById('page-og-url').content = canonicalUrl;
+      document.getElementById('page-og-type').content = ogType;
+      document.getElementById('page-canonical').href = canonicalUrl;
+      document.getElementById('page-structured-data').textContent = JSON.stringify(schema, (key, value) => value === undefined ? undefined : value).replace(/</g, '\\u003c');
+    };
+
     window.renderMain = function() {
       const container = document.getElementById('main-content');
       if (!container) return;
@@ -1576,6 +1583,7 @@
       
       if (v === 'admin') window.renderAdminPage(container);
       else if (v === 'groups') window.renderAllGroupsPage(container);
+      else if (v === 'group-detail') window.renderGroupDetailPage(container);
       else if (v === 'member-detail') window.renderMemberDetailPage(container);
       else if (v === 'update-detail') window.renderUpdateDetailPage(container);
       else if (v === 'test-participation') window.renderTestParticipationPage(container);
@@ -1593,6 +1601,7 @@
         window.initInteractiveAutoScroll('home-leaders-scroll-track', 0.45, -1);
         window.initInteractiveAutoScroll('home-stats-bottom-scroll-track', 0.55, 1);
       }
+      window.updatePageSEO();
     };
 
     window.renderMemberDetailPage = function(container) {
@@ -1767,7 +1776,8 @@
                     </div>
                   </div>
 
-                  <a href="${grp.link}" target="_blank" class="mt-5 w-full py-3 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-2 shadow-lg">
+                  <a href="${window.getPublicDetailUrl('group-detail', grp.id)}" class="mt-5 w-full py-2.5 bg-brand-card text-brand-teal font-black text-xs rounded-xl border border-brand-border transition flex items-center justify-center gap-2">Group Details</a>
+                  <a href="${grp.link}" target="_blank" rel="noopener noreferrer" class="mt-2 w-full py-3 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-2 shadow-lg">
                     <span>📱</span> Join WhatsApp Group
                   </a>
                 </div>
@@ -1778,6 +1788,35 @@
       `;
     };
 
+    window.renderGroupDetailPage = function(container) {
+      const group = (window.state.waGroups || []).find(item => item.id === window.state.selectedGroupId);
+      if (!group) {
+        container.innerHTML = `
+          <div class="py-20 px-4 max-w-md mx-auto text-center">
+            <div class="glass-box p-8 rounded-3xl">
+              <h1 class="text-xl font-black text-white mb-2">WhatsApp Group Not Found</h1>
+              <p class="text-xs text-slate-400 mb-6">This group may no longer be active.</p>
+              <button onclick="window.switchView('groups')" class="px-6 py-3 bg-brand-whatsapp text-slate-950 font-black text-xs rounded-xl">Browse Groups</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <main class="max-w-3xl mx-auto px-4 py-10 animate-slide-up">
+          <article class="glass-box p-6 sm:p-10 rounded-3xl text-left">
+            <a href="${window.location.pathname}?view=groups" class="text-xs font-bold text-slate-400 hover:text-brand-teal">← All WhatsApp Groups</a>
+            <p class="text-brand-whatsapp text-xs font-black uppercase mt-8">${group.category || group.tag || 'Student Community'}</p>
+            <h1 class="text-2xl sm:text-4xl font-black text-white mt-2">${group.name || group.title}</h1>
+            <p class="text-slate-300 leading-relaxed mt-4">${group.description || group.subtitle || 'Official student WhatsApp community.'}</p>
+            <div class="mt-6 text-xs text-slate-400">West Bengal student community · ${window.getRealGroupCount(group)} members</div>
+            <a href="${group.link}" target="_blank" rel="noopener noreferrer" class="inline-flex mt-8 px-5 py-3 bg-brand-whatsapp text-slate-950 font-black text-sm rounded-xl">Join WhatsApp Group</a>
+          </article>
+        </main>
+      `;
+    };
+
     window.renderStudyPage = function(container) {
       container.innerHTML = `
         <div class="w-full h-[calc(100vh-130px)] flex flex-col relative animate-slide-up bg-brand-black">
@@ -1785,7 +1824,7 @@
             <span class="text-brand-gold font-bold flex items-center gap-1.5"><span>📚</span> WBSTG Integrated Learning Portal</span>
             <div class="flex items-center gap-3">
               <button onclick="window.hideStudyLoader()" class="text-slate-400 hover:text-white transition">Dismiss Loader ✕</button>
-              <a href="${LEARNING_PORTAL}" target="_blank" class="text-brand-teal hover:underline flex items-center gap-1 font-bold">Open in Tab ↗</a>
+              <a href="${window.state.studyUrl || LEARNING_PORTAL}" target="_blank" rel="noopener noreferrer" class="text-brand-teal hover:underline flex items-center gap-1 font-bold">Open in Tab ↗</a>
             </div>
           </div>
 
@@ -1798,7 +1837,7 @@
             </button>
           </div>
 
-          <iframe id="study-portal-iframe" src="${LEARNING_PORTAL}" onload="window.hideStudyLoader()" class="w-full flex-1 border-0 bg-brand-black"></iframe>
+          <iframe id="study-portal-iframe" src="${window.state.studyUrl || LEARNING_PORTAL}" onload="window.hideStudyLoader()" class="w-full flex-1 border-0 bg-brand-black"></iframe>
         </div>
       `;
 
@@ -1818,6 +1857,19 @@
     };
 
     window.renderStorePage = function(container) {
+      if (window.state.storeUrl) {
+        container.innerHTML = `
+          <div class="w-full h-[calc(100vh-130px)] flex flex-col relative animate-slide-up bg-brand-black">
+            <div class="bg-brand-dark px-4 py-3 border-b border-brand-border flex justify-between items-center text-xs z-10">
+              <span class="text-brand-gold font-bold">🛍️ WBSTG Official Store</span>
+              <a href="${window.state.storeUrl}" target="_blank" rel="noopener noreferrer" class="text-brand-teal hover:underline font-bold">Open in Tab ↗</a>
+            </div>
+            <iframe title="WBSTG Official Store" src="${window.state.storeUrl}" class="w-full flex-1 border-0 bg-brand-black"></iframe>
+          </div>
+        `;
+        return;
+      }
+
       container.innerHTML = `
         <div class="py-12 px-4 max-w-2xl mx-auto text-center animate-slide-up">
           <div class="glass-box p-8 sm:p-12 rounded-[36px] border border-brand-gold/40 shadow-2xl relative overflow-hidden">
@@ -1920,7 +1972,7 @@
           <div class="updates-neon-panel rounded-[30px] p-4 sm:p-6 md:p-7">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 mb-4 border-b border-brand-border">
               <div class="flex items-center gap-3">
-                <span class="latest-live-dot" aria-label="Live updates"></span>
+                <span class="w-3 h-3 rounded-full bg-rose-500 shadow-[0_0_14px_rgba(244,63,94,.65)]"></span>
                 <h2 class="text-xl sm:text-2xl font-black text-white">Latest <span class="text-blue-500">Updates</span></h2>
               </div>
               <span class="text-[10px] sm:text-xs text-slate-500 font-mono">${vlogs.length} update${vlogs.length===1?'':'s'}</span>
@@ -1930,11 +1982,11 @@
               ${chips.map(([key,label]) => `<button onclick="window.setUpdateFilter('${key}')" class="update-chip ${filter===key?'active':''}">${label}</button>`).join('')}
             </div>
 
-            <div class="space-y-3" aria-label="Latest updates list">
+            <div class="space-y-3">
               ${vlogs.length === 0 ? `
                 <div class="rounded-2xl border border-brand-border p-8 text-center text-xs text-slate-400">No updates found for this filter.</div>
               ` : vlogs.map(vlog => `
-                <a href="?view=update-detail&slug=${encodeURIComponent(window.getVlogSlug(vlog))}" onclick="event.preventDefault(); window.openVlogDetail('${vlog.id}')" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group block">
+                <a href="${window.getPublicDetailUrl('update-detail', vlog.id)}" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group">
                   <div class="w-[86px] h-[68px] sm:w-[116px] sm:h-[82px] md:w-[140px] md:h-[92px] rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 updates-thumb">
                     <img src="${window.getVlogThumbnail(vlog)}" alt="${vlog.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80';" />
                   </div>
@@ -1947,9 +1999,9 @@
               `).join('')}
             </div>
 
-            <button onclick="window.switchView('updates')" class="updates-view-all w-full mt-4 py-3.5 rounded-2xl text-blue-300 hover:text-white font-black text-xs sm:text-sm transition">
+            <a href="${window.location.pathname}?view=updates" class="updates-view-all w-full mt-4 py-3.5 rounded-2xl text-blue-300 hover:text-white font-black text-xs sm:text-sm transition text-center block">
               View All Updates →
-            </button>
+            </a>
           </div>
         </div>
       `;
@@ -2041,7 +2093,7 @@
                   <option value="Hindi">Hindi Medium</option><option value="English">English Medium</option><option value="Urdu">Urdu Medium</option><option value="All / Common">All Mediums</option>
                 </select></div>
               </div>
-              <div><label class="text-slate-300 font-bold block mb-1">CHOOSE PDF FILE * (Max 25MB)</label><input type="file" id="donate-pdf-file" accept="application/pdf" required class="w-full bg-[#050D1A] border border-brand-teal/40 rounded-xl px-3.5 py-2.5 text-white text-xs cursor-pointer" /></div>
+              <div><label class="text-slate-300 font-bold block mb-1">CHOOSE PDF FILE *</label><input type="file" id="donate-pdf-file" accept="application/pdf" required class="w-full bg-[#050D1A] border border-brand-teal/40 rounded-xl px-3.5 py-2.5 text-white text-xs cursor-pointer" /></div>
               <div><label class="text-slate-300 font-bold block mb-1">SHORT DESCRIPTION <span class="text-slate-500 font-normal">(Optional)</span></label><textarea id="donate-desc" rows="3" placeholder="Briefly describe the chapters/topics..." class="w-full bg-[#050D1A] border border-brand-border rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-brand-teal"></textarea></div>
               <button type="submit" id="donate-submit-btn" class="w-full py-4 bg-gradient-to-r from-brand-teal to-cyan-400 text-brand-black font-black text-sm rounded-xl shadow-lg">🚀 Upload PDF Directly to Google Drive</button>
             </form>
@@ -2317,22 +2369,22 @@
           <div class="updates-neon-panel rounded-[30px] p-4 sm:p-6 md:p-7 shadow-2xl">
             <div class="flex items-center justify-between gap-3 pb-4 mb-4 border-b border-brand-border">
               <div class="flex items-center gap-3">
-                <span class="latest-live-dot" aria-label="Live updates"></span>
+                <span class="w-3 h-3 rounded-full bg-rose-500 shadow-[0_0_14px_rgba(244,63,94,.65)]"></span>
                 <h3 class="text-xl sm:text-2xl font-black text-white">Latest <span class="text-blue-500">Updates</span></h3>
               </div>
-              <button onclick="window.switchView('updates')" class="hidden sm:inline-flex text-[10px] sm:text-xs font-black text-blue-400 hover:text-cyan-300 transition">View All →</button>
+              <a href="${window.location.pathname}?view=updates" class="hidden sm:inline-flex text-[10px] sm:text-xs font-black text-blue-400 hover:text-cyan-300 transition">View All →</a>
             </div>
 
             <div class="updates-filter-strip flex gap-2 overflow-x-auto pb-1 mb-4">
               ${[['all','All'],['10th','1–10th'],['11th','11th'],['hs','HS'],['jobs','Jobs'],['schemes','Schemes']].map(([key,label]) => `<button onclick="window.setHomeUpdateFilter('${key}')" class="update-chip ${(window.state.homeUpdateFilter||'all')===key?'active':''}">${label}</button>`).join('')}
             </div>
 
-            <div class="space-y-3" aria-label="Latest updates list">
+            <div class="space-y-3">
               ${(() => {
                 const hf = window.state.homeUpdateFilter || 'all';
                 const hv = [...vlogs].sort((a,b)=>window.getItemTime(b)-window.getItemTime(a)).filter(v=>hf==='all'||window.getUpdateCategory(v)===hf).slice(0,3);
                 return hv.length ? hv.map(vlog => `
-                  <a href="?view=update-detail&slug=${encodeURIComponent(window.getVlogSlug(vlog))}" onclick="event.preventDefault(); window.openVlogDetail('${vlog.id}')" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group block">
+                  <a href="${window.getPublicDetailUrl('update-detail', vlog.id)}" class="updates-neon-row rounded-2xl overflow-hidden flex items-center gap-3 sm:gap-4 p-3 sm:p-4 cursor-pointer transition group">
                     <div class="w-[86px] h-[68px] sm:w-[116px] sm:h-[82px] md:w-[140px] md:h-[92px] rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 updates-thumb">
                       <img src="${window.getVlogThumbnail(vlog)}" alt="${vlog.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80';" />
                     </div>
@@ -2341,14 +2393,14 @@
                       <p class="text-[10px] sm:text-xs text-blue-400 font-bold mt-1.5 flex items-center gap-1.5"><span>▣</span>${vlog.publishedDate || 'Recently Updated'}</p>
                     </div>
                     <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-cyan-500/25 bg-cyan-500/5 flex items-center justify-center text-cyan-300 text-lg flex-shrink-0">›</div>
-                  </div>
+                  </a>
                 `).join('') : `<div class="p-7 text-center text-xs text-slate-400">No updates found for this filter.</div>`;
               })()}
             </div>
 
-            <button onclick="window.switchView('updates')" class="updates-view-all w-full mt-4 py-3.5 rounded-2xl text-blue-300 hover:text-white font-black text-xs sm:text-sm transition">
+            <a href="${window.location.pathname}?view=updates" class="updates-view-all w-full mt-4 py-3.5 rounded-2xl text-blue-300 hover:text-white font-black text-xs sm:text-sm transition text-center block">
               View All Updates →
-            </button>
+            </a>
           </div>
         </section>
 
@@ -2430,9 +2482,9 @@
               <span class="text-brand-whatsapp text-xs font-black uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5 mb-1">Official Verified WhatsApp Groups</span>
               <h3 class="text-xl sm:text-2xl font-black text-white">Join Your Class & District Community</h3>
             </div>
-            <button onclick="window.switchView('groups')" class="px-4 py-2 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center gap-1.5">
+            <a href="${window.location.pathname}?view=groups" class="px-4 py-2 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center gap-1.5">
               View All Groups (${window.state.waGroups.length}) ❯
-            </button>
+            </a>
           </div>
 
           <div id="home-wa-scroll-track" class="interactive-scroll-container no-scrollbar px-4">
@@ -2448,7 +2500,8 @@
                     <h4 class="text-base font-black text-white truncate">${grp.name || grp.title}</h4>
                     <p class="text-slate-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">${grp.description || grp.subtitle || 'Official verified group'}</p>
                   </div>
-                  <a href="${grp.link}" target="_blank" class="mt-4 w-full py-2.5 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-1.5">Join WhatsApp Group</a>
+                  <a href="${window.getPublicDetailUrl('group-detail', grp.id)}" class="mt-3 text-brand-teal text-xs font-bold hover:underline">Group details →</a>
+                  <a href="${grp.link}" target="_blank" rel="noopener noreferrer" class="mt-2 w-full py-2.5 bg-brand-whatsapp/15 hover:bg-brand-whatsapp text-brand-whatsapp hover:text-slate-950 font-black text-xs rounded-xl border border-brand-whatsapp/40 transition flex items-center justify-center gap-1.5">Join WhatsApp Group</a>
                 </div>
               `;
             }).join('')}
@@ -2467,7 +2520,7 @@
 
           <div id="home-leaders-scroll-track" class="interactive-scroll-container no-scrollbar px-4">
             ${duplicatedMembers.map(m => `
-              <div onclick="window.openMemberDetailsPage('${m.id}')" class="w-[280px] sm:w-[310px] glass-box rounded-3xl overflow-hidden shadow-2xl cursor-pointer flex-shrink-0 group">
+              <a href="${window.getPublicDetailUrl('member-detail', m.id)}" class="w-[280px] sm:w-[310px] glass-box rounded-3xl overflow-hidden shadow-2xl cursor-pointer flex-shrink-0 group">
                 <div class="relative h-64 w-full bg-slate-900 overflow-hidden">
                   ${m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-300" />` : window.getDefaultAvatarHtml(m.name, 'Male', 'w-full h-full')}
                   <div class="absolute top-3 left-3 bg-brand-gold text-brand-black font-black text-[10px] px-3 py-1 rounded-full uppercase shadow-lg">${m.badge || 'CORE TEAM'}</div>
@@ -2481,7 +2534,7 @@
                     <span class="text-brand-gold font-bold group-hover:underline">See Details →</span>
                   </div>
                 </div>
-              </div>
+              </a>
             `).join('')}
           </div>
         </section>
@@ -3364,6 +3417,16 @@
                 <div><span class="text-xs text-slate-400 block">Public Test Participation</span><strong class="text-white text-sm block mt-1">${window.state.showTestParticipationButton === false ? 'Button hidden' : 'Button visible'}</strong></div>
                 <button onclick="window.adminToggleTestParticipationButton()" class="px-4 py-2 rounded-xl text-xs font-black ${window.state.showTestParticipationButton === false ? 'bg-brand-teal text-brand-black' : 'bg-brand-gold text-brand-black'}">${window.state.showTestParticipationButton === false ? 'Show Participate Button' : 'Hide Participate Button'}</button>
               </div>
+              <form onsubmit="window.adminSaveSiteLinks(event)" class="glass-box p-5 rounded-2xl mt-5 space-y-3 text-left">
+                <div>
+                  <h2 class="text-sm font-black text-white">Website Links</h2>
+                  <p class="text-[11px] text-slate-400 mt-1">Store link will open inside the Store panel. App link opens in a new tab.</p>
+                </div>
+                <div><label for="site-study-url" class="text-xs text-slate-300 block mb-1">Study Panel URL</label><input id="site-study-url" type="url" value="${window.state.studyUrl || ''}" placeholder="https://..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white font-mono" /></div>
+                <div><label for="site-store-url" class="text-xs text-slate-300 block mb-1">Store URL</label><input id="site-store-url" type="url" value="${window.state.storeUrl || ''}" placeholder="https://..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white font-mono" /></div>
+                <div><label for="site-app-url" class="text-xs text-slate-300 block mb-1">Android App URL</label><input id="site-app-url" type="url" value="${window.state.playStoreUrl || ''}" placeholder="https://..." class="w-full bg-brand-card border border-brand-border rounded-xl p-2.5 text-xs text-white font-mono" /></div>
+                <button type="submit" class="px-4 py-2 bg-brand-teal text-brand-black font-black text-xs rounded-xl">Save Links</button>
+              </form>
             ` : tab === 'users' ? `
               <div class="space-y-3">
                 ${window.state.users.length === 0 ? '<div class="glass-box p-6 text-center text-xs text-slate-400">No registered users found.</div>' : window.state.users.map(u => `
@@ -3515,6 +3578,39 @@
       });
       window.state.showTestParticipationButton = nextValue;
       window.renderMain();
+    };
+
+    window.adminSaveSiteLinks = async function(event) {
+      event.preventDefault();
+      const links = {
+        studyUrl: document.getElementById('site-study-url').value.trim(),
+        storeUrl: document.getElementById('site-store-url').value.trim(),
+        playStoreUrl: document.getElementById('site-app-url').value.trim()
+      };
+
+      for (const [label, value] of Object.entries({ Study: links.studyUrl, Store: links.storeUrl, App: links.playStoreUrl })) {
+        if (!value) continue;
+        try {
+          if (!['http:', 'https:'].includes(new URL(value).protocol)) throw new Error('Invalid protocol');
+        } catch (error) {
+          alert(`${label} URL must start with http:// or https://`);
+          return;
+        }
+      }
+
+      try {
+        await window.dbSave('settings', 'siteConfig', { ...links, updatedAt: Date.now() });
+        window.state.studyUrl = links.studyUrl || LEARNING_PORTAL;
+        window.state.storeUrl = links.storeUrl;
+        window.state.playStoreUrl = links.playStoreUrl;
+        setStored('wbstg_cache_study_url', window.state.studyUrl);
+        setStored('wbstg_cache_store_url', links.storeUrl);
+        setStored('wbstg_cache_playstore_url', links.playStoreUrl);
+        alert('Study, Store and App links saved.');
+        window.renderMain();
+      } catch (error) {
+        alert('Could not save site links: ' + error.message);
+      }
     };
 
     window.adminEditTestParticipant = async function(id) {
